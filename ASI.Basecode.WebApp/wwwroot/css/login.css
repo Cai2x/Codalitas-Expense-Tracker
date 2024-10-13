@@ -1,29 +1,59 @@
-.gradient-custom-2 {
-    /* fallback for old browsers */
-    background: #ff0000; /* Red */
-    /* Chrome 10-25, Safari 5.1-6 */
-    background: -webkit-linear-gradient(to right, #ff0000, #000000); /* Red, Black */
-    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background: linear-gradient(to right, #ff0000, #000000); /* Red, Black */
+
+.login-heading {
+    font-size: 2.5rem;
 }
 
-.login-btn {
-    width: 180px;
+.form-label {
+    font-weight: 600;
+    color: #426B1F;
 }
 
-.register-box {
-    width: 600px;
+
+.btn-login {
+    width: 200px; 
+    height: 48px; 
+    padding: 10px 20px; 
+    font-size: 18px; 
+    border-width: 2px; 
+    display: block; 
+    margin: 0 auto; 
+    background-color: #426B1F;
 }
 
-@media (min-width: 768px) {
-    .gradient-form {
-        height: 100vh !important;
-    }
+.login-card-bg {
+    padding: 10px;
+    width: 500px;
+    height: 600px;
+    background-color: #FAFAF5;
+    border-radius: 10px;
+    margin-left: -80px;
 }
 
-@media (min-width: 769px) {
-    .gradient-custom-2 {
-        border-top-right-radius: .3rem;
-        border-bottom-right-radius: .3rem;
-    }
+.create-btn {
+    padding: 10px 20px; 
+    font-size: 16px; 
+    border-width: 2px; 
+    width: auto;
+    height: auto; 
+    display: inline-block; 
+}
+
+.input {
+    background-color: #E5EEDE; 
+    border: 1px solid #ced4da; 
+    padding: 10px; 
+    border-radius: 10px;
+    height: 50px;
+}
+
+.login-container {
+    background-color: #ffffff; /* Set background to white */
+}
+
+.header-text {
+    font-family: 'Newsreader', serif;
+    font-size: 3rem;
+    color: #426B1F;
+    font-weight: bold;
+    text-align: center;
 }
