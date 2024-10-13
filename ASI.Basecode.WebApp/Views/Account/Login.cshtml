@@ -2,8 +2,8 @@
 
 @using static ASI.Basecode.Resources.Views.Screen
 @section styles {
-    <link rel="stylesheet" href="~/css/login.css"/>
-    <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@400;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="~/css/login.css"/>
+        <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@400;700&display=swap" rel="stylesheet">
 }
 @{
     ViewBag.LoginView = true;
@@ -13,47 +13,46 @@
     @Html.AntiForgeryToken()
 </div>
 
-<div class="container py-5" style="display:flex; align-items:center; justify-content:center; height:calc(100vh - 64px)">
-    <div class="col-md-4 mx-auto">
-       <h1 class="header-text text-center mb-5">GasTwo</h1>
-        <div class="card login-card login-card-bg">
-            <div class="card-body">
-                <h3 class="text-left mt-3 mb-5 login-heading">Login</h3>              
-                <form asp-action="Login" asp-controller="Account" method="post" id="loginForm">                  
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Username</label>
-                        <input type="text" id="email" class="form-control input" asp-for="UserId" placeholder="Enter UserId" />
-                        <span asp-validation-for="UserId" class="text-danger"></span>
+<div class="container login-container">
+    <div class="col-md-4 ">
+        <h1 class="header-text text-center mb-5">GasTwo</h1>
+            <div class="card login-card">
+                <div class="card-body">
+                    <h3 class="text-left mt-3 mb-5 login-heading">Login</h3>
+                    <form asp-action="Login" asp-controller="Account" method="post" id="loginForm">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Username</label>
+                            <input type="text" id="email" class="form-control input" asp-for="UserId" placeholder="Enter UserId" />
+                            <span asp-validation-for="UserId" class="text-danger"></span>
+                        </div>
+                        <div class="mb-5">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" id="password" class="form-control input" asp-for="Password" placeholder="Enter password" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="d-grid gap-2 mt-4 mb-3">
+                            <button type="submit" class="btn btn-login text-white">Login</button>
+                        </div>
+                        <div class="text-center">
+                            <a asp-controller="Account" asp-action="ForgotPassword" class="text-muted">Forgot Password?</a>
+                        </div>
+                    </form>
+                    <div class="mt-5 text-center">
+                        <span>Don't have an account? </span>
+                        <a asp-controller="Account" asp-action="Register" class="text-success">Sign Up</a>
                     </div>
-                    <div class="mb-5">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" id="password" class="form-control input" asp-for="Password" placeholder="Enter password" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
-                    <div class="d-grid gap-2 mt-4 mb-3">
-                        <button type="submit" class="btn btn-login text-white">Login</button>
-                    </div>
-
-                    <div class="text-center">
-                        <a asp-controller="Account" asp-action="ForgotPassword" class="text-muted">Forgot Password?</a>
-                    </div>
-                </form>               
-                <div class="mt-5 text-center">
-                    <a>Don't have an account?</a>
-                    <a asp-controller="Account" asp-action="Register" class="btn btn-outline-success create-btn">Create New</a>
                 </div>
-            </div>
-        </div>
+          </div>
     </div>
 </div>
 
 
 @section scripts {
-    <script>
-        // Check for error message and display Toastr notification
-        var errorMessage = '@TempData["ErrorMessage"]';
-        if (errorMessage) {
-            toastr.error(errorMessage);
-        }
-    </script>
+        <script>
+            // Check for error message and display Toastr notification
+            var errorMessage = '@TempData["ErrorMessage"]';
+            if (errorMessage) {
+                toastr.error(errorMessage);
+            }
+        </script>
 }
