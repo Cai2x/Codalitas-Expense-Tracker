@@ -18,7 +18,7 @@ namespace ASI.Basecode.Services.ServiceModels
         public string FirstName { get; set; }
 
         [Required(ErrorMessage = "Last name is required.")]
- 
+
         public string LastName { get; set; }
 
         [Required(ErrorMessage = "Password is required.")]
