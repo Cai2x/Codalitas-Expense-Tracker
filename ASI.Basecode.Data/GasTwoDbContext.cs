@@ -27,9 +27,9 @@ namespace ASI.Basecode.Data
             {
                 entity.ToTable("Category");
 
-                entity.Property(e => e.CategoryId).ValueGeneratedOnAdd();
-
                 entity.Property(e => e.DateCreated).HasColumnType("datetime");
+
+                entity.Property(e => e.DateUpdated).HasColumnType("datetime");
 
                 entity.Property(e => e.Description)
                     .IsRequired()
@@ -52,9 +52,9 @@ namespace ASI.Basecode.Data
             {
                 entity.ToTable("Expense");
 
-                entity.Property(e => e.ExpenseId).ValueGeneratedOnAdd();
-
                 entity.Property(e => e.DateCreated).HasColumnType("datetime");
+
+                entity.Property(e => e.DateUpdated).HasColumnType("datetime");
 
                 entity.Property(e => e.Description)
                     .IsRequired()
@@ -82,8 +82,6 @@ namespace ASI.Basecode.Data
             modelBuilder.Entity<User>(entity =>
             {
                 entity.ToTable("User");
-
-                entity.Property(e => e.UserId).ValueGeneratedOnAdd();
 
                 entity.Property(e => e.CreatedBy)
                     .IsRequired()

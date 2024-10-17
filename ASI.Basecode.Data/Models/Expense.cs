@@ -13,6 +13,7 @@ namespace ASI.Basecode.Data.Models
         public DateTime DateCreated { get; set; }
         public string Description { get; set; }
         public bool Status { get; set; }
+        public DateTime? DateUpdated { get; set; }
 
         public virtual Category Category { get; set; }
         public virtual User User { get; set; }
