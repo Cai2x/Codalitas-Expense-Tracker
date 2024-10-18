@@ -28,6 +28,9 @@ x64/
 # Debug artifacts
 launchSettings.json
 
+#Ignore appsettings
+/Codalitas-Expense-Tracker/ASI.Basecode.WebApp/appsettings*.json
+
 # Prevent accidental re-checkin of NuGet.exe
 NuGet.exe
 
