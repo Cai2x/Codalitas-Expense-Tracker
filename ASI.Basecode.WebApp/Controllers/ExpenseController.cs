@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System;
 using System.IO;
 
 namespace ASI.Basecode.WebApp.Controllers
@@ -54,8 +55,15 @@ namespace ASI.Basecode.WebApp.Controllers
         [HttpPost]
         public IActionResult Create(ExpenseViewModel expense)
         {
-            _expenseService.AddExpense(expense, int.Parse(UserId));
-            return Ok(expense);
+            try
+            {
+                _expenseService.AddExpense(expense, int.Parse(UserId));
+                return Ok(expense);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
             //return RedirectToAction("Index");
         }
 

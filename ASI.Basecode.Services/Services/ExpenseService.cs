@@ -80,7 +80,7 @@ namespace ASI.Basecode.Services.Services
 
             catch (Exception)
             {
-                throw new InvalidDataException(Resources.Messages.Errors.ServerError);
+                throw new InvalidDataException(Resources.Messages.Errors.UserExists);
             }
         }
 
