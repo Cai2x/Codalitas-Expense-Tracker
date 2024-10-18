@@ -4,10 +4,12 @@ using ASI.Basecode.Services.ServiceModels;
 using ASI.Basecode.WebApp.Authentication;
 using ASI.Basecode.WebApp.Mvc;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.IO;
 
 namespace ASI.Basecode.WebApp.Controllers
 {
@@ -48,11 +50,13 @@ namespace ASI.Basecode.WebApp.Controllers
         #endregion
 
         #region POST Methods
+        [AllowAnonymous]
         [HttpPost]
         public IActionResult Create(ExpenseViewModel expense)
         {
             _expenseService.AddExpense(expense, int.Parse(UserId));
-            return RedirectToAction("Index");
+            return Ok(expense);
+            //return RedirectToAction("Index");
         }
 
         [HttpPost]
