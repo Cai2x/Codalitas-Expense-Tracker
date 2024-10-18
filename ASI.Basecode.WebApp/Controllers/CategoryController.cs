@@ -70,14 +70,14 @@ namespace ASI.Basecode.WebApp.Controllers
         [HttpPost]
         public IActionResult Edit(CategoryViewModel category)
         {
-            _categoryService.UpdateExpense(category);
+            _categoryService.UpdateCategory(category);
             return RedirectToAction("Index");
         }
 
         [HttpPost]
         public IActionResult PostDelete(int Id)
         {
-            _categoryService.DeleteExpense(Id);
+            _categoryService.DeleteCategory(Id);
             return RedirectToAction("Index");
         }
         #endregion

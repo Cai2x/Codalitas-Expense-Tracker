@@ -12,8 +12,8 @@ namespace ASI.Basecode.Services.Interfaces
     {
 
         void AddCategory(CategoryViewModel categoryModel, int userId);
-        void DeleteExpense(int categoryId);
-        void UpdateExpense(CategoryViewModel categoryModel);
+        void DeleteCategory(int categoryId);
+        void UpdateCategory(CategoryViewModel categoryModel);
         List<CategoryViewModel> RetrieveUserCategory(int userId);
         CategoryViewModel RetrieveCategory(int categoryId);
     }

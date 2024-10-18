@@ -78,13 +78,13 @@ namespace ASI.Basecode.Services.Services
                 _categoryRepository.AddCategory(category);
             }
 
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new InvalidDataException(Resources.Messages.Errors.ServerError);
             }
         }
 
-        public void DeleteExpense(int categoryId)
+        public void DeleteCategory(int categoryId)
         {
             var category = _categoryRepository.RetrieveCategory().Where(x => x.CategoryId == categoryId).FirstOrDefault();
             if (category != null)
@@ -93,7 +93,7 @@ namespace ASI.Basecode.Services.Services
             }
         }
 
-        public void UpdateExpense(CategoryViewModel categoryModel)
+        public void UpdateCategory(CategoryViewModel categoryModel)
         {
             var category = new Category();
             _mapper.Map(categoryModel, category);
