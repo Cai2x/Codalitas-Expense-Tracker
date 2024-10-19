@@ -1,5 +1,6 @@
 ﻿using ASI.Basecode.Data.Interfaces;
 using ASI.Basecode.Data.Models;
+using ASI.Basecode.Data.Repositories;
 using ASI.Basecode.Services.Interfaces;
 using ASI.Basecode.Services.Manager;
 using ASI.Basecode.Services.ServiceModels;
@@ -15,29 +16,20 @@ namespace ASI.Basecode.Services.Services
 {
     public class ExpenseService : IExpenseService
     {
+        private readonly ICategoryRepository _categoryRepository;
         private readonly IExpenseRepository _expenseRepository;
         private readonly IMapper _mapper;
-        public ExpenseService(IExpenseRepository expenseRepository, IMapper mapper) { 
+        public ExpenseService(IExpenseRepository expenseRepository, ICategoryRepository categoryRepository, IMapper mapper) {
+            _categoryRepository = categoryRepository;
             _expenseRepository = expenseRepository;
             _mapper = mapper;
         }
 
         public List<ExpenseViewModel> RetrieveUserExpenses(int userId)
         {
-            var retrievedData = _expenseRepository.RetrieveExpenses().Where(x=>x.UserId == userId)
-                .Select(x => new ExpenseViewModel
-                {
-                    ExpenseId = x.ExpenseId,
-                    Title = x.Title,
-                    Amount = x.Amount,
-                    Description = x.Description,
-                    CategoryId = x.CategoryId,
-                }).ToList();
-
-            //Put this on after ni Jule para sa Foreign Key Application
-            /*var retrievedData = _expenseRepository.RetrieveExpenses().Where(x=>x.UserId == userId).Join(_categoryRepository.RetrieveCategories(), 
+            var retrievedData = _expenseRepository.RetrieveExpenses().Where(x=>x.UserId == userId).Join(_categoryRepository.RetrieveCategory(), 
                 expense => expense.CategoryId,
-                category = > category.CategoryId,
+                category => category.CategoryId,
                 (expense,category) => new ExpenseViewModel
                 {
                     ExpenseId = expense.ExpenseId,
@@ -45,8 +37,8 @@ namespace ASI.Basecode.Services.Services
                     Amount = expense.Amount,
                     Description = expense.Description,
                     CategoryId = category.CategoryId,
-                    CategoryName = category.CategoryName,
-                }).ToList();*/
+                    CategoryName = category.Name,
+                }).ToList();
 
             return retrievedData;
         }
