@@ -1,4 +1,12 @@
-
+body {
+    background-image: url('../img/bg-login.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
 
 .rcard-bg {
     background-color: #FAFAF5;

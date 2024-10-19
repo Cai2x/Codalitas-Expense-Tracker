@@ -1,10 +1,12 @@
 ﻿@model LoginViewModel
 
 @using static ASI.Basecode.Resources.Views.Screen
+
 @section styles {
-        <link rel="stylesheet" href="~/css/login.css"/>
-        <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/login.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@400;700&display=swap" rel="stylesheet">
 }
+
 @{
     ViewBag.LoginView = true;
     ViewData["Title"] = "Login Page";
@@ -13,7 +15,7 @@
     @Html.AntiForgeryToken()
 </div>
 
-<div class="container login-container">
+<div class="container  login-container" >
     <div class="col-md-4 ">
         <h1 class="header-text text-center mb-5">GasTwo</h1>
             <div class="card login-card">
