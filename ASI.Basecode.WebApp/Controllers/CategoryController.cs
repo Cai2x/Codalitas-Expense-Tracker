@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace ASI.Basecode.WebApp.Controllers
 {
@@ -27,23 +28,49 @@ namespace ASI.Basecode.WebApp.Controllers
 
         #region Get Methods
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult Display()
         {
-            return View();
+            try
+            {
+                var data = _categoryService.RetrieveUserCategory(int.Parse(UserId));
+                return Ok(data);
+                //return View();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message); 
+            }
         }
 
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var category = _categoryService.RetrieveCategory(id);
-            return View(category);
+            try
+            {
+                var category = _categoryService.RetrieveCategory(id);
+                return Ok(category);
+                //return View(category);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
 
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            var category = _categoryService.RetrieveCategory(id);
-            return View(category);
+            try
+            {
+                var category = _categoryService.RetrieveCategory(id);
+                return Ok(category);
+                //return View(category);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         #endregion

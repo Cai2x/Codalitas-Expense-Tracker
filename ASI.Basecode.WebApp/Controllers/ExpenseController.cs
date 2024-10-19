@@ -29,23 +29,48 @@ namespace ASI.Basecode.WebApp.Controllers
 
         #region Get Methods
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult Display()
         {
-            return View();
+            try
+            {
+                var data = _expenseService.RetrieveUserExpenses(int.Parse(UserId));
+                return Ok(data);
+                //return View();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var expense = _expenseService.RetrieveExpense(id);
-            return View(expense);
+            try
+            {
+                var expense = _expenseService.RetrieveExpense(id);
+                //return View(expense);
+                return Ok(expense);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            var expense = _expenseService.RetrieveExpense(id);
-            return View(expense);
+            try
+            {
+                var expense = _expenseService.RetrieveExpense(id);
+                return Ok(expense);
+                //return View(expense);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         #endregion
