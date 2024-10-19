@@ -1,3 +1,14 @@
+
+body {
+    background-image: url('../img/bg-login.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    width: 100vw;
+    overflow:hidden;
+}
+
 .login-heading {
     font-size: 2.5rem;
 }
@@ -16,16 +27,18 @@
     display: block;
     margin: 0 auto;
     background-color: #426B1F;
+    border-radius: 10px;
 }
 
 .login-card {
     padding: 10px;
-    width: 500px;
-    min-height: 600px;
+    width: 450px;
+    min-height: 300px;
     flex-shrink: 0;
     background-color: #FAFAF5;
-    border-radius: 10px;
-    margin-left:-70px;
+    border-radius: 24px;
+    margin-left: -70px;
+    box-shadow: 2px 2px 9px 4px rgba(0, 0, 0, 0.3);
 }
 
 .create-btn {
@@ -37,20 +50,20 @@
     display: inline-block;
 }
 
+
 .input {
     background-color: #E5EEDE;
-    border: 1px solid #ced4da;
-    padding: 10px;
+    font-weight:500;
+    padding: 15px;
     border-radius: 10px;
     height: 50px;
+    border-color: white;
 }
 
 .login-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: calc(100vh - 64px)
-
 }
 
 .header-text {
@@ -59,4 +72,7 @@
     color: #426B1F;
     font-weight: bold;
     text-align: center;
+    margin-right: 3rem;
+    margin-top: 1rem;
+
 }

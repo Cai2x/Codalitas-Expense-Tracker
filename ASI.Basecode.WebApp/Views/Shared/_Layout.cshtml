@@ -14,16 +14,27 @@
     @RenderSection("Styles", required: false)
 </head>
 <body>
-    @Html.Partial("_Header")
-    <div class="container">
-        <main role="main">
-            @RenderBody()
-        </main>
-    </div>
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            @Copyright
+    <!-- Conditional Navbar -->
+    @if (!(ViewBag.LoginView == true))
+    {
+        <header class="navbar">
+            @Html.Partial("_Header")
+        </header>
+    }
+
+    <div class="wrapper">
+        <!-- Sidebar -->
+        @Html.Partial("_Sidebar")
+
+        <div class="content-container">
+            <main role="main">
+                @RenderBody()
+            </main>
         </div>
+    </div>
+    <!---->
+    <footer class="border-top footer text-muted">
+        
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

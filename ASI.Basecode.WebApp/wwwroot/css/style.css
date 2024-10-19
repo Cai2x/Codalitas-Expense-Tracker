@@ -27,17 +27,45 @@ body {
     overflow-x: hidden;
 }
 
+
 header {
-    height: 70px;
-    width: 100vw;
+    height: 80px;
+    width: 100%; 
     padding: 0 30px;
-    background-color: var(--background-color1);
-    z-index: 100;
-    box-shadow: 1px 1px 15px rgba(161, 182, 253, 0.825);
+    background-color: #426B1F; 
+    z-index: 1001; 
+    position: fixed;
+    top: 0;
+    left: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom-right-radius: 20px;
 }
+
+.sidebar {
+    height: 100vh; 
+    width: 200px; 
+    background-color: #F8F8F2; 
+    position: fixed;
+    top: 0; 
+    left: 0;
+    z-index: 1002; 
+    padding-top: 20px;
+    box-shadow: 1px 0 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    border-bottom-right-radius: 20px;
+}
+
+
+.content-container {
+    padding: 20px;
+    position: relative;
+    z-index: 1; /* Lower than the sidebar */
+    background-color: FFFFFF;
+}
+
 
 .logo {
     font-size: 27px;

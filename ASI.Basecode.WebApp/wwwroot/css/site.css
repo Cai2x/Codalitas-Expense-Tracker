@@ -35,12 +35,19 @@ body {
 }
 
 .wrapper {
-    min-height: 100vh;
-    position: relative;
+    /*
+//min-height: 100vh;
+    //position: relative;
+    */
+    
     height: auto
 }
 
 .hide-navbar {
+    display: none;
+}
+
+.hide-sidebar {
     display: none;
 }
 
