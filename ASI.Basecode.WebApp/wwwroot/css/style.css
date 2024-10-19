@@ -43,20 +43,57 @@ header {
     border-bottom-right-radius: 20px;
 }
 
+/* Sidebar */
 .sidebar {
-    height: 100vh; 
-    width: 200px; 
-    background-color: #F8F8F2; 
+    height: 100vh;
+    width: 200px;
+    background-color: #F8F8F2;
     position: fixed;
-    top: 0; 
+    top: 0;
     left: 0;
-    z-index: 1002; 
-    padding-top: 20px;
+    z-index: 1002;
     box-shadow: 1px 0 8px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
+    padding: 20px;
     border-bottom-right-radius: 20px;
+    
 }
+
+    .sidebar .logosec {
+        text-align: center;
+        font-size: 1.5rem;
+        color: #426B1F;
+        font-weight: bold;
+        margin-bottom: 100px;
+        
+    }
+    .sidebar .menu {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        
+    }
+
+        .sidebar .menu a {
+            text-decoration: none;
+            color: black;
+            padding: 10px 0;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+            .sidebar .menu a:hover {
+                background-color: #E5EEDE; 
+                border-radius: 10px;
+            }
+
+            .sidebar .menu a:last-child {
+                margin-bottom: 20px;
+            }
+
 
 
 .content-container {
@@ -89,13 +126,7 @@ header {
     display: none;
 }
 
-.logosec {
-    gap: 20px;
-}
 
-.hover-pointer {
-    cursor: pointer;
-}
 
 .searchbar input {
     width: 250px;
