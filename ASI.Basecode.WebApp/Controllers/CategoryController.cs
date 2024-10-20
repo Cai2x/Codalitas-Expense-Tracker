@@ -108,5 +108,10 @@ namespace ASI.Basecode.WebApp.Controllers
             return RedirectToAction("Index");
         }
         #endregion
+
+        public IActionResult Index()
+        {
+            return View();
+        }
     }
 }

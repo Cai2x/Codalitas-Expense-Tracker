@@ -30,10 +30,10 @@ body {
 
 header {
     height: 80px;
-    width: 100%; 
+    width: 100%;
     padding: 0 30px;
-    background-color: #426B1F; 
-    z-index: 1001; 
+    background-color: #426B1F;
+    z-index: 1001;
     position: fixed;
     top: 0;
     left: 0;
@@ -57,7 +57,6 @@ header {
     flex-direction: column;
     padding: 20px;
     border-bottom-right-radius: 20px;
-    
 }
 
     .sidebar .logosec {
@@ -66,13 +65,12 @@ header {
         color: #426B1F;
         font-weight: bold;
         margin-bottom: 100px;
-        
     }
+
     .sidebar .menu {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        
     }
 
         .sidebar .menu a {
@@ -86,7 +84,7 @@ header {
         }
 
             .sidebar .menu a:hover {
-                background-color: #E5EEDE; 
+                background-color: #E5EEDE;
                 border-radius: 10px;
             }
 
@@ -175,9 +173,9 @@ header {
     align-items: center;
     justify-content: center;
     position: relative;
-    cursor: pointer; 
+    cursor: pointer;
     position: relative;
-    overflow: hidden; 
+    overflow: hidden;
 }
 
 .main-container {
