@@ -95,10 +95,9 @@ header {
 
 
 .content-container {
-    padding: 20px;
-    position: relative;
     z-index: 1; /* Lower than the sidebar */
-    background-color: FFFFFF;
+    padding-left: 250px;
+    padding-top: 20px;
 }
 
 

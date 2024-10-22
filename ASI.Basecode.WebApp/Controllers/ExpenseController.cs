@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace ASI.Basecode.WebApp.Controllers
@@ -34,8 +35,15 @@ namespace ASI.Basecode.WebApp.Controllers
             try
             {
                 var data = _expenseService.RetrieveUserExpenses(int.Parse(UserId));
-                return Ok(data);
-                //return View();
+
+                if (data == null)
+                {
+                    // Return an empty list to avoid null reference
+                    return View(new List<ExpenseViewModel>());
+                }
+
+                // Return the view with the retrieved data
+                return View(data);
             }
             catch (Exception ex)
             {
@@ -74,6 +82,7 @@ namespace ASI.Basecode.WebApp.Controllers
         }
 
         #endregion
+
 
         #region POST Methods
         [AllowAnonymous]

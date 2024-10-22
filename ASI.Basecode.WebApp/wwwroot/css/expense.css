@@ -1,0 +1,118 @@
+/* Styling the entire page */
+body {
+    font-family: 'Newsreader', serif;
+    background-color: #FAFAF5;
+}
+
+/* Container for the page heading */
+h1 {
+    color: #426B1F;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Add Expenses Button */
+.btn-success {
+    background-color: #426B1F;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .btn-success:hover {
+        background-color: #365719;
+    }
+
+/* Table container */
+.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 20px 0;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+    .table th, .table td {
+        padding: 15px;
+        text-align: left;
+        font-size: 1.1rem;
+    }
+
+    .table thead th {
+        font-weight: bold;
+        color: #426B1F;
+        border-bottom: 2px solid #426B1F;
+    }
+
+    .table tbody tr {
+        border-bottom: 1px solid #ddd;
+    }
+
+        .table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+/* Status Badges */
+.badge {
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    display: inline-block;
+}
+
+    .badge.bg-success {
+        background-color: #426B1F;
+        color: #fff;
+    }
+
+    .badge.bg-warning {
+        background-color: #e0e0e0;
+        color: #888;
+    }
+
+/* Action buttons */
+.btn {
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin-right: 5px;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    color: #fff;
+}
+
+    .btn-warning:hover {
+        background-color: #d39e00;
+    }
+
+.btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+/* Rounded container */
+.table-container {
+    padding: 20px;
+    background-color: #f8f8f8;
+    border-radius: 12px;
+    margin-bottom: 40px;
+}
+
+    .table-container h2 {
+        font-size: 1.5rem;
+        color: #426B1F;
+        margin-bottom: 15px;
+    }
