@@ -1,10 +1,71 @@
-﻿@{
-    ViewData["Title"] = "Expense";
+﻿@model IEnumerable<ASI.Basecode.Services.ServiceModels.ExpenseViewModel>
+
+@{
+    ViewData["Title"] = "Expenses";
+}
+@section styles {
+    <link rel="stylesheet" href="~/css/expense.css" />
 }
 
-<div class="text-center">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-    <h1 class="display-4">Expense</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 
+<div class="page-container">
+
+    <h1>Expenses</h1>
+
+    <div class="text-right mb-2">
+        <a asp-action="Create" class="btn btn-success">
+            <i class="fas fa-plus-circle"></i> Add Expenses
+        </a>
+    </div>
+
+    <div class="table-container">
+        <h2>My Expenses</h2>
+
+        @if (Model == null || !Model.Any())
+        {
+            <p>No expenses found.</p>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Category</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                            <td>
+                                <span class="badge bg-secondary">@item.CategoryName</span>
+                            </td>
+                            <td>@item.Amount.ToString("C")</td>
+                            <td>
+                                @if (item.Status)
+                                {
+                                    <span class="badge bg-success">Publish</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning">Draft</span>
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.ExpenseId" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
+                                <a asp-action="Delete" asp-route-id="@item.ExpenseId" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
 </div>
