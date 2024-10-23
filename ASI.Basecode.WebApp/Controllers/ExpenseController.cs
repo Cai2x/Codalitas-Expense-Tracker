@@ -1,4 +1,5 @@
-﻿using ASI.Basecode.Services.Interfaces;
+﻿using ASI.Basecode.Data.Models;
+using ASI.Basecode.Services.Interfaces;
 using ASI.Basecode.Services.Manager;
 using ASI.Basecode.Services.ServiceModels;
 using ASI.Basecode.WebApp.Authentication;
@@ -36,10 +37,10 @@ namespace ASI.Basecode.WebApp.Controllers
             {
                 var data = _expenseService.RetrieveUserExpenses(int.Parse(UserId));
 
-                if (data == null)
+                if (data is null)
                 {
                     // Return an empty list to avoid null reference
-                    return View(new List<ExpenseViewModel>());
+                    return View(null);
                 }
 
                 // Return the view with the retrieved data
@@ -96,7 +97,7 @@ namespace ASI.Basecode.WebApp.Controllers
             }
             catch(Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
             //return RedirectToAction("Index");
         }
@@ -104,21 +105,37 @@ namespace ASI.Basecode.WebApp.Controllers
         [HttpPost]
         public IActionResult Edit(ExpenseViewModel expense)
         {
-            _expenseService.UpdateExpense(expense);
-            return RedirectToAction("Index");
+            try
+            {
+                _expenseService.UpdateExpense(expense);
+                return Ok(expense);
+                //return RedirectToAction("Index");
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
         public IActionResult PostDelete(int Id)
         {
-            _expenseService.DeleteExpense(Id);
-            return RedirectToAction("Index");
+            try
+            {
+                _expenseService.DeleteExpense(Id);
+                return Ok(Id);
+                //return RedirectToAction("Index");
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 #endregion
 
 public IActionResult Index()
         {
-            return View();
+            return Display();
         }
     }
 }
