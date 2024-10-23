@@ -27,7 +27,8 @@ namespace ASI.Basecode.Services.Services
 
         public List<ExpenseViewModel> RetrieveUserExpenses(int userId)
         {
-            var retrievedData = _expenseRepository.RetrieveExpenses().Where(x=>x.UserId == userId).Join(_categoryRepository.RetrieveCategory(), 
+            var retrievedData = _expenseRepository.RetrieveExpenses().Where(x=>x.UserId == userId)
+                .Join(_categoryRepository.RetrieveCategory(), 
                 expense => expense.CategoryId,
                 category => category.CategoryId,
                 (expense,category) => new ExpenseViewModel
@@ -38,6 +39,8 @@ namespace ASI.Basecode.Services.Services
                     Description = expense.Description,
                     CategoryId = category.CategoryId,
                     CategoryName = category.Name,
+                    Status = expense.Status,
+                    ExpenseDateCreated = expense.DateCreated
                 }).ToList();
 
             return retrievedData;
@@ -46,50 +49,82 @@ namespace ASI.Basecode.Services.Services
         public ExpenseViewModel RetrieveExpense(int expenseId)
         {
             var expense = _expenseRepository.RetrieveExpenses().Where(x => x.ExpenseId == expenseId)
-                .Select(e => new ExpenseViewModel
+                .Join(_categoryRepository.RetrieveCategory(),
+                expense => expense.CategoryId,
+                category => category.CategoryId,
+                (expense, category) => new ExpenseViewModel
                 {
-                    ExpenseId = e.ExpenseId,
-                    Title = e.Title,
-                    Amount = e.Amount,
-                    Description = e.Description,
-                    CategoryId = e.CategoryId,
+                    ExpenseId = expense.ExpenseId,
+                    Title = expense.Title,
+                    Amount = expense.Amount,
+                    Description = expense.Description,
+                    CategoryId = category.CategoryId,
+                    CategoryName = category.Name,
+                    Status = expense.Status,
+                    ExpenseDateCreated = expense.DateCreated
                 }).FirstOrDefault();
+
+            if(expense is null)
+            {
+                throw new InvalidDataException(Resources.Messages.Errors.DataNotFound);
+            }
 
             return expense;
         }
 
         public void AddExpense(ExpenseViewModel expenseModel, int userId)
         {
+            var categoryExist = _categoryRepository.RetrieveCategory().Any(x => x.CategoryId == expenseModel.CategoryId);
+            if(categoryExist is false)
+            {
+                throw new InvalidDataException(Resources.Messages.Errors.DataNotFound);
+            }
+
             var expense = new Expense();
             _mapper.Map(expenseModel, expense);
             expense.UserId = userId;
             expense.DateCreated = DateTime.Now;
             expense.DateUpdated = DateTime.Now;
+
             try
             {
-                _expenseRepository.AddExpense(expense);
+               _expenseRepository.AddExpense(expense);
             }
 
             catch (Exception)
             {
-                throw new InvalidDataException(Resources.Messages.Errors.UserExists);
+                throw new InvalidDataException(Resources.Messages.Errors.ServerError);
             }
         }
 
         public void DeleteExpense(int expenseId)
         {
             var expense = _expenseRepository.RetrieveExpenses().Where(x=>x.ExpenseId == expenseId).FirstOrDefault();
-            if(expense != null)
+            try
             {
-                _expenseRepository.DeleteExpense(expense);
+                if (expense != null)
+                {
+                    _expenseRepository.DeleteExpense(expense);
+                }
+            }
+            catch (Exception)
+            {
+                throw new InvalidDataException(Resources.Messages.Errors.ServerError);
             }
         }
 
         public void UpdateExpense(ExpenseViewModel expenseModel)
         {
-            var expense = new Expense();
+            var expense = _expenseRepository.RetrieveExpenses().Where(x => x.ExpenseId == expenseModel.ExpenseId).FirstOrDefault();
+
+            if (expense is null)
+            {
+                throw new InvalidDataException(Resources.Messages.Errors.DataNotFound);
+            }
+
             _mapper.Map(expenseModel, expense);
             expense.DateUpdated = DateTime.Now;
+
             try
             {
                 _expenseRepository.UpdateExpense(expense);

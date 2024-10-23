@@ -16,5 +16,6 @@ namespace ASI.Basecode.Services.ServiceModels
         public string Description { get; set; }
         public double Amount { get; set; }
         public bool Status { get; set; }
+        public DateTime ExpenseDateCreated { get; set; }
     }
 }
