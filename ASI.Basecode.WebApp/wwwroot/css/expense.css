@@ -4,6 +4,13 @@ body {
     background-color: #FAFAF5;
 }
 
+/*modal body*/
+.modal-cstm {
+    background-color: #FAFAF5 !important;
+    padding: 20px !important;
+    border-radius: 10px;
+}
+
 /* Container for the page heading */
 h1 {
     color: #426B1F;
@@ -116,3 +123,34 @@ h1 {
         color: #426B1F;
         margin-bottom: 15px;
     }
+
+
+/*For Add Expense Modal CSS*/
+.addExpense-title {
+    font-family: 'Newsreader', serif;
+    font-weight: 520;
+    color: #426B1F;
+}
+
+.addExpense-field {
+    font-weight: 500;
+    background-color: #E5EEDE;
+    height: 40px
+}
+
+.box-input {
+    background-color: #E5EEDE;
+    resize: none;
+}
+
+.btn-custom {
+    background-color: #426B1F;
+    color: white;
+}
+
+.btn-custom:hover {
+        background-color: #426B1F;
+        color: white;
+        cursor: pointer;
+ }
+
