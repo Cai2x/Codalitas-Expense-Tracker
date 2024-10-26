@@ -111,7 +111,7 @@ namespace ASI.Basecode.WebApp.Controllers
 
         public IActionResult Index()
         {
-            return Display();
+            return View();
         }
     }
 }
