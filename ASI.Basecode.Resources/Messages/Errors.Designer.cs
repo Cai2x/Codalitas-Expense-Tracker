@@ -70,6 +70,15 @@ namespace ASI.Basecode.Resources.Messages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Category already exists!.
+        /// </summary>
+        public static string DuplicateCategoryName {
+            get {
+                return ResourceManager.GetString("DuplicateCategoryName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server error occured!.
         /// </summary>
         public static string ServerError {

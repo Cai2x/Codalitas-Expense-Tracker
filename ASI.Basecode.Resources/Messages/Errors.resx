@@ -126,4 +126,7 @@
   <data name="UserExists" xml:space="preserve">
     <value>UserId already exists!</value>
   </data>
+  <data name="DuplicateCategoryName" xml:space="preserve">
+    <value>Category already exists!</value>
+  </data>
 </root>

@@ -58,16 +58,25 @@ namespace ASI.Basecode.Services.Services
             category.CreatedBy = userId;
             category.DateCreated = DateTime.Now;
             category.DateUpdated = DateTime.Now;
+
             try
             {
+                var existingCategory = _categoryRepository.RetrieveCategory().Any(x => x.Name == categoryModel.Name && x.CreatedBy == userId);
+
+                if (existingCategory)
+                {
+                    throw new InvalidOperationException(Resources.Messages.Errors.DuplicateCategoryName);
+                }
+
+                
                 _categoryRepository.AddCategory(category);
             }
-
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new InvalidDataException(Resources.Messages.Errors.ServerError);
+                throw new InvalidDataException(Resources.Messages.Errors.ServerError, ex);
             }
         }
+
 
         public void DeleteCategory(int categoryId)
         {
