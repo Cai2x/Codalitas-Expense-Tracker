@@ -61,7 +61,7 @@ namespace ASI.Basecode.Services.Services
 
             try
             {
-                var existingCategory = _categoryRepository.RetrieveCategory().Any(x => x.Name == categoryModel.Name);
+                var existingCategory = _categoryRepository.RetrieveCategory().Any(x => x.Name == categoryModel.Name && x.CreatedBy == userId);
 
                 if (existingCategory)
                 {
