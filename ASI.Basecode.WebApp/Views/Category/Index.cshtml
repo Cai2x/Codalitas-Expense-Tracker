@@ -1,5 +1,4 @@
-﻿@model CategoryViewModel
-@using ASI.Basecode.Services.ServiceModels
+﻿@model IEnumerable<ASI.Basecode.Services.ServiceModels.CategoryViewModel>
 
 
 @{
@@ -15,15 +14,64 @@
     <link rel="stylesheet" href="~/css/category.css" />
 }
 
+    <div class="catgory-header d-flex justify-content-between align-items-center">
+        <h1>Categories</h1>
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addExpenseModal">
+            <i class="fas fa-plus-circle"></i> Add Category
+        </button>
+    </div>
+    <hr class="category-divider">
 
+<div class="table-container">
+    <h2>My Category</h2>
 
+    @if (Model == null || !Model.Any())
+    {
+        <p>No categories found.</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Date Created</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                        <td>
+                            <span>@item.CategoryDateCreated.ToShortDateString()</span>
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.CategoryId" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
+                            <a asp-action="Delete" asp-route-id="@item.CategoryId" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+</div>
+@*
+
+@{
+    var newCategory = new ASI.Basecode.Services.ServiceModels.CategoryViewModel();
+}
 
 <div class="page container">
-    <div class="header d-flex justify-content-between align-items-center">
+   <div class="header d-flex justify-content-between align-items-center">
         <h1 class="title">Categories</h1>
-            <!--Modal Button-->
-            <div>
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+        <!--Modal Button-->
+        <div>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
                 <i class="fas fa-plus-circle"></i> Add Category
             </button>
 
@@ -38,12 +86,12 @@
                         <div class="modal-body">
                             <form asp-action="AddCategory" method="post">
                                 <div class="form-group mb-3">
-                                    <input asp-for="Name" class="form-control input-field" placeholder="Category Name" />
-                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                    <input asp-for="@newCategory.Name" class="form-control input-field" placeholder="Category Name" />
+                                    <span asp-validation-for="@newCategory.Name" class="text-danger"></span>
                                 </div>
                                 <div class="form-group mb-4">
-                                    <textarea asp-for="Description" class="form-control textarea-field" placeholder="Description"></textarea>
-                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                    <textarea asp-for="@newCategory.Description" class="form-control textarea-field" placeholder="Description"></textarea>
+                                    <span asp-validation-for="@newCategory.Description" class="text-danger"></span>
                                 </div>
                                 <div class="text-center">
                                     <button type="submit" name="saveAsDraft" class="btn btn-outline-success btn-md px-4 me-1">Draft</button>
@@ -57,3 +105,4 @@
         </div>
     </div>
 </div>
+*@

@@ -1,35 +1,29 @@
-
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px; 
-    margin-bottom: 20px;
-}
-
-.modal-content {
-    width: 600px;
-    height: 500px;
-    padding: 2rem;
-    margin: auto;
-    box-shadow: 0 0.75rem 1.5rem rgba(18, 38, 63, 0.03);
-    border-radius: 10px;
-    background-color: #FAFAF5;
-}
-
-
-.title {
-    font-family: 'Newsreader', serif;
-    text-align: left ;
-    margin-left: -20px !important;
-}
-
-
+/* Styling the entire page */
 body {
     font-family: 'Newsreader', serif;
     background-color: #FAFAF5;
 }
 
+/* Header container styling */
+.category-header {
+    margin-bottom: 10px;
+}
+
+/* Divider line under "Expenses" heading */
+.category-divider {
+    border: 1px solid #426B1F;
+    margin-bottom: 20px;
+}
+
+
+/*modal body*/
+.modal-cstm {
+    background-color: #FAFAF5 !important;
+    padding: 20px !important;
+    border-radius: 10px;
+}
+
+/* Container for the page heading */
 h1 {
     color: #426B1F;
     font-size: 2.5rem;
@@ -37,62 +31,137 @@ h1 {
     margin-bottom: 20px;
 }
 
+/* Add Expenses Button */
 .btn-success {
-    background-color: #426B1F !important;
-    height: 50px;
+    background-color: #426B1F;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
- 
 
-.modal-title {
+    .btn-success:hover {
+        background-color: #365719;
+    }
+
+/* Table container */
+.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 20px 0;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+    .table th, .table td {
+        padding: 15px;
+        text-align: left;
+        font-size: 1.1rem;
+    }
+
+    .table thead th {
+        font-weight: bold;
+        color: #426B1F;
+        border-bottom: 2px solid #426B1F;
+    }
+
+    .table tbody tr {
+        border-bottom: 1px solid #ddd;
+    }
+
+        .table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+/* Status Badges */
+.badge {
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    display: inline-block;
+}
+
+    .badge.bg-success {
+        background-color: #426B1F;
+        color: #fff;
+    }
+
+    .badge.bg-warning {
+        background-color: #e0e0e0;
+        color: #888;
+    }
+
+/* Action buttons */
+.btn {
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin-right: 5px;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    color: #fff;
+}
+
+    .btn-warning:hover {
+        background-color: #d39e00;
+    }
+
+.btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+/* Rounded container */
+.table-container {
+    padding: 20px;
+    background-color: #f8f8f8;
+    border-radius: 12px;
+    margin-bottom: 40px;
+}
+
+    .table-container h2 {
+        font-size: 1.5rem;
+        color: #426B1F;
+        margin-bottom: 15px;
+    }
+
+
+/*For Add Expense Modal CSS*/
+.addCategory-title {
     font-family: 'Newsreader', serif;
-    font-weight: 530;
-    color: #426B1F;       
+    font-weight: 520;
+    color: #426B1F;
 }
 
-.input-field {
-    margin-top: 10px;
+.addCategory-field {
+    font-weight: 500;
     background-color: #E5EEDE;
-    height: 40px;
+    height: 40px
 }
 
-.textarea-field {
+.box-input {
     background-color: #E5EEDE;
-    height: 200px !important;
     resize: none;
 }
 
 .btn-custom {
     background-color: #426B1F;
     color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 10px;
-    font-size: 0.9rem;
 }
 
- .btn-custom:hover {
-    background-color: #426B1F;
-    cursor: pointer;
- }
-
-.btn-outline-success {
-    padding: 12px 20px;
-    font-size: 0.9rem;
-    border-radius: 10px;
-}
-
-.close {
-    font-size: 1.5rem;
-    color: #000;
-    opacity: 0.7;
-}
-
-.close:hover {
-     color: #000;
-     opacity: 1;
-}
-
-::placeholder {
-    font-weight: 500;
-}
-
+    .btn-custom:hover {
+        background-color: #426B1F;
+        color: white;
+        cursor: pointer;
+    }

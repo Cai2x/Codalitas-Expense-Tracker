@@ -33,8 +33,8 @@ namespace ASI.Basecode.WebApp.Controllers
             try
             {
                 var data = _categoryService.RetrieveUserCategory(int.Parse(UserId));
-                return Ok(data);
-                //return View();
+                //return Ok(data);
+                return View(data);
             }
             catch(Exception ex)
             {
@@ -111,7 +111,7 @@ namespace ASI.Basecode.WebApp.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return Display();
         }
     }
 }

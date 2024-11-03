@@ -4,6 +4,18 @@ body {
     background-color: #FAFAF5;
 }
 
+/* Header container styling */
+.expenses-header {
+    margin-bottom: 10px;
+}
+
+/* Divider line under "Expenses" heading */
+.expenses-divider {
+    border: 1px solid #426B1F;
+    margin-bottom: 20px;
+}
+
+
 /*modal body*/
 .modal-cstm {
     background-color: #FAFAF5 !important;

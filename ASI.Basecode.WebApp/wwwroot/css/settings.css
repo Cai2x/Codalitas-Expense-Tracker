@@ -1,0 +1,123 @@
+/* General Styling */
+body {
+    font-family: 'Newsreader', serif;
+    background-color: #FAFAF5;
+}
+
+.page-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 40px 20px;
+    background-color: #FFFFFF;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Page Heading */
+h1 {
+    color: #426B1F;
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: left;
+}
+
+.settings-divider {
+    border: 1px solid #426B1F;
+    margin-bottom: 40px;
+}
+
+/* Profile Container */
+.profile-container {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background-color: #FAFAF5;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+}
+
+.profile-image {
+    margin-right: 20px;
+}
+
+.profile-picture {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+.profile-details h2 {
+    color: #333;
+    font-weight: bold;
+    margin: 0;
+}
+
+.profile-details p,
+.profile-details span {
+    color: #888;
+    font-size: 1rem;
+    margin: 2px 0;
+}
+
+/* Form Styling */
+.form-container {
+    background-color: #f8f8f8;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.form-label {
+    color: #426B1F;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.input-field {
+    background-color: #E5EEDE;
+    border: none;
+    border-radius: 5px;
+    height: 40px;
+    font-size: 1rem;
+    color: #333;
+}
+
+    .input-field::placeholder {
+        color: #888;
+    }
+
+/* Button Styling */
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-save {
+    background-color: #426B1F;
+    color: white;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+}
+
+    .btn-save:hover {
+        background-color: #365719;
+        cursor: pointer;
+    }
+
+.btn-change-password {
+    background-color: transparent;
+    color: #426B1F;
+    border: 2px solid #426B1F;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+}
+
+    .btn-change-password:hover {
+        background-color: #426B1F;
+        color: white;
+        cursor: pointer;
+    }
