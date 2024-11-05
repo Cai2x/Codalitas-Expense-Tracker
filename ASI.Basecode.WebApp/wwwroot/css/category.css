@@ -15,6 +15,17 @@ body {
     margin-bottom: 20px;
 }
 
+/*modal CSS*/
+
+.modal-content {
+    width: 600px;
+    height: 500px;
+    padding: 2rem;
+    margin: auto;
+    box-shadow: 0 0.75rem 1.5rem rgba(18, 38, 63, 0.03);
+    border-radius: 10px;
+    background-color: #FAFAF5;
+}
 
 /*modal body*/
 .modal-cstm {
@@ -22,6 +33,68 @@ body {
     padding: 20px !important;
     border-radius: 10px;
 }
+
+
+
+.modal-title {
+    font-family: 'Newsreader', serif;
+    font-weight: 530;
+    color: #426B1F;
+    /*padding-bottom: 15px;
+    margin-bottom: 10px;*/
+}
+
+.input-field {
+    margin-top: 10px;
+    background-color: #E5EEDE;
+    height: 40px;
+}
+
+.textarea-field {
+    background-color: #E5EEDE;
+    height: 200px;
+    resize: none;
+}
+
+.btn-custom {
+    background-color: #426B1F;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+}
+
+    .btn-custom:hover {
+        background-color: #426B1F;
+        cursor: pointer;
+    }
+
+.btn-outline-success {
+    padding: 12px 20px;
+    font-size: 0.9rem;
+    border-radius: 10px;
+}
+
+.close {
+    font-size: 1.5rem;
+    color: #000;
+    opacity: 0.7;
+}
+
+    .close:hover {
+        color: #000;
+        opacity: 1;
+    }
+
+::placeholder {
+    font-weight: 500;
+}
+
+
+
+
+
 
 /* Container for the page heading */
 h1 {
