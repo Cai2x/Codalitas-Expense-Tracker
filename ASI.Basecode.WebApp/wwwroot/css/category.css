@@ -52,7 +52,7 @@ body {
 
 .textarea-field {
     background-color: #E5EEDE;
-    height: 200px;
+    height: 200px !important; 
     resize: none;
 }
 

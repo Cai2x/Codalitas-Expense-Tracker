@@ -51,5 +51,23 @@ namespace ASI.Basecode.Services.Services
                 throw new InvalidDataException(Resources.Messages.Errors.UserExists);
             }
         }
+
+        public UserViewModel RetrieveUser(int user)
+        {
+            var current_user = _repository.GetUsers().Where(x=>x.UserId == user)
+                .Select(e=>new UserViewModel
+                {
+                    FirstName = e.FirstName,
+                    LastName = e.LastName,
+                    Username = e.Username
+                }).FirstOrDefault();
+
+            if (current_user is null)
+            {
+                new UserViewModel();
+            }
+
+            return current_user;
+        }
     }
 }
