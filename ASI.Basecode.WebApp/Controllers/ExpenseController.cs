@@ -2,6 +2,7 @@
 using ASI.Basecode.Services.Interfaces;
 using ASI.Basecode.Services.Manager;
 using ASI.Basecode.Services.ServiceModels;
+using ASI.Basecode.Services.Services;
 using ASI.Basecode.WebApp.Authentication;
 using ASI.Basecode.WebApp.Mvc;
 using AutoMapper;
@@ -13,20 +14,24 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace ASI.Basecode.WebApp.Controllers
 {
     public class ExpenseController : ControllerBase<ExpenseController>
     {
         private readonly IExpenseService _expenseService;
+        private readonly ICategoryService _categoryService;
         public ExpenseController(
                             IHttpContextAccessor httpContextAccessor,
                             ILoggerFactory loggerFactory,
                             IConfiguration configuration,
                             IMapper mapper,
-                            IExpenseService expenseService) : base(httpContextAccessor, loggerFactory, configuration, mapper)
+                            IExpenseService expenseService,
+                            ICategoryService categoryService) : base(httpContextAccessor, loggerFactory, configuration, mapper)
         {
-           _expenseService = expenseService;
+            _expenseService = expenseService;
+            _categoryService = categoryService;
         }
 
         #region Get Methods
@@ -52,6 +57,26 @@ namespace ASI.Basecode.WebApp.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult Category()
+        {
+            try
+            {
+                var categories = _categoryService.RetrieveUserCategory(int.Parse(UserId));
+
+                if (categories == null || !categories.Any())
+                {
+                    return NotFound("No categories found for this user.");
+                }
+
+                return Ok(new { success = true, data = categories });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        
         [HttpGet]
         public IActionResult Edit(int id)
         {
@@ -93,7 +118,7 @@ namespace ASI.Basecode.WebApp.Controllers
             try
             {
                 _expenseService.AddExpense(expense, int.Parse(UserId));
-                return Ok(expense);
+                return RedirectToAction("Index");
             }
             catch(Exception ex)
             {
