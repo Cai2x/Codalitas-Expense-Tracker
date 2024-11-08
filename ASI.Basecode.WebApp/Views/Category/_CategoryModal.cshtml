@@ -1,0 +1,31 @@
+﻿@model ASI.Basecode.Services.ServiceModels.CategoryViewModel
+
+
+<div class="modal fade" id="addCategoryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="addCategoryModalLabel">Add Categories</h2>
+                <button type="button" class="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="AddCategory" method="post">
+                    <div class="form-group mb-3">
+                        <input asp-for="Name" class="form-control input-field" placeholder="Category Name" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-4">
+                        <textarea asp-for="Description" class="form-control textarea-field" placeholder="Description"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" name="saveAsDraft" class="btn btn-outline-success  px-4 me-1">Draft</button>
+                        <button type="submit" name="saveAndPublish" class="btn btn-custom  px-4">Save and Publish</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+

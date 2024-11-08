@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.LoginView = true;
+    ViewBag.Title = "Verify OTP";
+}
+asd
+@section styles {
+    <link rel="stylesheet" href="~/css/forgotpassword.css" />
+}
+
+<div class="container fp-container">
+    <h1 class="header-text text-center mb-5">GasTue</h1>
+    <div class="card fp-card">
+        <a href="/Account/ForgotPassword" class="btn-back"></a>
+        <div class="card-body">
+            <h2 class="text-center fp-text mb-4">Verify OTP</h2>
+            <form action="/Account/VerifyOTP" method="post">
+                <div class="form-outline mb-4">
+                    <label class="form-label" for="otp">OTP</label>
+                    <input type="text" id="otp" name="OTP" class="form-control custom-input" placeholder="Enter OTP" required>
+                </div>
+                <a href="/Account/ResetPassword" class="btn btn-submit">Verify OTP</a>
+            </form>
+        </div>
+    </div>
+</div>
