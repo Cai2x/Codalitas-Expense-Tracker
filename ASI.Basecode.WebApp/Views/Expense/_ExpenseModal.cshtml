@@ -26,8 +26,8 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        <select id="categoryDropdown" name="CategoryId" class="form-select addExpense-field">
-                            <option value="" disabled selected hidden>Select Category</option>
+                        <select asp-for="CategoryId" id="categoryDropdown" name="CategoryId" class="form-select addExpense-field">
+                            <option value=null disabled selected hidden>Select Category</option>
                         </select>
                         <div class="text-end mt-2">
                             <a href="#" class="text-muted">Create New Category List</a>
@@ -35,11 +35,17 @@
                         <span asp-validation-for="CategoryId" class="text-danger"></span>
                     </div>
 
-                    <!----AJAX for dynamic dropdown--->
+                    <!----AJAX for reset and dynamic dropdown--->
                     <script>
-                        // Add an event listener to fetch categories when the modal is shown
+                        function resetForm() {
+                            // Reset the form fields to empty
+                            const form = document.getElementById('addExpenseForm');
+                            form.reset();  // Resets all form fields
+                        }
+
+                        // Add event listener to fetch categories and reset form on modal show
                         document.getElementById('addExpenseModal').addEventListener('show.bs.modal', function (event) {
-                            fetchCategories();
+                            fetchCategories(); // Fetch categories
                         });
 
                         function fetchCategories() {
@@ -65,6 +71,7 @@
                                             option.textContent = category.name;  // Display CategoryName
                                             dropdown.appendChild(option);
                                         });
+
                                     } else {
                                         console.error("Error fetching categories:", data.message);
                                     }
@@ -75,17 +82,23 @@
                         }
                     </script>
 
-
-
                     <div class="form-group mb-4">
                         <textarea asp-for="Description" class="form-control box-input" rows="4" placeholder="Description"></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
 
                     <div class="text-center">
-                        <button type="submit" name="saveAsDraft" class="btn btn-outline-success btn-md px-4">Draft</button>
-                        <button type="submit" name="saveAsPublish" class="btn btn-custom btn-md px-4">Save and Publish</button>
+                        <input type="hidden" id="status" name="Status" value="false" />
+
+                        <button type="submit" name="saveAsDraft" class="btn btn-outline-success btn-md px-4" onclick="setStatus(false)">Draft</button>
+                        <button type="submit" name="saveAsPublish" class="btn btn-custom btn-md px-4" onclick="setStatus(true)">Save and Publish</button>
                     </div>
+
+                    <script>
+                        function setStatus(isPublished) {
+                            document.getElementById('status').value = isPublished;
+                        }
+                    </script>
                 </form>
             </div>
         </div>
