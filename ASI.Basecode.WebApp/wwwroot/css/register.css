@@ -8,31 +8,39 @@ body {
     overflow: hidden;
 }
 
+.su-text {
+    font: Inter;
+    color: #000000;
+    font-weight: 500;
+    font-size: 48px;
+}
+
+
 .rcard-bg {
     background-color: #FAFAF5;
-    border-radius:20px;
+    border-radius: 20px;
 }
 
 
 .custom-label {
     color: #426B1F;
-    font-weight:600;
+    font-weight: 600;
 }
 
-.input-lg{
+.input-lg {
     background-color: #E5EEDE;
     border-radius: 10px;
-    height: 50px; /* Increase the height */
-    padding: 15px; /* Add padding */
-    font-size: 16px; /* Optional: increase font size */
+    height: 50px; 
+    padding: 15px;
+    font-size: 16px; 
 }
 
 .signup-btn {
     background-color: #426B1F;
     width: 300px;
     height: 50px;
-    color: white; 
-    border: none; 
+    color: white;
+    border: none;
 }
 
 .header-text {

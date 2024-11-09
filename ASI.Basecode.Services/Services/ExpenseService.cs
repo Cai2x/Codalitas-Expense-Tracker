@@ -91,9 +91,11 @@ namespace ASI.Basecode.Services.Services
                _expenseRepository.AddExpense(expense);
             }
 
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new InvalidDataException(Resources.Messages.Errors.ServerError);
+                //throw new InvalidDataException(Resources.Messages.Errors.ServerError);
+
+                throw new InvalidDataException(ex.Message);
             }
         }
 
