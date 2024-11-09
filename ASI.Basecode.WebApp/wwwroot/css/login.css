@@ -6,7 +6,8 @@ body {
     background-repeat: no-repeat;
     height: 100vh;
     width: 100vw;
-    overflow:hidden;
+    overflow: hidden;
+    
 }
 
 .login-heading {
@@ -37,8 +38,8 @@ body {
     flex-shrink: 0;
     background-color: #FAFAF5;
     border-radius: 24px;
-    margin-left: -70px;
     box-shadow: 2px 2px 9px 4px rgba(0, 0, 0, 0.3);
+    justify-content: center;
 }
 
 .create-btn {
@@ -72,7 +73,6 @@ body {
     color: #426B1F;
     font-weight: bold;
     text-align: center;
-    margin-right: 3rem;
+   /* margin-right: 3rem;*/
     margin-top: 1rem;
-
 }
