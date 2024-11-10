@@ -66,8 +66,14 @@
                                 }
                             </td>
                             <td>
-                                <a asp-action="Edit" asp-route-id="@item.ExpenseId" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
-                                <a asp-action="Delete" asp-route-id="@item.ExpenseId" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                <a href="@Url.Action("Edit", new { id = item.ExpenseId })" data-bs-toggle="modal" data-bs-target="#editExpenseModal" class="btn btn-warning">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
+                                <a href="@Url.Action("Delete", new { id = item.ExpenseId })" class="btn btn-danger">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+
+
                             </td>
                         </tr>
                     }
