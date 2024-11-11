@@ -129,4 +129,10 @@
   <data name="DuplicateCategoryName" xml:space="preserve">
     <value>Category already exists!</value>
   </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>User Not Found!</value>
+  </data>
+  <data name="InvalidOldPassword" xml:space="preserve">
+    <value>Password do not match!</value>
+  </data>
 </root>

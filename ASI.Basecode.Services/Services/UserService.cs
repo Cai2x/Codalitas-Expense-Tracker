@@ -69,5 +69,32 @@ namespace ASI.Basecode.Services.Services
 
             return current_user;
         }
+
+        public bool ChangePassword(int userId, string oldPassword, string newPassword)
+        {
+            var user = _repository.GetUsers().Where(x => x.UserId == userId).FirstOrDefault();
+
+            if (user == null)
+            {
+                return false;
+                throw new InvalidDataException(Resources.Messages.Errors.UserNotFound);
+            }
+
+            var encryptedOldPassword = PasswordManager.EncryptPassword(oldPassword);
+            if (user.Password != encryptedOldPassword)
+            {
+                return false;
+                throw new InvalidDataException(Resources.Messages.Errors.InvalidOldPassword);
+            }
+
+            var encryptedNewPassword = PasswordManager.EncryptPassword(newPassword);
+
+            user.Password = encryptedNewPassword;
+            user.DateUpdated = DateTime.Now;
+            user.UpdatedBy = System.Environment.UserName;
+
+            _repository.ChangePassword(user);
+            return true;
+        }
     }
 }
