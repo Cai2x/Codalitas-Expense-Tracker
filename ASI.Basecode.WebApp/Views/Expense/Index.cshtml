@@ -21,7 +21,7 @@
     <div class="expenses-header d-flex justify-content-between align-items-center">
         <h1>Expenses</h1>
         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addExpenseModal">
-            <i class="fas fa-plus-circle"></i> Add Expenses
+            <i class="fas fa-plus-circle"></i>  Add Expenses
         </button>
     </div>
     <hr class="expenses-divider">
@@ -83,5 +83,7 @@
     </div>
 </div>
 
+
 <!--To Call the expenseviewmodel-->
 <partial name="_ExpenseModal" model="new ASI.Basecode.Services.ServiceModels.ExpenseViewModel()"/>
+<partial name="_EditExpenseModal" model="new ASI.Basecode.Services.ServiceModels.ExpenseViewModel()" />

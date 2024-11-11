@@ -53,7 +53,7 @@ header {
     left: 0;
     z-index: 1002;
     box-shadow: 1px 0 8px rgba(0, 0, 0, 0.1);
-    display: flex;
+   
     flex-direction: column;
     padding: 20px;
     border-bottom-right-radius: 20px;
@@ -68,18 +68,18 @@ header {
     }
 
     .sidebar .menu {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+        display: flex; /* Ensure it's a flex container */
+        flex-direction: column; /* Arrange items in a column */
+       
     }
 
         .sidebar .menu a {
             text-decoration: none;
             color: black;
-            padding: 10px 0;
+            padding: 10px !important;
             font-size: 1rem;
             font-weight: 600;
-            text-align: center;
+            text-align: start !important ;
             transition: background-color 0.3s ease;
         }
 
@@ -91,6 +91,7 @@ header {
             .sidebar .menu a:last-child {
                 margin-bottom: 20px;
             }
+
 
 
 
