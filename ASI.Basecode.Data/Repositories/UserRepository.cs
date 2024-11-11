@@ -31,6 +31,11 @@ namespace ASI.Basecode.Data.Repositories
             this.GetDbSet<User>().Add(user);
             UnitOfWork.SaveChanges();
         }
+        public void ChangePassword(User user)
+        {
+            this.GetDbSet<User>().Update(user);
+            UnitOfWork.SaveChanges();
+        }
 
     }
 }

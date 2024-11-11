@@ -2,6 +2,7 @@
 using ASI.Basecode.Services.Interfaces;
 using ASI.Basecode.Services.Manager;
 using ASI.Basecode.Services.ServiceModels;
+using ASI.Basecode.Services.Services;
 using ASI.Basecode.WebApp.Authentication;
 using ASI.Basecode.WebApp.Models;
 using ASI.Basecode.WebApp.Mvc;
@@ -143,11 +144,41 @@ namespace ASI.Basecode.WebApp.Controllers
             return View();
         }
 
-        [HttpGet]
+        [HttpPost]
         [AllowAnonymous]
-        public IActionResult ResetPassword()
+        public IActionResult ResetPassword(UserViewModel model)
         {
-            return View();
+            try
+            {
+                var userId = int.Parse(UserId);
+                if (userId == 0)
+                {
+                    TempData["ErrorMessage"] = Resources.Messages.Errors.UserNotFound;
+                    return View();
+                }
+
+                var changepass = _userService.ChangePassword(userId, model.Password, model.NewPassword);
+
+                if (changepass)
+                {
+                    TempData["SuccessMessage"] = "Password changed successfully.";
+                }
+
+                TempData["ErrorMessage"] = "Change Password Failed";
+
+                return RedirectToAction("Index", "Settings");
+            }
+            catch (InvalidDataException ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = Resources.Messages.Errors.ServerError;
+                return BadRequest(ex.Message);
+            }
+            //return View();
         }
 
         

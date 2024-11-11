@@ -2,8 +2,50 @@
     ViewData["Title"] = "Dashboard";
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/css/dashboard.css" />
+
+    <style>
+        /* Highcharts Styling */
+        .highcharts-figure {
+            width: 90%;
+            max-width: 1200px;
+            margin: 2rem auto;
+            background-color: #FAFAF5;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+        }
+
+            .highcharts-figure #container {
+                height: 500px;
+                width: 100%;
+            }
+
+        .highcharts-description {
+            margin-top: 1rem;
+            color: #426B1F;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+}
+
 <div class="dashboard-container">
-    <h1>Dashboard</h1>
+    <div class="d-flex justify-content-between align-items-center">
+		<h1>Dashboard</h1>
+        <div class="date-picker">
+            <label for="start-date">From:</label>
+            <input type="date" id="start-date" name="start-date" class="date-input">
+
+            <label for="end-date">To:</label>
+            <input type="date" id="end-date" name="end-date" class="date-input">
+            <button class="generate-report-btn">Generate Report</button>
+        </div>
+    </div>
+    <hr class="expenses-divider">
+    
+
 
     <!-- Top summary cards -->
     <div class="summary-cards">
@@ -31,14 +73,8 @@
     <div class="report-section">
         <div class="report-header">
     <h2>Expenses Report</h2>
-    <div class="date-picker">
-        <label for="start-date">From:</label>
-        <input type="date" id="start-date" name="start-date" class="date-input">
+    
 
-        <label for="end-date">To:</label>
-        <input type="date" id="end-date" name="end-date" class="date-input">
-    </div>
-    <button class="generate-report-btn">Generate Report</button>
 </div>
 
 
@@ -69,39 +105,15 @@
     </div>
 </div>
 
-@section Styles {
-    <link rel="stylesheet" href="~/css/dashboard.css" />
-
-    <style>
-        /* Highcharts Styling */
-        .highcharts-figure,
-        .highcharts-data-table table {
-            min-width: 310px;
-            max-width: 800px;
-            margin: 1em auto;
-        }
-
-        #container {
-            height: 400px;
-        }
-
-        .highcharts-description {
-            margin: 0.3rem 10px;
-        }
-    </style>
-}
-
-
 <!-- Highcharts Column Chart Section -->
 <div class="chart-section">
     <figure class="highcharts-figure">
         <div id="container"></div>
         <p class="highcharts-description">
+            Expenses Overview for 2023
         </p>
     </figure>
 </div>
-</div>
-
 
 @section Scripts {
     <script src="https://code.highcharts.com/highcharts.js"></script>
@@ -116,28 +128,45 @@
                     type: 'column'
                 },
                 title: {
-                    text: 'Corn vs Wheat Estimated Production for 2023',
-                    align: 'left'
-                },
-                subtitle: {
-                    text: 'Source: <a target="_blank" href="https://www.indexmundi.com/agriculture/?commodity=corn">indexmundi</a>',
-                    align: 'left'
+                    text: 'Expenses by Category',
+                    align: 'left',
+                    style: {
+                        color: '#426B1F',
+                        fontWeight: 'bold'
+                    }
                 },
                 xAxis: {
-                    categories: ['USA', 'China', 'Brazil', 'EU', 'Argentina', 'India'],
+                    categories: ['Office Supplies', 'Travel', 'Entertainment', 'Food', 'Utilities'],
                     crosshair: true,
                     accessibility: {
-                        description: 'Countries'
+                        description: 'Expense Categories'
+                    },
+                    labels: {
+                        style: {
+                            color: '#426B1F'
+                        }
                     }
                 },
                 yAxis: {
                     min: 0,
                     title: {
-                        text: '1000 Metric Tons (MT)'
+                        text: 'Amount (in USD)',
+                        style: {
+                            color: '#426B1F'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            color: '#426B1F'
+                        }
                     }
                 },
                 tooltip: {
-                    valueSuffix: ' (1000 MT)'
+                    valuePrefix: '$',
+                    backgroundColor: '#426B1F',
+                    style: {
+                        color: '#FAFAF5'
+                    }
                 },
                 plotOptions: {
                     column: {
@@ -145,16 +174,11 @@
                         borderWidth: 0
                     }
                 },
-                series: [
-                    {
-                        name: 'Corn',
-                        data: [387749, 280000, 129000, 64300, 54000, 34300]
-                    },
-                    {
-                        name: 'Wheat',
-                        data: [45321, 140000, 10000, 140500, 19500, 113500]
-                    }
-                ]
+                colors: ['#426B1F', '#88B04B', '#E5EEDE', '#BFD7B5', '#88B04B'],
+                series: [{
+                    name: 'Amount',
+                    data: [500, 1200, 800, 600, 900]
+                }]
             });
         });
     </script>

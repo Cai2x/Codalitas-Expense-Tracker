@@ -89,7 +89,7 @@ h1 {
 /* Button Styling */
 .button-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 }
 
@@ -100,6 +100,7 @@ h1 {
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
+    margin-right:10px;
 }
 
     .btn-save:hover {

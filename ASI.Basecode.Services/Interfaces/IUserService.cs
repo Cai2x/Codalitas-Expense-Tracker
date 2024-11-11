@@ -9,5 +9,6 @@ namespace ASI.Basecode.Services.Interfaces
         LoginResult AuthenticateUser(string userName, string password, ref User user);
         void AddUser(UserViewModel model);
         UserViewModel RetrieveUser(int user);
+        bool ChangePassword(int userId, string oldPassword, string newPassword);
     }
 }
