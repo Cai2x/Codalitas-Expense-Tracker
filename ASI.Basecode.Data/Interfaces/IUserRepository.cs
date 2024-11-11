@@ -12,5 +12,6 @@ namespace ASI.Basecode.Data.Interfaces
         IQueryable<User> GetUsers();
         bool UserExists(string userName);
         void AddUser(User user);
+        void ChangePassword(User user);
     }
 }
