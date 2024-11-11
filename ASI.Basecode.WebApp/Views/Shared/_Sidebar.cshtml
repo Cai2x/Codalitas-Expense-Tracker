@@ -1,13 +1,19 @@
-﻿@if (!(ViewBag.LoginView == true))
+﻿@section styles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  
+  
+}
+
+@if (!(ViewBag.LoginView == true))
 {
     <div class="sidebar">
         <div class="logosec">
             <h2>GasTwo</h2>
         </div>
         <div class="menu">
-            <a href="/Home/Index">Dashboard</a>
-            <a href="/Expense/Index">Expenses</a>
-            <a href="/Category/Index">Category</a>
+            <a href="/Home/Index">  <i class="fa-solid fa-table-columns"></i> Dashboard</a>
+            <a href="/Expense/Index"> <i class="fa-solid fa-money-bills"></i> Expenses</a>
+            <a href="/Category/Index"> <i class="fa-solid fa-list"></i> Category</a>
         </div>
     </div>
 }
