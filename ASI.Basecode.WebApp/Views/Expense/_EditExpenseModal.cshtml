@@ -11,23 +11,23 @@
             <div class="modal-body">
                 <form asp-action="Edit">
                     <!-- Hidden input to store the Expense ID -->
-                    <input type="hidden" asp-for="ExpenseId" />
+                    <input type="hidden" asp-for="ExpenseId" id="EditExpenseId"/>
 
                     <!-- Title Field -->
                     <div class="form-group mb-3">
-                        <input asp-for="Title" class="form-control addExpense-field" />
+                        <input asp-for="Title" class="form-control addExpense-field" id="EditTitle" />
                         <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
 
                     <!-- Expense Date Field -->
                     <div class="form-group mb-3">
-                        <input asp-for="ExpenseDateCreated" class="form-control addExpense-field" />
+                        <input asp-for="ExpenseDateCreated" type="date" class="form-control addExpense-field" id="EditExpenseDateCreated" />
                         <span asp-validation-for="ExpenseDateCreated" class="text-danger"></span>
                     </div>
 
                     <!-- Amount Field -->
                     <div class="form-group mb-3">
-                        <input asp-for="Amount" id="Amount" class="form-control addExpense-field" placeholder="Amount" />
+                        <input asp-for="Amount" id="EditAmount" class="form-control addExpense-field" placeholder="Amount" />
                         <span asp-validation-for="Amount" class="text-danger"></span>
                     </div>
 
@@ -43,7 +43,7 @@
                     <!-- Description Field -->
                     <div class="form-group mb-4">
                         <label asp-for="Description" class="control-label"></label>
-                        <textarea asp-for="Description" id="Description" class="form-control box-input" rows="4" placeholder="Description"></textarea>
+                        <textarea asp-for="Description" id="EditDescription" class="form-control box-input" rows="4" placeholder="Description"></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
 
@@ -64,7 +64,7 @@
 
     // Function to open the modal and populate data
     function openEditModal(expenseId) {
-        fetch(`/Expense/Edit/?id=${expenseId}`)
+        fetch(`/Expense/Edit/${expenseId}`)
             .then(response => {
                 if (!response.ok) {
                     return response.json().then(error => { throw new Error(error.message); });
@@ -87,11 +87,11 @@
 
     // Function to populate modal fields with fetched expense data
     function populateModalFields(expense) {
-        document.getElementById("ExpenseId").value = expense.expenseId;
-        document.getElementById("Title").value = expense.title;
-        document.getElementById("ExpenseDateCreated").value = expense.expenseDateCreated.split('T')[0]; // Format date
-        document.getElementById("Amount").value = expense.amount;
-        document.getElementById("Description").value = expense.description;
+        document.getElementById("EditExpenseId").value = expense.expenseId;
+        document.getElementById("EditTitle").value = expense.title;
+        document.getElementById("EditExpenseDateCreated").value = expense.expenseDateCreated.split('T')[0]; // Format date
+        document.getElementById("EditAmount").value = expense.amount;
+        document.getElementById("EditDescription").value = expense.description;
     }
 
     // Fetch categories and set the selected one based on the expense data
@@ -110,8 +110,7 @@
                         dropdown.appendChild(option);
 
                         if(category.categoryId == categoryId){
-                            option.value = categoryId;
-                            option.textContent = category.name;
+                            option.selected = true;
                         }
                     });
 
