@@ -30,22 +30,9 @@ var app = appBuilder.Build();
 
 configurer.ConfigureApp(app, app.Environment);
 
-// General route for CRUD-like actions
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Account}/{action=Login}/{id?}");
-
-// Explicit routes for specific actions
-app.MapControllerRoute(
-    name: "expenseEdit",
-    pattern: "Expense/Edit/{id}",
-    defaults: new { controller = "Expense", action = "Edit" });
-
-app.MapControllerRoute(
-    name: "categoryEdit",
-    pattern: "Category/Edit/{id}",
-    defaults: new { controller = "Category", action = "Edit" });
-
+    pattern: "{controller=Account}/{action=Login}");
 app.MapControllers();
 app.MapRazorPages();
 
