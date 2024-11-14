@@ -1,7 +1,7 @@
 ﻿@model ASI.Basecode.Services.ServiceModels.ExpenseViewModel
 
 <!-- Edit Expense Modal -->
-<div class="modal fade" id="editExpenseModal" tabindex="-1" aria-labelledby="editExpenseModalLabel" aria-hidden="true" data-bs-backdrop="static">
+<div class="modal fade" id="editExpenseModal" tabindex="-1" aria-labelledby="editExpenseModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content modal-cstm">
             <div class="modal-header">
@@ -33,9 +33,7 @@
 
                     <!-- Category Dropdown -->
                     <div class="form-group mb-3">
-                        <select asp-for="CategoryId" id="CategoryId" name="CategoryId" class="form-select addExpense-field">
-                            <option value="" disabled selected hidden>Select Category</option>
-                        </select>
+                        <select asp-for="CategoryId" id="categoryDropdownEdit" name="CategoryId" class="form-select addExpense-field"></select>
                         <div class="text-end mt-2">
                             <a href="#" class="text-muted">Create New Category List</a>
                         </div>
@@ -55,6 +53,7 @@
                         <button type="submit" class="btn btn-custom btn-md px-4">Save Edit</button>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>
@@ -62,9 +61,10 @@
 
 <!-- JavaScript to Load Expense Data and Populate Modal -->
 <script>
+
     // Function to open the modal and populate data
     function openEditModal(expenseId) {
-        fetch(`/Expense/Edit/${expenseId}`)
+        fetch(`/Expense/Edit/?id=${expenseId}`)
             .then(response => {
                 if (!response.ok) {
                     return response.json().then(error => { throw new Error(error.message); });
@@ -73,7 +73,7 @@
             })
             .then(expense => {
                 populateModalFields(expense); // Populate modal fields with expense data
-                fetchCategories(expense.CategoryId); // Fetch categories and set selected one
+                fetchEditCategories(expense.categoryId); // Fetch categories and set selected one
 
                 // Open the modal programmatically
                 const editExpenseModal = new bootstrap.Modal(document.getElementById('editExpenseModal'));
@@ -87,41 +87,71 @@
 
     // Function to populate modal fields with fetched expense data
     function populateModalFields(expense) {
-        document.getElementById("ExpenseId").value = expense.ExpenseId;
-        document.getElementById("Title").value = expense.Title;
-        document.getElementById("ExpenseDateCreated").value = expense.ExpenseDateCreated.split('T')[0]; // Format date
-        document.getElementById("Amount").value = expense.Amount;
-        document.getElementById("Description").value = expense.Description;
+        document.getElementById("ExpenseId").value = expense.expenseId;
+        document.getElementById("Title").value = expense.title;
+        document.getElementById("ExpenseDateCreated").value = expense.expenseDateCreated.split('T')[0]; // Format date
+        document.getElementById("Amount").value = expense.amount;
+        document.getElementById("Description").value = expense.description;
     }
 
     // Fetch categories and set the selected one based on the expense data
-    function fetchCategories(selectedCategoryId) {
+    function fetchEditCategories(categoryId) {
         fetch('/Expense/Category')
             .then(response => response.json())
             .then(data => {
-                const dropdown = document.getElementById('CategoryId');
-                dropdown.innerHTML = ''; // Clear existing options
+                if (data.success) {
+                    const dropdown = document.getElementById('categoryDropdownEdit');
 
-                // Default option
-                const defaultOption = document.createElement('option');
-                defaultOption.value = "";
-                defaultOption.textContent = "Select Category";
-                defaultOption.disabled = true;
-                defaultOption.selected = true;
-                defaultOption.hidden = true;
-                dropdown.appendChild(defaultOption);
+                    // Append fetched categories
+                    data.data.forEach(category => {
+                        const option = document.createElement('option');
+                        option.value = category.categoryId; // Pass CategoryId as value
+                        option.textContent = category.name;  // Display CategoryName
+                        dropdown.appendChild(option);
 
-                // Populate categories and select the correct one
-                data.forEach(category => {
-                    const option = document.createElement('option');
-                    option.value = category.categoryId;
-                    option.textContent = category.name;
-                    if (category.categoryId == selectedCategoryId) {
-                        option.selected = true;
-                    }
-                    dropdown.appendChild(option);
-                });
+                        if(category.categoryId == categoryId){
+                            option.value = categoryId;
+                            option.textContent = category.name;
+                        }
+                    });
+
+                } else {
+                    console.error("Error fetching categories:", data.message);
+                }
             })
-            .catch(error => console.error('Error fetching categories:', error));
+            .catch(error => {
+                console.error('Error fetching categories:', error);
+            });
     }
+
+        // Close the modal when the close button is clicked
+    document.querySelector('.btn-close').addEventListener('click', function () {
+        const editExpenseModal = bootstrap.Modal.getInstance(document.getElementById('editExpenseModal'));
+        editExpenseModal.hide(); // Explicitly hide the modal when the close button is clicked
+    });
+
+    // Handle form submission and close the modal
+    document.querySelector('form').addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent form from submitting normally
+        const editExpenseModal = bootstrap.Modal.getInstance(document.getElementById('editExpenseModal'));
+
+        // Handle form submission here
+        fetch('/Expense/Edit', {
+            method: 'POST',
+            body: new FormData(event.target), // Serialize form data
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Expense saved successfully!');
+                editExpenseModal.hide(); // Hide the modal after success
+            } else {
+                alert('Failed to save expense');
+            }
+        })
+        .catch(error => {
+            console.error('Error saving expense:', error);
+            alert('Error saving expense');
+        });
+    });
 </script>

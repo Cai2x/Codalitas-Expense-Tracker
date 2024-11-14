@@ -83,12 +83,16 @@ namespace ASI.Basecode.WebApp
             services.AddMemoryCache();
 
             // Register SQL database configuration context as services.
-            services.AddDbContext<GasTwoDbContext>(options =>
+            /*services.AddDbContext<GasTwoDbContext>(options =>
             {
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection"),
                     sqlServerOptions => sqlServerOptions.CommandTimeout(120));
-            });
+            });*/
+
+            //Register Db in App (ApplicationDbContext)
+            services.AddDbContext<GasTwoDbContext>(options => options.UseNpgsql(
+                Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddControllersWithViews();
             services.AddRazorPages().AddRazorRuntimeCompilation();
