@@ -20,7 +20,6 @@ namespace ASI.Basecode.Data
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Expense> Expenses { get; set; }
         public virtual DbSet<User> Users { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Category>(entity =>
@@ -51,6 +50,8 @@ namespace ASI.Basecode.Data
             modelBuilder.Entity<Expense>(entity =>
             {
                 entity.ToTable("Expense");
+
+                entity.Property(e => e.Date).HasColumnType("datetime");
 
                 entity.Property(e => e.DateCreated).HasColumnType("datetime");
 

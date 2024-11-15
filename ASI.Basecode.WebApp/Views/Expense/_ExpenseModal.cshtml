@@ -15,7 +15,7 @@
                         <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
                     <div class="form-group mb-3">
-                        <input asp-for=ExpenseDateCreated type="date" class="form-control addExpense-field" placeholder="Select Date" />
+                        <input asp-for=Date type="date" class="form-control addExpense-field" placeholder="Select Date" />
                     </div>
                     <div class="form-group mb-3">
                         <div class="input-group gap-3">
@@ -76,8 +76,18 @@
                                             dropdown.appendChild(option);
                                         });
 
-                                    } else {
-                                        console.error("Error fetching categories:", data.message);
+                                    } 
+                                    else {
+                                        const dropdown = document.getElementById('categoryDropdown');
+                                        dropdown.innerHTML = ''; // Clear any existing options
+
+                                        const defaultOption = document.createElement('option');
+                                        defaultOption.value = "";
+                                        defaultOption.textContent = "No Categories Added";
+                                        defaultOption.disabled = true;
+                                        defaultOption.selected = true;
+                                        defaultOption.hidden = true;
+                                        dropdown.appendChild(defaultOption);
                                     }
                                 })
                                 .catch(error => {
