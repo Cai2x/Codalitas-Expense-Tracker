@@ -4,6 +4,7 @@ body {
     background-color: #FAFAF5;
 }
 
+
 /* Header container styling */
 .category-header {
     margin-bottom: 10px;
@@ -17,13 +18,17 @@ body {
 
 /*modal CSS*/
 
-.modal-content {
+.addcategory-content {
     width: 600px;
-    height: 500px;
+    /*height: 500px;*/
     padding: 2rem;
-    margin: auto;
+    /*margin: auto;*/
     box-shadow: 0 0.75rem 1.5rem rgba(18, 38, 63, 0.03);
     border-radius: 10px;
+    background-color: #FAFAF5 ;
+}
+
+.del-modal-content {
     background-color: #FAFAF5;
 }
 
@@ -238,3 +243,7 @@ h1 {
         color: white;
         cursor: pointer;
     }
+
+
+    
+
