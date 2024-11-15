@@ -90,6 +90,10 @@ namespace ASI.Basecode.WebApp
                     sqlServerOptions => sqlServerOptions.CommandTimeout(120));
             });
 
+            /*//Register Db in App (ApplicationDbContext)
+            services.AddDbContext<GasTwoDbContext>(options => options.UseNpgsql(
+                Configuration.GetConnectionString("DefaultConnection")));*/
+
             services.AddControllersWithViews();
             services.AddRazorPages().AddRazorRuntimeCompilation();
 

@@ -9,7 +9,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form asp-action="Create" method="post">
+                <form asp-action="Create" method="post" id="addExpenseForm">
                     <div class="form-group mb-3">
                         <input asp-for="Title" class="form-control addExpense-field" placeholder="Subject" />
                         <span asp-validation-for="Title" class="text-danger"></span>
@@ -30,7 +30,7 @@
 
                     <div class="form-group mb-3">
                         <select asp-for="CategoryId" id="categoryDropdown" name="CategoryId" class="form-select addExpense-field">
-                            <option value=null disabled selected hidden>Select Category</option>
+                           
                         </select>
                         <div class="text-end mt-2">
                             <a href="#" class="text-muted">Create New Category List</a>
@@ -40,18 +40,19 @@
 
                     <!----AJAX for reset and dynamic dropdown--->
                     <script>
+                        // Add event listener to fetch categories and reset form on modal show
+                        document.getElementById('addExpenseModal').addEventListener('show.bs.modal', function (event) {
+                            fetchAddCategories(); // Fetch categories
+                            resetForm();
+                        });
+
                         function resetForm() {
                             // Reset the form fields to empty
                             const form = document.getElementById('addExpenseForm');
                             form.reset();  // Resets all form fields
                         }
 
-                        // Add event listener to fetch categories and reset form on modal show
-                        document.getElementById('addExpenseModal').addEventListener('show.bs.modal', function (event) {
-                            fetchCategories(); // Fetch categories
-                        });
-
-                        function fetchCategories() {
+                        function fetchAddCategories() {
                             fetch('/Expense/Category')
                                 .then(response => response.json())
                                 .then(data => {
@@ -90,7 +91,7 @@
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
 
-                  @*   <div class="text-center">
+                    <div class="text-center">
                         <input type="hidden" id="status" name="Status" value="false" />
 
                         <button type="submit" name="saveAsDraft" class="btn btn-outline-success btn-md px-4" onclick="setStatus(false)">Draft</button>
@@ -101,13 +102,7 @@
                         function setStatus(isPublished) {
                             document.getElementById('status').value = isPublished;
                         }
-                    </script> *@
-
-                     <div class="text-center">
-                        <button type="submit" name="saveAsDraft" class="btn btn-outline-success btn-md px-4">Draft</button>
-                        <button type="submit" name="saveAsPublish" class="btn btn-custom btn-md px-4">Save and Publish</button>
-                    </div> 
-
+                    </script> 
                 </form>
             </div>
         </div>
