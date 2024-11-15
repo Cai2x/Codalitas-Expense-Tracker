@@ -4,11 +4,8 @@ body {
     background-color: #FAFAF5;
 }
 
-/*delete modal content*/
-#deleteModal .delete-modal-content {
+.del-modal-content{
     background-color: #FAFAF5 !important;
-    border-radius: 10px;
-    
 }
 
 /* Header container styling */
@@ -31,7 +28,7 @@ body {
     margin: auto;
     box-shadow: 0 0.75rem 1.5rem rgba(18, 38, 63, 0.03);
     border-radius: 10px;
-    background-color: #FAFAF5;
+    background-color: #FAFAF5!important;
 }
 
 /*modal body*/
@@ -247,5 +244,5 @@ h1 {
     }
 
 
-    /*Delete Modal CSS */
+    
 

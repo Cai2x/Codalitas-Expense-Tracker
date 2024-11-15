@@ -57,7 +57,7 @@
                             <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editCategoryModal" data-id="@item.CategoryId" data-name="@item.Name" data-description="@item.Description">
                                 <i class="fas fa-pencil-alt"></i>
                             </button>
-                             <a href="javascript:void(0);" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            <a href="javascript:void(0);" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletecategoryModal">
                                 <i class="fas fa-trash"></i>
                             </a>
                         </td>
@@ -69,8 +69,8 @@
 </div>
 
 <!--To call Add Category Modal-->
-<partial name="_DeleteModal" />
 <partial name="_CategoryModal" model="new ASI.Basecode.Services.ServiceModels.CategoryViewModel()" />
 <partial name="_EditCategoryModal" model="new ASI.Basecode.Services.ServiceModels.CategoryViewModel()" />
+<partial name="_DeleteModal" />
 
 
