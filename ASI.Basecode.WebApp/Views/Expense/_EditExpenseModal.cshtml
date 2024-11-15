@@ -9,7 +9,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form asp-action="Edit">
+                <form asp-action="Edit" method="post" id="editExpenseForm">
                     <!-- Hidden input to store the Expense ID -->
                     <input type="hidden" asp-for="ExpenseId" id="EditExpenseId"/>
 
@@ -61,96 +61,65 @@
 
 <!-- JavaScript to Load Expense Data and Populate Modal -->
 <script>
-
-    // Function to open the modal and populate data
     function openEditModal(expenseId) {
         fetch(`/Expense/Edit/${expenseId}`)
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(error => { throw new Error(error.message); });
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(expense => {
-                populateModalFields(expense); // Populate modal fields with expense data
-                fetchEditCategories(expense.categoryId); // Fetch categories and set selected one
-
-                // Open the modal programmatically
-                const editExpenseModal = new bootstrap.Modal(document.getElementById('editExpenseModal'));
-                editExpenseModal.show();
+                populateModalFields(expense);
+                fetchEditCategories(expense.categoryId);
+                const editModal = new bootstrap.Modal(document.getElementById('editExpenseModal'));
+                editModal.show();
             })
-            .catch(error => {
-                console.error('Error fetching expense:', error);
-                alert("Error fetching expense: " + error.message);
-            });
+            .catch(error => alert("Error fetching expense: " + error.message));
     }
 
-    // Function to populate modal fields with fetched expense data
-    function populateModalFields(expense) {
-        document.getElementById("EditExpenseId").value = expense.expenseId;
-        document.getElementById("EditTitle").value = expense.title;
-        document.getElementById("EditExpenseDateCreated").value = expense.expenseDateCreated.split('T')[0]; // Format date
-        document.getElementById("EditAmount").value = expense.amount;
-        document.getElementById("EditDescription").value = expense.description;
-    }
-
-    // Fetch categories and set the selected one based on the expense data
-    function fetchEditCategories(categoryId) {
+    function fetchEditCategories(selectedCategoryId) {
         fetch('/Expense/Category')
             .then(response => response.json())
             .then(data => {
+                const dropdown = document.getElementById('categoryDropdownEdit');
+                dropdown.innerHTML = ''; // Clear existing options
+
                 if (data.success) {
-                    const dropdown = document.getElementById('categoryDropdownEdit');
-
-                    // Append fetched categories
                     data.data.forEach(category => {
-                        const option = document.createElement('option');
-                        option.value = category.categoryId; // Pass CategoryId as value
-                        option.textContent = category.name;  // Display CategoryName
-                        dropdown.appendChild(option);
-
-                        if(category.categoryId == categoryId){
-                            option.selected = true;
-                        }
+                        const option = new Option(category.name, category.categoryId);
+                        option.selected = category.categoryId == selectedCategoryId;
+                        dropdown.add(option);
                     });
-
-                } else {
-                    console.error("Error fetching categories:", data.message);
                 }
             })
-            .catch(error => {
-                console.error('Error fetching categories:', error);
-            });
+            .catch(error => console.error('Error fetching categories:', error));
     }
 
-        // Close the modal when the close button is clicked
-    document.querySelector('.btn-close').addEventListener('click', function () {
-        const editExpenseModal = bootstrap.Modal.getInstance(document.getElementById('editExpenseModal'));
-        editExpenseModal.hide(); // Explicitly hide the modal when the close button is clicked
-    });
+    function populateModalFields(expense) {
+        document.getElementById("EditExpenseId").value = expense.expenseId;
+        document.getElementById("EditTitle").value = expense.title;
+        document.getElementById("EditExpenseDateCreated").value = expense.expenseDateCreated.split('T')[0];
+        document.getElementById("EditAmount").value = expense.amount;
+        document.getElementById("EditDescription").value = expense.description;
+    }
+</script>
 
-    // Handle form submission and close the modal
-    document.querySelector('form').addEventListener('submit', function (event) {
-        event.preventDefault(); // Prevent form from submitting normally
-        const editExpenseModal = bootstrap.Modal.getInstance(document.getElementById('editExpenseModal'));
+<script>
+    document.getElementById('editExpenseForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const form = event.target;
 
-        // Handle form submission here
         fetch('/Expense/Edit', {
             method: 'POST',
-            body: new FormData(event.target), // Serialize form data
+            body: new FormData(form)
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('Expense saved successfully!');
-                editExpenseModal.hide(); // Hide the modal after success
+                const editModal = bootstrap.Modal.getInstance(document.getElementById('editExpenseModal'));
+                editModal.hide();
+                location.reload(); // Refresh page or update the UI dynamically
             } else {
-                alert('Failed to save expense');
+                alert('Failed to update expense');
             }
         })
-        .catch(error => {
-            console.error('Error saving expense:', error);
-            alert('Error saving expense');
-        });
+        .catch(error => console.error('Error saving expense:', error));
     });
 </script>
+
