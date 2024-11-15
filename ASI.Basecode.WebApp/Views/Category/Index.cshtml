@@ -52,8 +52,14 @@
                         </td>
                         <td>@Html.DisplayFor(modelItem => item.Description)</td>
                         <td>
-                            <a asp-action="Edit" asp-route-id="@item.CategoryId" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
-                            <a asp-action="Delete" asp-route-id="@item.CategoryId" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                            @* <a asp-action="Edit" asp-route-id="@item.CategoryId" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a> *@
+                            <!-- Edit Button -->
+                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editCategoryModal" data-id="@item.CategoryId" data-name="@item.Name" data-description="@item.Description">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                             <a href="javascript:void(0);" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                <i class="fas fa-trash"></i>
+                            </a>
                         </td>
                     </tr>
                 }
@@ -63,4 +69,8 @@
 </div>
 
 <!--To call Add Category Modal-->
+<partial name="_DeleteModal" />
 <partial name="_CategoryModal" model="new ASI.Basecode.Services.ServiceModels.CategoryViewModel()" />
+<partial name="_EditCategoryModal" model="new ASI.Basecode.Services.ServiceModels.CategoryViewModel()" />
+
+

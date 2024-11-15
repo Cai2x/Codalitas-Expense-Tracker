@@ -4,6 +4,13 @@ body {
     background-color: #FAFAF5;
 }
 
+/*delete modal content*/
+#deleteModal .delete-modal-content {
+    background-color: #FAFAF5 !important;
+    border-radius: 10px;
+    
+}
+
 /* Header container styling */
 .category-header {
     margin-bottom: 10px;
@@ -238,3 +245,7 @@ h1 {
         color: white;
         cursor: pointer;
     }
+
+
+    /*Delete Modal CSS */
+

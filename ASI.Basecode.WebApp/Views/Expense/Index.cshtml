@@ -69,7 +69,10 @@
                                 <a href="javascript:void(0);" onclick="openEditModal(@item.ExpenseId)" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editExpenseModal">
                                     <i class="fas fa-pencil-alt"></i>
                                 </a>
-                                <a href="@Url.Action("Delete", new { id = item.ExpenseId })" class="btn btn-danger">
+                               @*  <a href="@Url.Action("Delete", new { id = item.ExpenseId })" class="btn btn-danger">
+                                    <i class="fas fa-trash"></i>
+                                </a> *@
+                                <a href="javascript:void(0);" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
                                     <i class="fas fa-trash"></i>
                                 </a>
                             </td>
@@ -85,3 +88,4 @@
 <!--To Call the expenseviewmodel-->
 <partial name="_ExpenseModal" model="new ASI.Basecode.Services.ServiceModels.ExpenseViewModel()"/>
 <partial name="_EditExpenseModal" model="new ASI.Basecode.Services.ServiceModels.ExpenseViewModel()" />
+<partial name="_DeleteModal" />
