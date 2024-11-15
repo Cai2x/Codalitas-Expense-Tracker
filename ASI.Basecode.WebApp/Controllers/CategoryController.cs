@@ -83,8 +83,7 @@ namespace ASI.Basecode.WebApp.Controllers
             try
             {
                 _categoryService.AddCategory(category, int.Parse(UserId));
-                return Ok(category);
-
+                return RedirectToAction("Index");
             }
             catch
             {
