@@ -61,7 +61,8 @@ namespace ASI.Basecode.Services.Services
                     CategoryId = category.CategoryId,
                     CategoryName = category.Name,
                     Status = expense.Status,
-                    ExpenseDateCreated = expense.DateCreated
+                    ExpenseDateCreated = expense.DateCreated,
+                    Date = expense.Date.Date
                 }).FirstOrDefault();
 
             if(expense is null)
