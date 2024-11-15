@@ -133,8 +133,7 @@ namespace ASI.Basecode.WebApp.Controllers
             try
             {
                 _expenseService.UpdateExpense(expense);
-                return Ok(expense);
-                //return RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
             catch(Exception ex)
             {
