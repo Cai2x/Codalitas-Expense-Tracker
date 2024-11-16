@@ -83,13 +83,15 @@ namespace ASI.Basecode.WebApp.Controllers
             try
             {
                 _categoryService.AddCategory(category, int.Parse(UserId));
-                return RedirectToAction("Index");
+                return Ok(category);
+
             }
-            catch (Exception)
+            catch
             {
-                TempData["ErrorMessage"] = "Category already exists!";
-                return RedirectToAction("Index");
+                return BadRequest(category);
             }
+            
+            //return RedirectToAction("Index");
         }
 
         [HttpPost]

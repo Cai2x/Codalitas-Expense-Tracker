@@ -40,35 +40,49 @@
 
                     <!----AJAX for reset and dynamic dropdown--->
                     <script>
-                        document.getElementById('addExpenseModal').addEventListener('show.bs.modal', function () {
-                            fetchAddCategories();
+                        // Add event listener to fetch categories and reset form on modal show
+                        document.getElementById('addExpenseModal').addEventListener('show.bs.modal', function (event) {
+                            fetchAddCategories(); // Fetch categories
                             resetForm();
                         });
+
+                        function resetForm() {
+                            // Reset the form fields to empty
+                            const form = document.getElementById('addExpenseForm');
+                            form.reset();  // Resets all form fields
+                        }
 
                         function fetchAddCategories() {
                             fetch('/Expense/Category')
                                 .then(response => response.json())
                                 .then(data => {
-                                    const dropdown = document.getElementById('categoryDropdown');
-                                    dropdown.innerHTML = ''; // Clear existing options
-
                                     if (data.success) {
-                                        const defaultOption = new Option("Select Category", "", true, true);
-                                        defaultOption.disabled = true;
-                                        dropdown.add(defaultOption);
+                                        const dropdown = document.getElementById('categoryDropdown');
+                                        dropdown.innerHTML = ''; // Clear any existing options
 
+                                        const defaultOption = document.createElement('option');
+                                        defaultOption.value = "";
+                                        defaultOption.textContent = "Select Category";
+                                        defaultOption.disabled = true;
+                                        defaultOption.selected = true;
+                                        defaultOption.hidden = true;
+                                        dropdown.appendChild(defaultOption);
+
+                                        // Append fetched categories
                                         data.data.forEach(category => {
-                                            dropdown.add(new Option(category.name, category.categoryId));
+                                            const option = document.createElement('option');
+                                            option.value = category.categoryId; // Pass CategoryId as value
+                                            option.textContent = category.name;  // Display CategoryName
+                                            dropdown.appendChild(option);
                                         });
+
                                     } else {
                                         console.error("Error fetching categories:", data.message);
                                     }
                                 })
-                                .catch(error => console.error('Error fetching categories:', error));
-                        }
-
-                        function resetForm() {
-                            document.getElementById('addExpenseForm').reset();
+                                .catch(error => {
+                                    console.error('Error fetching categories:', error);
+                                });
                         }
                     </script>
 
