@@ -28,7 +28,7 @@ namespace ASI.Basecode.Services.Services
         public List<ExpenseViewModel> RetrieveUserExpenses(int userId)
         {
             var retrievedData = _expenseRepository.RetrieveExpenses().Where(x=>x.UserId == userId && x.IsDeleted == false)
-                .Join(_categoryRepository.RetrieveCategory(), 
+                .Join(_categoryRepository.RetrieveCategory().Where(c => c.IsDeleted == false), 
                 expense => expense.CategoryId,
                 category => category.CategoryId,
                 (expense,category) => new ExpenseViewModel
@@ -50,7 +50,7 @@ namespace ASI.Basecode.Services.Services
         public ExpenseViewModel RetrieveExpense(int expenseId)
         {
             var expense = _expenseRepository.RetrieveExpenses().Where(x => x.ExpenseId == expenseId)
-                .Join(_categoryRepository.RetrieveCategory(),
+                .Join(_categoryRepository.RetrieveCategory().Where(c => c.IsDeleted == false),
                 expense => expense.CategoryId,
                 category => category.CategoryId,
                 (expense, category) => new ExpenseViewModel

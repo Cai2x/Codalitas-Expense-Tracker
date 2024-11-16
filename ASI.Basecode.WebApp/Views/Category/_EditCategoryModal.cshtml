@@ -1,6 +1,5 @@
 ﻿@model ASI.Basecode.Services.ServiceModels.CategoryViewModel
 
-
 <div class="modal fade" id="editCategoryModal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -22,7 +21,7 @@
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
                     <div class="text-center">
-                        <button type="submit" name="cancelEdit" class="btn btn-outline-success  px-4 me-1">Cancel</button>
+                        <button type="button" name="cancelEdit" data-bs-dismiss="modal" class="btn btn-outline-success  px-4 me-1">Cancel</button>
                         <button type="submit" name="saveEdit" class="btn btn-custom  px-4">Save Edit</button>
                     </div>
                 </form>
@@ -31,17 +30,44 @@
     </div>
 </div>
 
-<!-- JavaScript to Load Expense Data and Populate Modal -->
+<!-- JavaScript to Load Category Data and Populate Modal -->
 <script>
+    let editCategoryModal;  // Declare the modal globally
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const modalElement = document.getElementById('editCategoryModal');
+        if (modalElement) {
+            editCategoryModal = new bootstrap.Modal(modalElement);
+        } else {
+            console.error("Edit modal not found in DOM!");
+        }
+
+        modalElement.addEventListener('hidden.bs.modal', function () {
+            resetEditForm();  // Reset form on modal close
+        });
+    });
+
     function openEditCategoryModal(categoryId) {
         fetch(`/Category/Edit/${categoryId}`)
-            .then(response => response.json())
-            .then(category => {
-                populateModalFields(category);
-                const editModal = new bootstrap.Modal(document.getElementById('editCategoryModal'));
-                editModal.show();
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(error => { throw new Error(error.message); });
+                }
+                return response.json();
             })
-            .catch(error => alert("Error fetching category: " + error.message));
+            .then(category => {
+                populateModalFields(category); // Populate modal fields with expense data
+
+                if (editCategoryModal) {
+                    editCategoryModal.show();
+                } else {
+                    console.error("Modal instance not initialized.");
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching expense:', error);
+                alert("Error fetching expense: " + error.message);
+            });
     }
 
     // Function to populate modal fields with fetched expense data
@@ -51,27 +77,9 @@
         document.getElementById("EditDescription").value = category.description;
         document.getElementById("EditCategoryDate").value = category.categoryDateCreated;
     }
-</script>
 
-<script>
-    // Handle form submission and close the modal
-    document.querySelector('editCategoryForm').addEventListener('submit', function (event) {
-        event.preventDefault(); // Prevent form from submitting normally
-
-        fetch('/Category/Edit', {
-            method: 'POST',
-            body: new FormData(form)
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const editModal = bootstrap.Modal.getInstance(document.getElementById('editCategoryModal'));
-                    editModal.hide();
-                    location.reload(); // Refresh page or update the UI dynamically
-                } else {
-                    alert('Failed to update expense');
-                }
-            })
-            .catch(error => console.error('Error saving expense:', error));
-    });
+    function resetEditForm() {
+        const form = document.getElementById('editCategoryForm');
+        form.reset();  // Resets all form fields
+    }
 </script>

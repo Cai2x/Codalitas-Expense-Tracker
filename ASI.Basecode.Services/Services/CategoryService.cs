@@ -26,13 +26,14 @@ namespace ASI.Basecode.Services.Services
 
         public List<CategoryViewModel> RetrieveUserCategory(int userId)
         {
-            var retrievedData = _categoryRepository.RetrieveCategory().Where(x => x.CreatedBy == userId)
+            var retrievedData = _categoryRepository.RetrieveCategory().Where(x => x.CreatedBy == userId && x.IsDeleted == false)
                 .Select(x => new CategoryViewModel
                 {
                     CategoryId = x.CategoryId,
                     Name = x.Name,
                     CategoryDateCreated = x.DateCreated,
                     Description = x.Description,
+                    isDeleted = x.IsDeleted
                 }).ToList();
             return retrievedData;
         }
@@ -46,6 +47,7 @@ namespace ASI.Basecode.Services.Services
                     Name = e.Name,
                     CategoryDateCreated = e.DateCreated,
                     Description = e.Description,
+                    isDeleted = e.IsDeleted
                 }).FirstOrDefault();
 
             return category;
@@ -61,7 +63,7 @@ namespace ASI.Basecode.Services.Services
 
             try
             {
-                var existingCategory = _categoryRepository.RetrieveCategory().Any(x => x.Name == categoryModel.Name && x.CreatedBy == userId);
+                var existingCategory = _categoryRepository.RetrieveCategory().Any(x => x.Name == categoryModel.Name && x.CreatedBy == userId && x.IsDeleted == false);
 
                 if (existingCategory)
                 {
@@ -77,13 +79,13 @@ namespace ASI.Basecode.Services.Services
             }
         }
 
-
         public void DeleteCategory(int categoryId)
         {
             var category = _categoryRepository.RetrieveCategory().Where(x => x.CategoryId == categoryId).FirstOrDefault();
+            category.IsDeleted = true;
             if (category != null)
             {
-                _categoryRepository.DeleteCategory(category);
+                _categoryRepository.UpdateCategory(category);
             }
         }
 

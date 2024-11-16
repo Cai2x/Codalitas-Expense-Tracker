@@ -51,12 +51,12 @@
                     <div class="text-center">
                         <input type="hidden" id="EditStatus" name="Status" value="false" />
 
-                        <button type="submit" name="saveAsDraft" class="btn btn-outline-success btn-md px-4" onclick="setStatus(false)">Draft</button>
-                        <button type="submit" name="saveAsPublish" class="btn btn-custom btn-md px-4" onclick="setStatus(true)">Save and Publish</button>
+                        <button type="submit" name="saveAsDraft" class="btn btn-outline-success btn-md px-4" onclick="setEditStatus(false)">Draft</button>
+                        <button type="submit" name="saveAsPublish" class="btn btn-custom btn-md px-4" onclick="setEditStatus(true)">Save and Publish</button>
                     </div>
 
                     <script>
-                        function setStatus(isPublished) {
+                        function setEditStatus(isPublished) {
                             document.getElementById('EditStatus').value = isPublished;
                         }
                     </script>
@@ -69,6 +69,21 @@
 
 <!-- JavaScript to Load Expense Data and Populate Modal -->
 <script>
+    let editExpenseModal;  // Declare the modal globally
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const modalElement = document.getElementById('editExpenseModal');
+        if (modalElement) {
+            editExpenseModal = new bootstrap.Modal(modalElement);
+        } else {
+            console.error("Edit modal not found in DOM!");
+        }
+
+        modalElement.addEventListener('hidden.bs.modal', function () {
+            resetEditForm();  // Reset form on modal close
+        });
+    });
+
     // Function to open the modal and populate data
     function openEditModal(expenseId) {
         fetch(`/Expense/Edit/${expenseId}`)
@@ -79,12 +94,15 @@
                 return response.json();
             })
             .then(expense => {
-                populateModalFields(expense); // Populate modal fields with expense data
-                fetchEditCategories(expense.categoryId); // Fetch categories and set selected one
+                populateModalFields(expense); 
+                fetchEditCategories(expense.categoryId);
 
                 // Open the modal programmatically
-                const editExpenseModal = new bootstrap.Modal(document.getElementById('editExpenseModal'));
-                editExpenseModal.show();
+                if (editExpenseModal) {
+                    editExpenseModal.show();
+                } else {
+                    console.error("Modal instance not initialized.");
+                }
             })
             .catch(error => {
                 console.error('Error fetching expense:', error);
@@ -113,8 +131,8 @@
                     // Append fetched categories
                     data.data.forEach(category => {
                         const option = document.createElement('option');
-                        option.value = category.categoryId; // Pass CategoryId as value
-                        option.textContent = category.name;  // Display CategoryName
+                        option.value = category.categoryId; 
+                        option.textContent = category.name;  
                         dropdown.appendChild(option);
 
                         if(category.categoryId == categoryId){
@@ -131,33 +149,8 @@
             });
     }
 
-        // Close the modal when the close button is clicked
-    document.querySelector('.btn-close').addEventListener('click', function () {
-        const editExpenseModal = bootstrap.Modal.getInstance(document.getElementById('editExpenseModal'));
-        editExpenseModal.hide(); // Explicitly hide the modal when the close button is clicked
-    });
-
-    // Handle form submission and close the modal
-    document.querySelector('editExpenseform').addEventListener('submit', function (event) {
-        event.preventDefault(); // Prevent form from submitting normally
-
-        // Handle form submission here
-        fetch('/Expense/Edit', {
-            method: 'POST',
-            body: new FormData(event.target), // Serialize form data
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Expense saved successfully!');
-                editExpenseModal.hide(); // Hide the modal after success
-            } else {
-                alert('Failed to save expense');
-            }
-        })
-        .catch(error => {
-            console.error('Error saving expense:', error);
-            alert('Error saving expense');
-        });
-    });
+    function resetEditForm() {
+        const form = document.getElementById('editExpenseForm');
+        form.reset();  // Resets all form fields
+    }
 </script>

@@ -15,5 +15,6 @@ namespace ASI.Basecode.Services.ServiceModels
         public DateTime CategoryDateCreated { get; set; }
         [Required(ErrorMessage = "Category Description is required.")]
         public string Description { get; set; }
+        public bool isDeleted { get; set; }
     }
 }

@@ -1,0 +1,84 @@
+﻿@model ASI.Basecode.Services.ServiceModels.CategoryViewModel
+
+<div class="modal fade" id="deleteCategoryModal" tabindex="-1" role="dialog" aria-labelledby="deletecategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content del-modal-content">
+            <div class="delete-modal-body del-modal-body text-center">
+                <div class="mb-3">
+                    <span class="display-1 text-danger">&times;</span>
+                </div>
+                <h5 class="deleteModal-title mb-3">Are you sure?</h5>
+                <p>Do you really want to delete these records? Note that deleting this category deletes all expenses under this category.This process cannot be undone.</p>
+                <div class="d-flex justify-content-center mb-4">
+                    <button type="button" class="btn btn-secondary deleteModal-Button mr-2" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger deleteModal-Button" onclick="confirmDelete()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript to Load Category Data and Populate Modal -->
+<script>
+    let deleteCategoryModal;
+    let currentCategoryId;
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const modalElement = document.getElementById('deleteCategoryModal');
+        if (modalElement) {
+            deleteCategoryModal = new bootstrap.Modal(modalElement);
+        } else {
+            console.error("Delete modal not found in DOM!");
+        }
+    });
+
+    // Function to open the delete modal 
+    function openDeleteCategoryModal(categoryId) {
+        currentCategoryId = categoryId;
+        console.log('Opening modal for expense ID:', categoryId);
+
+        // Set the value of the hidden input to the CategoryId of the expense to delete
+        document.getElementById('DeleteExpenseId').value = categoryId;
+
+        // Open the modal programmatically
+        if (deleteCategoryModal) {
+            deleteCategoryModal.show();
+        } else {
+            console.error("Modal instance not initialized.");
+        }
+    }
+
+    // Function to confirm deletion
+    function confirmDelete() {
+        // Ensure the currentCategoryId is set
+        if (!currentCategoryId) {
+            console.error('No Category ID available for deletion.');
+            return;
+        }
+
+        fetch(`/Category/PostDelete/${currentCategoryId}`, {
+            method: 'POST',
+        })
+            .then(response => {
+                if (response.ok) {
+                    if (response.redirected) {
+                        window.location.href = response.url;  // Redirect to the new location
+                    } else {
+                        alert('Expense deleted successfully!');
+                        deleteCategoryModal.hide(); // Close modal after success
+                    }
+                } else {
+                    return response.json();
+                }
+            })
+            .then(data => {
+                if (data && !data.success) {
+                    alert('Failed to delete expense: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting expense:', error);
+                alert('Error deleting expense. Please try again.');
+            });
+    }
+</script>
