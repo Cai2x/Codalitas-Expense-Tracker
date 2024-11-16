@@ -21,7 +21,7 @@
 
                     <!-- Expense Date Field -->
                     <div class="form-group mb-3">
-                        <input asp-for="Date" type="date" class="form-control addExpense-field" id="EditExpenseDate" />
+                        <input asp-for="Date" type="date" class="form-control addExpense-field" id="EditDate" />
                         <span asp-validation-for="Date" class="text-danger"></span>
                     </div>
 
@@ -50,12 +50,13 @@
                     <!-- Action Buttons -->
                     <div class="text-center">
                         <input type="hidden" id="EditStatus" name="Status" value="false" />
-                        <button type="submit" name="Edit_saveAsDraft" class="btn btn-outline-success btn-md px-4" onclick="setEditStatus(false)">Draft</button>
-                        <button type="submit" name="Edit_saveAsPublish" class="btn btn-custom btn-md px-4" onclick="setEditStatus(true)">Save and Publish</button>
+
+                        <button type="submit" name="saveAsDraft" class="btn btn-outline-success btn-md px-4" onclick="setStatus(false)">Draft</button>
+                        <button type="submit" name="saveAsPublish" class="btn btn-custom btn-md px-4" onclick="setStatus(true)">Save and Publish</button>
                     </div>
 
                     <script>
-                        function setEditStatus(isPublished) {
+                        function setStatus(isPublished) {
                             document.getElementById('EditStatus').value = isPublished;
                         }
                     </script>
@@ -68,7 +69,6 @@
 
 <!-- JavaScript to Load Expense Data and Populate Modal -->
 <script>
-
     // Function to open the modal and populate data
     function openEditModal(expenseId) {
         fetch(`/Expense/Edit/${expenseId}`)
@@ -96,7 +96,7 @@
     function populateModalFields(expense) {
         document.getElementById("EditExpenseId").value = expense.expenseId;
         document.getElementById("EditTitle").value = expense.title;
-        document.getElementById("EditExpenseDate").value = expense.date.split('T')[0]; // Format date
+        document.getElementById("EditDate").value = expense.date.split('T')[0]; // Format date
         document.getElementById("EditAmount").value = expense.amount;
         document.getElementById("EditDescription").value = expense.description;
     }

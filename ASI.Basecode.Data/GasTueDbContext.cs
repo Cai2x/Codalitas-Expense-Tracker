@@ -6,13 +6,13 @@ using ASI.Basecode.Data.Models;
 
 namespace ASI.Basecode.Data
 {
-    public partial class GasTwoDbContext : DbContext
+    public partial class GasTueDbContext : DbContext
     {
-        public GasTwoDbContext()
+        public GasTueDbContext()
         {
         }
 
-        public GasTwoDbContext(DbContextOptions<GasTwoDbContext> options)
+        public GasTueDbContext(DbContextOptions<GasTueDbContext> options)
             : base(options)
         {
         }
@@ -34,6 +34,8 @@ namespace ASI.Basecode.Data
                     .IsRequired()
                     .HasMaxLength(255)
                     .IsUnicode(false);
+
+                entity.Property(e => e.IsDeleted).HasColumnName("isDeleted");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -61,6 +63,8 @@ namespace ASI.Basecode.Data
                     .IsRequired()
                     .HasMaxLength(255)
                     .IsUnicode(false);
+
+                entity.Property(e => e.IsDeleted).HasColumnName("isDeleted");
 
                 entity.Property(e => e.Title)
                     .IsRequired()
@@ -97,6 +101,8 @@ namespace ASI.Basecode.Data
                     .IsRequired()
                     .HasMaxLength(255)
                     .IsUnicode(false);
+
+                entity.Property(e => e.IsDeleted).HasColumnName("isDeleted");
 
                 entity.Property(e => e.LastName)
                     .IsRequired()

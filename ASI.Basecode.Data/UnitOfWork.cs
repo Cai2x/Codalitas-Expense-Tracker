@@ -19,7 +19,7 @@ namespace ASI.Basecode.Data
         /// Initializes a new instance of the UnitOfWork class.
         /// </summary>
         /// <param name="serviceContext">The service context.</param>
-        public UnitOfWork(GasTwoDbContext serviceContext)
+        public UnitOfWork(GasTueDbContext serviceContext)
         {
             Database = serviceContext;
         }

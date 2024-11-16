@@ -22,7 +22,9 @@ namespace ASI.Basecode.Services.ServiceModels
         public double Amount { get; set; }
         public bool Status { get; set; }
         public DateTime ExpenseDateCreated { get; set; }
+
         [Required(ErrorMessage = "Date is required.")]
         public DateTime Date { get; set; }
+        public bool isDeleted { get; set; }
     }
 }

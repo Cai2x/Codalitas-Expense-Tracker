@@ -1,7 +1,7 @@
 ﻿@model ASI.Basecode.Services.ServiceModels.CategoryViewModel
 
 
-<div class="modal fade" id="editCategoryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+<div class="modal fade" id="editCategoryModal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -9,13 +9,16 @@
                 <button type="button" class="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form asp-action="AddCategory" method="post">
+                <form asp-action="Edit" method="post" id="editCategoryForm">
+                    <input type="hidden" asp-for="CategoryId" id="EditCategoryId" />
+                    <input type="hidden" asp-for="CategoryDateCreated" id="EditCategoryDate" />
+
                     <div class="form-group mb-3">
-                        <input asp-for="Name" class="form-control input-field" placeholder="Category Name" />
+                        <input asp-for="Name" class="form-control input-field" placeholder="Category Name" id="EditName" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                     <div class="form-group mb-4">
-                        <textarea asp-for="Description" class="form-control textarea-field" placeholder="Description"></textarea>
+                        <textarea asp-for="Description" class="form-control textarea-field" placeholder="Description" id="EditDescription"></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
                     <div class="text-center">
@@ -27,3 +30,48 @@
         </div>
     </div>
 </div>
+
+<!-- JavaScript to Load Expense Data and Populate Modal -->
+<script>
+    function openEditCategoryModal(categoryId) {
+        fetch(`/Category/Edit/${categoryId}`)
+            .then(response => response.json())
+            .then(category => {
+                populateModalFields(category);
+                const editModal = new bootstrap.Modal(document.getElementById('editCategoryModal'));
+                editModal.show();
+            })
+            .catch(error => alert("Error fetching category: " + error.message));
+    }
+
+    // Function to populate modal fields with fetched expense data
+    function populateModalFields(category) {
+        document.getElementById("EditCategoryId").value = category.categoryId;
+        document.getElementById("EditName").value = category.name;
+        document.getElementById("EditDescription").value = category.description;
+        document.getElementById("EditCategoryDate").value = category.categoryDateCreated;
+    }
+</script>
+
+<script>
+    // Handle form submission and close the modal
+    document.querySelector('editCategoryForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent form from submitting normally
+
+        fetch('/Category/Edit', {
+            method: 'POST',
+            body: new FormData(form)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const editModal = bootstrap.Modal.getInstance(document.getElementById('editCategoryModal'));
+                    editModal.hide();
+                    location.reload(); // Refresh page or update the UI dynamically
+                } else {
+                    alert('Failed to update expense');
+                }
+            })
+            .catch(error => console.error('Error saving expense:', error));
+    });
+</script>

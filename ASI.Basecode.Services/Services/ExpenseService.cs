@@ -27,7 +27,7 @@ namespace ASI.Basecode.Services.Services
 
         public List<ExpenseViewModel> RetrieveUserExpenses(int userId)
         {
-            var retrievedData = _expenseRepository.RetrieveExpenses().Where(x=>x.UserId == userId)
+            var retrievedData = _expenseRepository.RetrieveExpenses().Where(x=>x.UserId == userId && x.IsDeleted == false)
                 .Join(_categoryRepository.RetrieveCategory(), 
                 expense => expense.CategoryId,
                 category => category.CategoryId,
@@ -40,7 +40,8 @@ namespace ASI.Basecode.Services.Services
                     CategoryId = category.CategoryId,
                     CategoryName = category.Name,
                     Status = expense.Status,
-                    ExpenseDateCreated = expense.DateCreated
+                    ExpenseDateCreated = expense.DateCreated,
+                    Date = expense.Date
                 }).ToList();
 
             return retrievedData;
@@ -62,7 +63,7 @@ namespace ASI.Basecode.Services.Services
                     CategoryName = category.Name,
                     Status = expense.Status,
                     ExpenseDateCreated = expense.DateCreated,
-                    Date = expense.Date.Date
+                    Date = expense.Date
                 }).FirstOrDefault();
 
             if(expense is null)
@@ -103,11 +104,12 @@ namespace ASI.Basecode.Services.Services
         public void DeleteExpense(int expenseId)
         {
             var expense = _expenseRepository.RetrieveExpenses().Where(x=>x.ExpenseId == expenseId).FirstOrDefault();
+            expense.IsDeleted = true;
             try
             {
                 if (expense != null)
                 {
-                    _expenseRepository.DeleteExpense(expense);
+                    _expenseRepository.UpdateExpense(expense);
                 }
             }
             catch (Exception)

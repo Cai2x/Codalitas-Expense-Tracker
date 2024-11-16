@@ -89,7 +89,7 @@ namespace ASI.Basecode.Services.Services
 
         public void UpdateCategory(CategoryViewModel categoryModel)
         {
-            var category = new Category();
+            var category = _categoryRepository.RetrieveCategory().Where(x => x.CategoryId == categoryModel.CategoryId).FirstOrDefault();
             _mapper.Map(categoryModel, category);
             category.DateUpdated = DateTime.Now;
             try
@@ -97,9 +97,9 @@ namespace ASI.Basecode.Services.Services
                 _categoryRepository.UpdateCategory(category);
             }
 
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new InvalidDataException(Resources.Messages.Errors.ServerError);
+                throw new InvalidDataException(ex.Message);
             }
         }
     }
