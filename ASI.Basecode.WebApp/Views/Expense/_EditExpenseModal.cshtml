@@ -9,7 +9,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form asp-action="Edit">
+                <form asp-action="Edit" method="post" id="editExpenseForm">
                     <!-- Hidden input to store the Expense ID -->
                     <input type="hidden" asp-for="ExpenseId" id="EditExpenseId"/>
 
@@ -108,6 +108,7 @@
             .then(data => {
                 if (data.success) {
                     const dropdown = document.getElementById('categoryDropdownEdit');
+                    dropdown.innerHTML = ''; // Clear any existing options
 
                     // Append fetched categories
                     data.data.forEach(category => {
@@ -137,9 +138,8 @@
     });
 
     // Handle form submission and close the modal
-    document.querySelector('editExpenseModal').addEventListener('submit', function (event) {
+    document.querySelector('editExpenseform').addEventListener('submit', function (event) {
         event.preventDefault(); // Prevent form from submitting normally
-        const editExpenseModal = bootstrap.Modal.getInstance(document.getElementById('editExpenseModal'));
 
         // Handle form submission here
         fetch('/Expense/Edit', {

@@ -66,7 +66,7 @@ namespace ASI.Basecode.WebApp.Controllers
 
                 if (categories == null || !categories.Any())
                 {
-                    return NotFound("No categories found for this user.");
+                    return Ok(new { success = false, data = categories });
                 }
 
                 return Ok(new { success = true, data = categories });

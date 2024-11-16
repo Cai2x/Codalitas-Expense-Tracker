@@ -76,8 +76,18 @@
                                             dropdown.appendChild(option);
                                         });
 
-                                    } else {
-                                        console.error("Error fetching categories:", data.message);
+                                    } 
+                                    else {
+                                        const dropdown = document.getElementById('categoryDropdown');
+                                        dropdown.innerHTML = ''; // Clear any existing options
+
+                                        const defaultOption = document.createElement('option');
+                                        defaultOption.value = "";
+                                        defaultOption.textContent = "No Categories Added";
+                                        defaultOption.disabled = true;
+                                        defaultOption.selected = true;
+                                        defaultOption.hidden = true;
+                                        dropdown.appendChild(defaultOption);
                                     }
                                 })
                                 .catch(error => {
@@ -93,7 +103,6 @@
 
                     <div class="text-center">
                         <input type="hidden" id="status" name="Status" value="false" />
-
                         <button type="submit" name="saveAsDraft" class="btn btn-outline-success btn-md px-4" onclick="setStatus(false)">Draft</button>
                         <button type="submit" name="saveAsPublish" class="btn btn-custom btn-md px-4" onclick="setStatus(true)">Save and Publish</button>
                     </div>
