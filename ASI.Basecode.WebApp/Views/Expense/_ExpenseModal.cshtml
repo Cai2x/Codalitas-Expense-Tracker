@@ -15,7 +15,7 @@
                         <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
                     <div class="form-group mb-3">
-                        <input asp-for="Date" type="date" class="form-control addExpense-field" placeholder="Select Date" />
+                        <input asp-for="Date" type="date" class="form-control addExpense-field" placeholder="Select Date" id="dateInput"/>
                     </div>
                     <div class="form-group mb-3">
                         <div class="input-group gap-3">
@@ -44,7 +44,14 @@
                         document.getElementById('addExpenseModal').addEventListener('show.bs.modal', function (event) {
                             fetchAddCategories(); // Fetch categories
                             resetForm();
+                            today();
                         });
+
+                        function today(){
+                            var dateInput = document.getElementById('dateInput');
+                            var today = new Date().toISOString().split('T')[0]; // Get the current date in YYYY-MM-DD format
+                            dateInput.value = today;
+                        }
 
                         function resetForm() {
                             // Reset the form fields to empty

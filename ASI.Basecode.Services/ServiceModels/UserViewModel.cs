@@ -27,6 +27,7 @@ namespace ASI.Basecode.Services.ServiceModels
 
         [Required(ErrorMessage = "New Password is required.")]
         public string NewPassword { get; set; }
-
+        [Required(ErrorMessage = "Email is required.")]
+        public string Email { get; set; }
     }
 }

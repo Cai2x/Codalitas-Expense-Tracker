@@ -33,7 +33,8 @@
 
                         <div class="form-outline mb-3">
                             <label class="form-label custom-label" for="email">Email</label>
-                            <input type="text" id="email" class="form-control input-lg" placeholder="Email" />
+                            <input type="text" id="email" class="form-control input-lg" asp-for="Email"  placeholder="Email" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
 
                         <div class="form-outline mb-4">

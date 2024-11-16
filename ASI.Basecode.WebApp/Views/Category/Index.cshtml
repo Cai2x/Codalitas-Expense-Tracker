@@ -55,7 +55,9 @@
                             <a href="javascript:void(0);" onclick="openEditCategoryModal(@item.CategoryId)" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editCategoryModal">
                                 <i class="fas fa-pencil-alt"></i>
                             </a>
-                            <a asp-action="Delete" asp-route-id="@item.CategoryId" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                            <a href="javascript:void(0);" onclick="openDeleteCategoryModal(@item.CategoryId)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCategoryModal">
+                                <i class="fas fa-trash"></i>
+                            </a>
                         </td>
                     </tr>
                 }
@@ -67,3 +69,4 @@
 <!--To call Add Category Modal-->
 <partial name="_CategoryModal" model="new ASI.Basecode.Services.ServiceModels.CategoryViewModel()" />
 <partial name="_EditCategoryModal" model="new ASI.Basecode.Services.ServiceModels.CategoryViewModel()" />
+<partial name="_DeleteCategoryModal" model="new ASI.Basecode.Services.ServiceModels.CategoryViewModel()" />

@@ -8,7 +8,6 @@ namespace ASI.Basecode.Data.Models
         public User()
         {
             Categories = new HashSet<Category>();
-            Expenses = new HashSet<Expense>();
         }
 
         public int UserId { get; set; }
@@ -16,6 +15,7 @@ namespace ASI.Basecode.Data.Models
         public string Password { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Email { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
         public string CreatedBy { get; set; }
@@ -24,6 +24,5 @@ namespace ASI.Basecode.Data.Models
         public bool IsDeleted { get; set; }
 
         public virtual ICollection<Category> Categories { get; set; }
-        public virtual ICollection<Expense> Expenses { get; set; }
     }
 }
