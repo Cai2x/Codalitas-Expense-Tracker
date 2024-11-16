@@ -21,6 +21,7 @@ namespace ASI.Basecode.Data.Models
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
         public bool DarkMode { get; set; }
+        public bool IsDeleted { get; set; }
 
         public virtual ICollection<Category> Categories { get; set; }
         public virtual ICollection<Expense> Expenses { get; set; }

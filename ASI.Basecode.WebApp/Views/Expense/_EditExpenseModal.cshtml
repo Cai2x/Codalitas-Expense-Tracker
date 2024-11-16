@@ -21,8 +21,8 @@
 
                     <!-- Expense Date Field -->
                     <div class="form-group mb-3">
-                        <input asp-for="ExpenseDateCreated" type="date" class="form-control addExpense-field" id="EditExpenseDateCreated" />
-                        <span asp-validation-for="ExpenseDateCreated" class="text-danger"></span>
+                        <input asp-for="Date" type="date" class="form-control addExpense-field" id="EditDate" />
+                        <span asp-validation-for="Date" class="text-danger"></span>
                     </div>
 
                     <!-- Amount Field -->
@@ -49,9 +49,17 @@
 
                     <!-- Action Buttons -->
                     <div class="text-center">
-                        <button type="button" class="btn btn-outline-success btn-md px-4" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-custom btn-md px-4">Save Edit</button>
+                        <input type="hidden" id="EditStatus" name="Status" value="false" />
+
+                        <button type="submit" name="saveAsDraft" class="btn btn-outline-success btn-md px-4" onclick="setStatus(false)">Draft</button>
+                        <button type="submit" name="saveAsPublish" class="btn btn-custom btn-md px-4" onclick="setStatus(true)">Save and Publish</button>
                     </div>
+
+                    <script>
+                        function setStatus(isPublished) {
+                            document.getElementById('EditStatus').value = isPublished;
+                        }
+                    </script>
                 </form>
 
             </div>
@@ -61,7 +69,6 @@
 
 <!-- JavaScript to Load Expense Data and Populate Modal -->
 <script>
-
     // Function to open the modal and populate data
     function openEditModal(expenseId) {
         fetch(`/Expense/Edit/${expenseId}`)
@@ -89,7 +96,7 @@
     function populateModalFields(expense) {
         document.getElementById("EditExpenseId").value = expense.expenseId;
         document.getElementById("EditTitle").value = expense.title;
-        document.getElementById("EditExpenseDateCreated").value = expense.expenseDateCreated.split('T')[0]; // Format date
+        document.getElementById("EditDate").value = expense.date.split('T')[0]; // Format date
         document.getElementById("EditAmount").value = expense.amount;
         document.getElementById("EditDescription").value = expense.description;
     }
@@ -130,7 +137,7 @@
     });
 
     // Handle form submission and close the modal
-    document.querySelector('form').addEventListener('submit', function (event) {
+    document.querySelector('editExpenseModal').addEventListener('submit', function (event) {
         event.preventDefault(); // Prevent form from submitting normally
         const editExpenseModal = bootstrap.Modal.getInstance(document.getElementById('editExpenseModal'));
 

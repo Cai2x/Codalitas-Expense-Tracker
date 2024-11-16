@@ -6,13 +6,13 @@ using ASI.Basecode.Data.Models;
 
 namespace ASI.Basecode.Data
 {
-    public partial class GasTwoDbContext : DbContext
+    public partial class GasTueDbContext : DbContext
     {
-        public GasTwoDbContext()
+        public GasTueDbContext()
         {
         }
 
-        public GasTwoDbContext(DbContextOptions<GasTwoDbContext> options)
+        public GasTueDbContext(DbContextOptions<GasTueDbContext> options)
             : base(options)
         {
         }
@@ -36,6 +36,8 @@ namespace ASI.Basecode.Data
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
+                entity.Property(e => e.IsDeleted).HasColumnName("isDeleted");
+
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(255)
@@ -52,6 +54,8 @@ namespace ASI.Basecode.Data
             {
                 entity.ToTable("Expense");
 
+                entity.Property(e => e.Date).HasColumnType("datetime");
+
                 entity.Property(e => e.DateCreated).HasColumnType("datetime");
 
                 entity.Property(e => e.DateUpdated).HasColumnType("datetime");
@@ -60,6 +64,8 @@ namespace ASI.Basecode.Data
                     .IsRequired()
                     .HasMaxLength(255)
                     .IsUnicode(false);
+
+                entity.Property(e => e.IsDeleted).HasColumnName("isDeleted");
 
                 entity.Property(e => e.Title)
                     .IsRequired()
@@ -96,6 +102,8 @@ namespace ASI.Basecode.Data
                     .IsRequired()
                     .HasMaxLength(255)
                     .IsUnicode(false);
+
+                entity.Property(e => e.IsDeleted).HasColumnName("isDeleted");
 
                 entity.Property(e => e.LastName)
                     .IsRequired()

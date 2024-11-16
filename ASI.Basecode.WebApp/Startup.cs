@@ -83,7 +83,7 @@ namespace ASI.Basecode.WebApp
             services.AddMemoryCache();
 
             // Register SQL database configuration context as services.
-            services.AddDbContext<GasTwoDbContext>(options =>
+            services.AddDbContext<GasTueDbContext>(options =>
             {
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection"),
@@ -91,7 +91,7 @@ namespace ASI.Basecode.WebApp
             });
 
             /*//Register Db in App (ApplicationDbContext)
-            services.AddDbContext<GasTwoDbContext>(options => options.UseNpgsql(
+            services.AddDbContext<GasTueDbContext>(options => options.UseNpgsql(
                 Configuration.GetConnectionString("DefaultConnection")));*/
 
             services.AddControllersWithViews();

@@ -106,7 +106,6 @@ namespace ASI.Basecode.WebApp.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
         #endregion
 
 
@@ -133,8 +132,7 @@ namespace ASI.Basecode.WebApp.Controllers
             try
             {
                 _expenseService.UpdateExpense(expense);
-                return Ok(expense);
-                //return RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
             catch(Exception ex)
             {
@@ -148,8 +146,7 @@ namespace ASI.Basecode.WebApp.Controllers
             try
             {
                 _expenseService.DeleteExpense(Id);
-                return Ok(Id);
-                //return RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
             catch(Exception ex)
             {

@@ -14,6 +14,8 @@ namespace ASI.Basecode.Data.Models
         public string Description { get; set; }
         public bool Status { get; set; }
         public DateTime? DateUpdated { get; set; }
+        public DateTime Date { get; set; }
+        public bool IsDeleted { get; set; }
 
         public virtual Category Category { get; set; }
         public virtual User User { get; set; }

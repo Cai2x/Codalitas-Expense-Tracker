@@ -16,6 +16,7 @@ namespace ASI.Basecode.Data.Models
         public DateTime DateCreated { get; set; }
         public string Description { get; set; }
         public DateTime? DateUpdated { get; set; }
+        public bool IsDeleted { get; set; }
 
         public virtual User CreatedByNavigation { get; set; }
         public virtual ICollection<Expense> Expenses { get; set; }
