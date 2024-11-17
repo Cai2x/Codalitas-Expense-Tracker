@@ -1,18 +1,21 @@
-﻿@section styles {
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-  
-  
+﻿
+@section styles {
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/style.css" />
 }
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 
 @if (!(ViewBag.LoginView == true))
 {
     <div class="sidebar">
         <div class="logosec">
-            <h2>GasTue</h2>
+            <h1 style="font-family: 'Newsreader', serif; font-weight: bold; ">GasTue</h1>
         </div>
         <div class="menu">
             <a href="/Home/Index">  <i class="fa-solid fa-table-columns"></i> Dashboard</a>
-            <a href="/Expense/Index"> <i class="fa-solid fa-money-bills"></i> Expenses</a>
+            <a href="/Expense/Index"> <i class="fa-solid fa-money-bill"></i> Expenses</a>
             <a href="/Category/Index"> <i class="fa-solid fa-list"></i> Category</a>
         </div>
     </div>
