@@ -43,6 +43,11 @@ header {
     border-bottom-right-radius: 20px;
 }
 
+.sidebar-header {
+    font-family: 'Newsreader', serif;
+    font-weight: bold;
+}
+
 /* Sidebar */
 .sidebar {
     height: 100vh;
@@ -91,6 +96,7 @@ header {
             .sidebar .menu a:last-child {
                 margin-bottom: 20px;
             }
+
 
 
 

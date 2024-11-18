@@ -1,0 +1,56 @@
+﻿
+.change-password-modal {
+    background-color: #FAFAF5;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+    .change-password-modal .modal-header {
+        margin-bottom: 10px;
+    }
+
+.border-line {
+    border-bottom: 2px solid #D3E3D1; 
+    margin-bottom: 20px;
+    width: 100%;
+    
+}
+
+.change-password-modal .modal-title {
+    font-size: 2rem;
+    color: #2E4F23; 
+    font-weight: bold;
+    font-family: 'Newsreader', serif;
+}
+
+.change-password-modal .form-control {
+    background-color: #EAF4E4; 
+    border: 1px solid #D3E3D1;
+    width: 100%; 
+}
+
+    .change-password-modal .form-control:focus {
+        box-shadow: 0 0 4px rgba(46, 79, 35, 0.2);
+    }
+
+.btn-primary {
+    background-color: #2E4F23;
+    border: none;
+    font-weight: bold;
+}
+
+.save-button {
+    width: 300px;
+}
+
+.change-password-modal .btn-primary:hover {
+    background-color: #3A6430;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #426B1F;
+    margin-left: 5px;
+}
+
