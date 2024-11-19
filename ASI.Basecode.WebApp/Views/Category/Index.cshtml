@@ -70,3 +70,19 @@
 <partial name="_CategoryModal" model="new ASI.Basecode.Services.ServiceModels.CategoryViewModel()" />
 <partial name="_EditCategoryModal" model="new ASI.Basecode.Services.ServiceModels.CategoryViewModel()" />
 <partial name="_DeleteCategoryModal" model="new ASI.Basecode.Services.ServiceModels.CategoryViewModel()" />
+
+@section scripts {
+    <script>
+        // Check for error message and display Toastr notification
+        var errorMessage = '@TempData["ErrorMessage"]';
+        if (errorMessage) {
+            toastr.error(errorMessage);
+        }
+
+        // Check for success message and display Toastr notification
+        var successMessage = '@TempData["SuccessMessage"]';
+        if (successMessage) {
+            toastr.success(successMessage);
+        }
+    </script>
+}

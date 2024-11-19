@@ -9,12 +9,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.Linq;
 
 namespace ASI.Basecode.WebApp.Controllers
 {
     public class CategoryController : ControllerBase<CategoryController>
     {
         private readonly ICategoryService _categoryService;
+        private const int PageSize = 7;  // Max 7 data per table
         public CategoryController(
             IHttpContextAccessor httpContextAccessor, 
             ILoggerFactory loggerFactory, 
@@ -28,7 +31,7 @@ namespace ASI.Basecode.WebApp.Controllers
 
         #region Get Methods
         [HttpGet]
-        public IActionResult Display()
+        public IActionResult Display(int page = 1)
         {
             try
             {
@@ -38,7 +41,7 @@ namespace ASI.Basecode.WebApp.Controllers
             }
             catch(Exception ex)
             {
-                return BadRequest(ex.Message); 
+                return BadRequest(ex.Message);
             }
         }
 
@@ -63,8 +66,8 @@ namespace ASI.Basecode.WebApp.Controllers
         {
             try
             {
-                var category = _categoryService.RetrieveCategory(id);
-                return Ok(category);
+                var category = _categoryService.RetrieveCategory(id);               
+                return Ok(category);              
                 //return View(category);
             }
             catch (Exception ex)
@@ -83,20 +86,25 @@ namespace ASI.Basecode.WebApp.Controllers
             try
             {
                 _categoryService.AddCategory(category, int.Parse(UserId));
+                TempData["SuccessMessage"] = "Category added successfully!";
                 return RedirectToAction("Index");
+                
             }
+
             catch
             {
-                return BadRequest(category);
+                TempData["ErrorMessage"] = "Category Name Already Exists!";
+                return RedirectToAction("Index");
             }
-            
-            //return RedirectToAction("Index");
+           
         }
 
         [HttpPost]
         public IActionResult Edit(CategoryViewModel category)
         {
             _categoryService.UpdateCategory(category);
+            TempData["SuccessMessage"] = "Category Updated successfully!";
+            TempData.Keep("SuccessMessage");
             return RedirectToAction("Index");
         }
 
@@ -104,6 +112,7 @@ namespace ASI.Basecode.WebApp.Controllers
         public IActionResult PostDelete(int Id)
         {
             _categoryService.DeleteCategory(Id);
+            TempData["SuccessMessage"] = "Category deleted successfully!";          
             return RedirectToAction("Index");
         }
         #endregion

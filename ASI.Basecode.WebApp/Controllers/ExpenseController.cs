@@ -117,6 +117,7 @@ namespace ASI.Basecode.WebApp.Controllers
             try
             {
                 _expenseService.AddExpense(expense, int.Parse(UserId));
+                TempData["SuccessMessage"] = "Expense added successfully!";
                 return RedirectToAction("Index");
             }
             catch(Exception ex)
@@ -132,6 +133,7 @@ namespace ASI.Basecode.WebApp.Controllers
             try
             {
                 _expenseService.UpdateExpense(expense);
+                TempData["SuccessMessage"] = "Expense Updated successfully!";
                 return RedirectToAction("Index");
             }
             catch(Exception ex)
@@ -146,6 +148,7 @@ namespace ASI.Basecode.WebApp.Controllers
             try
             {
                 _expenseService.DeleteExpense(Id);
+                TempData["SuccessMessage"] = "Expense Deleted successfully!";
                 return RedirectToAction("Index");
             }
             catch(Exception ex)
