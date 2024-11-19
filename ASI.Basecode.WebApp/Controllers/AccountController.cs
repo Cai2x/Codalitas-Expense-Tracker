@@ -181,7 +181,62 @@ namespace ASI.Basecode.WebApp.Controllers
             //return View();
         }
 
-        
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ForgotPassAsync(string email)
+        {
+            try
+            {
+                var forgotpass = await _userService.SendPasswordResetEmailAsync(email);
+
+                if (forgotpass)
+                {
+                    TempData["SuccessMessage"] = "Password changed successfully.";
+                }
+                return Ok(forgotpass);
+            }
+            catch (InvalidDataException ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = Resources.Messages.Errors.ServerError;
+                return BadRequest(ex.Message);
+            }
+
+            //return View();
+        }
+
+        public IActionResult ResetPassword(string email)
+        {
+            try
+            {
+                var userId = int.Parse(UserId);
+                if (userId == 0)
+                {
+                    TempData["ErrorMessage"] = Resources.Messages.Errors.UserNotFound;
+                    return View();
+                }
+                TempData["ErrorMessage"] = "Change Password Failed";
+
+                return RedirectToAction("Index", "Settings");
+
+            }
+            catch (InvalidDataException ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = Resources.Messages.Errors.ServerError;
+                return BadRequest(ex.Message);
+            }
+            //return View();
+        }
 
 
         /// <summary>

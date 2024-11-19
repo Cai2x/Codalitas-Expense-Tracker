@@ -7,19 +7,26 @@ using AutoMapper;
 using System;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
+using System.Net;
+using System.Threading.Tasks;
 using static ASI.Basecode.Resources.Constants.Enums;
+using ASI.Basecode.Data.Repositories;
+
 
 namespace ASI.Basecode.Services.Services
 {
     public class UserService : IUserService
     {
         private readonly IUserRepository _repository;
+        private readonly ITokenRepository _tokenrepository;
         private readonly IMapper _mapper;
 
-        public UserService(IUserRepository repository, IMapper mapper)
+        public UserService(IUserRepository repository, ITokenRepository tokenRepository, IMapper mapper)
         {
             _mapper = mapper;
             _repository = repository;
+            _tokenrepository = tokenRepository;
         }
 
         public LoginResult AuthenticateUser(string userName, string password, ref User user)
@@ -96,5 +103,77 @@ namespace ASI.Basecode.Services.Services
             _repository.ChangePassword(user);
             return true;
         }
+        //FOR EMAIL SENDING
+
+        public async Task SendEmailAsync(string email, string subject, string message)
+        {
+            var smtpClient = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("julr789@gmail.com", "jerrishquijano123"),
+                EnableSsl = true,
+            };
+
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress("julr789@gmail.com"),
+                Subject = subject,
+                Body = message,
+                IsBodyHtml = true,
+            };
+
+            mailMessage.To.Add(email);
+            await smtpClient.SendMailAsync(mailMessage);
+        }
+
+        //FORGOT PASSWORD
+
+        public async Task<bool> SendPasswordResetEmailAsync(string email)
+        {
+            var user = _repository.GetUsers().Where(x => x.Email == email).FirstOrDefault();
+            if (user == null)
+                return false;
+
+            // Generate a unique token (for demo purposes, using a GUID)
+            var tokenModel = new TokenViewModel();
+            var token = new Token();
+            _mapper.Map(tokenModel, token);
+            token.Token1 = Guid.NewGuid().ToString();
+            token.ExpirationDate = DateTime.UtcNow.AddMinutes(5);
+            token.Email = email;
+
+            // Store the token and expiration in your database (implement this method)
+            _tokenrepository.AddToken(token);
+
+            // Construct the reset password link
+            var resetLink = $"https://youtube.com";
+            var emailBody = $"Click <a href='{resetLink}'>here</a> to reset your password.";
+
+            // Send the email
+            await SendEmailAsync(email, "Password Reset Request", emailBody);
+            return true;
+        }
+
+        //Forgot Password
+        public bool ChangePassword(string email, string newPassword)
+        {
+
+            var user  = _repository.GetUsers().Where(x => x.Email == email).FirstOrDefault();
+            if (user == null)
+            {
+                return false;
+                throw new InvalidDataException(Resources.Messages.Errors.UserNotFound);
+            }
+            var encryptedNewPassword = PasswordManager.EncryptPassword(newPassword);
+
+            user.Password = encryptedNewPassword;
+            user.DateUpdated = DateTime.Now;
+            user.UpdatedBy = System.Environment.UserName;
+
+            _repository.ChangePassword(user);
+            return true;
+        }
+
+
     }
 }
