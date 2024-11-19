@@ -11,8 +11,6 @@ using System.Net.Mail;
 using System.Net;
 using System.Threading.Tasks;
 using static ASI.Basecode.Resources.Constants.Enums;
-using ASI.Basecode.Data.Repositories;
-
 
 namespace ASI.Basecode.Services.Services
 {
@@ -110,20 +108,20 @@ namespace ASI.Basecode.Services.Services
             var smtpClient = new SmtpClient("smtp.gmail.com")
             {
                 Port = 587,
-                Credentials = new NetworkCredential("julr789@gmail.com", "jerrishquijano123"),
+                Credentials = new NetworkCredential("gastue.official@gmail.com", "qouh hmui nbcu xyuk"),
                 EnableSsl = true,
             };
 
             var mailMessage = new MailMessage
             {
-                From = new MailAddress("julr789@gmail.com"),
+                From = new MailAddress("gastue.official@gmail.com"),
                 Subject = subject,
                 Body = message,
                 IsBodyHtml = true,
             };
 
             mailMessage.To.Add(email);
-            await smtpClient.SendMailAsync(mailMessage);
+            await smtpClient.SendMailAsync(mailMessage);    
         }
 
         //FORGOT PASSWORD
@@ -134,23 +132,22 @@ namespace ASI.Basecode.Services.Services
             if (user == null)
                 return false;
 
-            // Generate a unique token (for demo purposes, using a GUID)
-            var tokenModel = new TokenViewModel();
+            var generate_token = Guid.NewGuid().ToString();
+            // Construct the reset password link
+            var resetLink = $"https://youtube.com";
+            var emailBody = $"Click <a href='{generate_token}'>here</a> to reset your password.";
+
+            // Send the email
+            await SendEmailAsync(email, "Password Reset Request", emailBody);
+            
+            //If email is sent successfully, add token to db 
             var token = new Token();
-            _mapper.Map(tokenModel, token);
-            token.Token1 = Guid.NewGuid().ToString();
+            token.Token1 = generate_token;
             token.ExpirationDate = DateTime.UtcNow.AddMinutes(5);
             token.Email = email;
 
             // Store the token and expiration in your database (implement this method)
             _tokenrepository.AddToken(token);
-
-            // Construct the reset password link
-            var resetLink = $"https://youtube.com";
-            var emailBody = $"Click <a href='{resetLink}'>here</a> to reset your password.";
-
-            // Send the email
-            await SendEmailAsync(email, "Password Reset Request", emailBody);
             return true;
         }
 
