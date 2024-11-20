@@ -9,7 +9,10 @@
                 <button type="button" class="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+
                 <form asp-action="Create" method="post" id="addCategoryForm">
+                    <input type="hidden" name="currentPage" value="@ViewBag.CurrentPage" />
+
                     <div class="form-group mb-3">
                         <input asp-for="Name" class="form-control input-field" placeholder="Category Name" />
                         <span asp-validation-for="Name" class="text-danger"></span>

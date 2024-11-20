@@ -165,3 +165,30 @@ h1 {
         cursor: pointer;
  }
 
+/*Pagination*/
+/* Style for pagination links */
+.pagination .page-item .page-link {
+    color: white;   
+    background-color: #426B1F;  
+    border-color: #426B1F;  
+}
+
+/* Style for active page */
+.pagination .page-item.active .page-link {
+    background-color: #365e17; 
+    border-color: #2c4e12; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); 
+}
+
+/* Hover effect for pagination links */
+.pagination .page-item .page-link:hover {
+    background-color: #365e17; 
+    border-color: #365e17;
+}
+
+/* Disabled state (previous and next) */
+.pagination .page-item.disabled .page-link {
+    color: #6c757d; 
+    background-color: #e9ecef; 
+    border-color: #e9ecef; 
+}

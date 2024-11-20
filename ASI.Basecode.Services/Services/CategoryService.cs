@@ -10,6 +10,7 @@ using ASI.Basecode.Data.Repositories;
 using ASI.Basecode.Services.ServiceModels;
 using System.IO;
 using AutoMapper;
+using System.Linq.Expressions;
 
 namespace ASI.Basecode.Services.Services
 {
