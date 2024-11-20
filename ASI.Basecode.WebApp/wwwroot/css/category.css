@@ -245,5 +245,32 @@ h1 {
     }
 
 
-    
+/*Pagination*/
+/* Style for pagination links */
+.pagination .page-item .page-link {
+    color: white; /* Text color */
+    background-color: #426B1F; /* Green background color */
+    border-color: #426B1F; /* Border color matching the background */
+}
+
+/* Style for active page */
+.pagination .page-item.active .page-link {
+    background-color: #365e17; /* Brighter green for active page */
+    border-color: #2c4e12; /* Darker green border for active page */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Light shadow around the active page */
+}
+
+/* Hover effect for pagination links */
+.pagination .page-item .page-link:hover {
+    background-color: #365e17; /* Darker green on hover */
+    border-color: #365e17; /* Darker border color on hover */
+}
+
+/* Disabled state (previous and next) */
+.pagination .page-item.disabled .page-link {
+    color: #6c757d; /* Gray color for disabled items */
+    background-color: #e9ecef; /* Light gray background */
+    border-color: #e9ecef; /* Light gray border */
+}
+
 

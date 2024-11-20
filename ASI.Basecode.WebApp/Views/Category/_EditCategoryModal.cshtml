@@ -9,6 +9,7 @@
             </div>
             <div class="modal-body">
                 <form asp-action="Edit" method="post" id="editCategoryForm">
+                    <input type="hidden" name="currentPage" value="@ViewBag.CurrentPage" />
                     <input type="hidden" asp-for="CategoryId" id="EditCategoryId" />
                     <input type="hidden" asp-for="CategoryDateCreated" id="EditCategoryDate" />
 

@@ -36,11 +36,26 @@ namespace ASI.Basecode.WebApp.Controllers
 
         #region Get Methods
         [HttpGet]
-        public IActionResult Display()
+        public IActionResult Display(int page = 1)
         {
             try
             {
+                int pageSize = 7; // items per page for pagination
+
                 var data = _expenseService.RetrieveUserExpenses(int.Parse(UserId));
+
+                var paginatedExpenses = data
+                   .Skip((page - 1) * pageSize)
+                   .Take(pageSize)
+                   .ToList();
+             
+
+                // Calculate total pages
+                var totalExpenses = data.Count;
+                var totalPages = (int)Math.Ceiling(totalExpenses / (double)pageSize);
+
+                ViewBag.CurrentPage = page;
+                ViewBag.TotalPages = totalPages;
 
                 if (data is null)
                 {
@@ -49,7 +64,7 @@ namespace ASI.Basecode.WebApp.Controllers
                 }
 
                 // Return the view with the retrieved data
-                return View(data);
+                return View("Index", paginatedExpenses);
             }
             catch (Exception ex)
             {
@@ -83,6 +98,7 @@ namespace ASI.Basecode.WebApp.Controllers
             try
             {
                 var expense = _expenseService.RetrieveExpense(id);
+                TempData["SuccessMessage"] = "Expense Updated successfully!";
                 //return View(expense);
                 return Ok(expense);
             }
@@ -98,6 +114,7 @@ namespace ASI.Basecode.WebApp.Controllers
             try
             {
                 var expense = _expenseService.RetrieveExpense(id);
+                TempData["SuccessMessage"] = "Expense added successfully!";
                 return Ok(expense);
                 //return View(expense);
             }
@@ -112,27 +129,46 @@ namespace ASI.Basecode.WebApp.Controllers
         #region POST Methods
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Create(ExpenseViewModel expense)
+        public IActionResult Create(ExpenseViewModel expense, int currentPage = 1)
         {
             try
             {
                 _expenseService.AddExpense(expense, int.Parse(UserId));
-                return RedirectToAction("Index");
+                TempData["SuccessMessage"] = "Expense added successfully!";
+                
+
+                var data = _expenseService.RetrieveUserExpenses(int.Parse(UserId));
+                int totalExpenses = data.Count;
+                int pageSize = 7;  // items per page
+
+                int totalPages = (int)Math.Ceiling(totalExpenses / (double)pageSize);
+
+                // Redirect to last page if the current page is less than total pages
+                if (currentPage < totalPages)
+                {
+                    return RedirectToAction("Display", new { page = totalPages });
+                }
+                else
+                {
+                    return RedirectToAction("Display", new { page = currentPage });
+                }
             }
-            catch(Exception ex)
+            catch
             {
-                return BadRequest(ex.Message);
+                TempData["ErrorMessage"] = "An error occurred while adding the expense.";
+                return RedirectToAction("Display", new { page = currentPage });
             }
             //return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public IActionResult Edit(ExpenseViewModel expense)
+        public IActionResult Edit(ExpenseViewModel expense, int currentPage)
         {
             try
             {
                 _expenseService.UpdateExpense(expense);
-                return RedirectToAction("Index");
+                TempData["SuccessMessage"] = "Expense Updated successfully!";
+                return RedirectToAction("Display", new { page = currentPage });
             }
             catch(Exception ex)
             {
@@ -141,12 +177,13 @@ namespace ASI.Basecode.WebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostDelete(int Id)
+        public IActionResult PostDelete(int Id, int  currentPage)
         {
             try
             {
                 _expenseService.DeleteExpense(Id);
-                return RedirectToAction("Index");
+                TempData["SuccessMessage"] = "Expense Deleted successfully!";
+                return RedirectToAction("Display", new { page = currentPage });
             }
             catch(Exception ex)
             {

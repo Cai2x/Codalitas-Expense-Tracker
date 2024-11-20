@@ -9,12 +9,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.Linq;
+using System.Drawing.Printing;
 
 namespace ASI.Basecode.WebApp.Controllers
 {
     public class CategoryController : ControllerBase<CategoryController>
     {
         private readonly ICategoryService _categoryService;
+        
         public CategoryController(
             IHttpContextAccessor httpContextAccessor, 
             ILoggerFactory loggerFactory, 
@@ -28,17 +32,33 @@ namespace ASI.Basecode.WebApp.Controllers
 
         #region Get Methods
         [HttpGet]
-        public IActionResult Display()
+        public IActionResult Display(int page = 1)
         {
             try
             {
+                int userId = int.Parse(UserId);
+                int pageSize = 7; // items per page for pagination
+
                 var data = _categoryService.RetrieveUserCategory(int.Parse(UserId));
                 //return Ok(data);
-                return View(data);
+
+                var paginatedCategories = data
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+                // Calculate total pages
+                var totalCategories = data.Count;
+                var totalPages = (int)Math.Ceiling(totalCategories / (double)pageSize);
+
+                ViewBag.CurrentPage = page;
+                ViewBag.TotalPages = totalPages;
+
+                return View("Index", paginatedCategories);
             }
             catch(Exception ex)
             {
-                return BadRequest(ex.Message); 
+                return BadRequest(ex.Message);
             }
         }
 
@@ -63,8 +83,8 @@ namespace ASI.Basecode.WebApp.Controllers
         {
             try
             {
-                var category = _categoryService.RetrieveCategory(id);
-                return Ok(category);
+                var category = _categoryService.RetrieveCategory(id);               
+                return Ok(category);              
                 //return View(category);
             }
             catch (Exception ex)
@@ -78,32 +98,58 @@ namespace ASI.Basecode.WebApp.Controllers
         #region POST Methods
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Create(CategoryViewModel category)
+        public IActionResult Create(CategoryViewModel category, int currentPage = 1)
         {
             try
             {
                 _categoryService.AddCategory(category, int.Parse(UserId));
-                return RedirectToAction("Index");
+                TempData["SuccessMessage"] = "Category added successfully!";
+                
+
+                var data = _categoryService.RetrieveUserCategory(int.Parse(UserId));
+                int totalCategories = data.Count;
+                int pageSize = 7;  
+
+
+                
+                int totalPages = (int)Math.Ceiling(totalCategories / (double)pageSize);
+               
+                if (currentPage < totalPages)
+                {
+                    // Redirect to the last page
+                    return RedirectToAction("Display", new { page = totalPages });
+                }
+                else
+                {
+                    
+                    return RedirectToAction("Display", new { page = currentPage });
+                }
+            
+
             }
+
             catch
             {
-                return BadRequest(category);
+                TempData["ErrorMessage"] = "Category Name Already Exists!";
+                return RedirectToAction("Display", new { page = currentPage });
             }
-            
-            //return RedirectToAction("Index");
+           
         }
 
         [HttpPost]
-        public IActionResult Edit(CategoryViewModel category)
+        public IActionResult Edit(CategoryViewModel category, int currentPage)
         {
             _categoryService.UpdateCategory(category);
-            return RedirectToAction("Index");
+            TempData["SuccessMessage"] = "Category Updated successfully!";
+            
+            return RedirectToAction("Display", new { page = currentPage });
         }
 
         [HttpPost]
         public IActionResult PostDelete(int Id)
         {
             _categoryService.DeleteCategory(Id);
+            TempData["SuccessMessage"] = "Category deleted successfully!";
             return RedirectToAction("Index");
         }
         #endregion
