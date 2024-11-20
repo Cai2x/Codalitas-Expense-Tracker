@@ -146,7 +146,7 @@ namespace ASI.Basecode.WebApp.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult ResetPassword(UserViewModel model)
+        public IActionResult ChangePassword(UserViewModel model)
         {
             try
             {
@@ -180,9 +180,6 @@ namespace ASI.Basecode.WebApp.Controllers
             }
             //return View();
         }
-
-        
-
 
         /// <summary>
         /// Sign Out current account and return login view.

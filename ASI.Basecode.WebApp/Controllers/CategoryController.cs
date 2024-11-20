@@ -42,6 +42,12 @@ namespace ASI.Basecode.WebApp.Controllers
                 var data = _categoryService.RetrieveUserCategory(int.Parse(UserId));
                 //return Ok(data);
 
+                if (data == null || !data.Any())
+                {
+                    ViewBag.CurrentPage = 1;
+                    ViewBag.TotalPages = 1;
+                }
+
                 var paginatedCategories = data
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -95,7 +101,7 @@ namespace ASI.Basecode.WebApp.Controllers
 
         #endregion
 
-        #region POST Methods
+            #region POST Methods
         [AllowAnonymous]
         [HttpPost]
         public IActionResult Create(CategoryViewModel category, int currentPage = 1)
@@ -143,14 +149,14 @@ namespace ASI.Basecode.WebApp.Controllers
             TempData["SuccessMessage"] = "Category Updated successfully!";
             
             return RedirectToAction("Display", new { page = currentPage });
-        }
+        }   
 
         [HttpPost]
         public IActionResult PostDelete(int Id)
         {
             _categoryService.DeleteCategory(Id);
             TempData["SuccessMessage"] = "Category deleted successfully!";
-            return RedirectToAction("Index");
+            return Json(new { success = true });
         }
         #endregion
 

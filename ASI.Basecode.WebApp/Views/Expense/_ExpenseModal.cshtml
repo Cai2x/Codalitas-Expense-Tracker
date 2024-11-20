@@ -10,7 +10,6 @@
             </div>
             <div class="modal-body">
                 <form asp-action="Create" method="post" id="addExpenseForm">
-                    <input type="hidden" name="currentPage" value="@ViewBag.CurrentPage" />
                     <div class="form-group mb-3">
                         <input asp-for="Title" class="form-control addExpense-field" placeholder="Subject" />
                         <span asp-validation-for="Title" class="text-danger"></span>

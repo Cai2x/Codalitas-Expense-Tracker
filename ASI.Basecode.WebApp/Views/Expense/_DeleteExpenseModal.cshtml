@@ -35,10 +35,6 @@
     // Function to open the delete modal and set the ExpenseId
     function openDeleteModal(expenseId) {
         currentExpenseId = expenseId;
-        console.log('Opening modal for expense ID:', expenseId);
-        // Set the value of the hidden input to the ExpenseId of the expense to delete
-        document.getElementById('DeleteExpenseId').value = expenseId;
-
         // Open the modal programmatically
         if (deleteExpenseModal) {
             deleteExpenseModal.show();
@@ -59,31 +55,18 @@
         fetch(`/Expense/PostDelete/${currentExpenseId}`, {
             method: 'POST',
         })
-            .then(response => {
-                if (response.ok) {
-                    // If the server sends a 3xx status code (redirect), follow the redirect manually
-                    if (response.redirected) {
-                        window.location.href = response.url;  // Redirect to the new location
-                    } else {
-                        // Handle the response (e.g., show success message)
-                        alert('Expense deleted successfully!');
-                        // Optionally, you can manually update the UI without needing a full page reload
-                        deleteExpenseModal.hide(); // Close modal after success
-                    }
-                } else {
-                    return response.json(); // If not ok, parse JSON for error details
-                }
-            })
+            .then(response => response.json()) // Parse the JSON response
             .then(data => {
-                // Handle the error response if needed
-                if (data && !data.success) {
+                if (data.success) {
+                    location.reload(); // Redirect manually
+                } else {
                     alert('Failed to delete expense: ' + data.message);
                 }
+                deleteExpenseModal.hide(); // Close the modal after response
             })
             .catch(error => {
                 console.error('Error deleting expense:', error);
                 alert('Error deleting expense. Please try again.');
             });
-
     }
 </script>
