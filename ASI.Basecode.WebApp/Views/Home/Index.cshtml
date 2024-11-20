@@ -7,20 +7,20 @@
 
     <style>
         /* Highcharts Styling */
-        .highcharts-figure {
-            width: 90%;
-            max-width: 1200px;
-            margin: 2rem auto;
-            background-color: #FAFAF5;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 1.5rem;
+        
+
+        .chart-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: space-between;
         }
 
-            .highcharts-figure #container {
-                height: 500px;
-                width: 100%;
-            }
+        .chart-full-row {
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
 
         .highcharts-description {
             margin-top: 1rem;
@@ -30,10 +30,9 @@
         }
     </style>
 }
-
-<div class="dashboard-container">
+<div class="dashboard-container">   
     <div class="d-flex justify-content-between align-items-center">
-		<h1>Dashboard</h1>
+        <h1>Dashboard</h1>
         <div class="date-picker">
             <label for="start-date">From:</label>
             <input type="date" id="start-date" name="start-date" class="date-input">
@@ -44,76 +43,66 @@
         </div>
     </div>
     <hr class="expenses-divider">
-    
 
-
-    <!-- Top summary cards -->
     <div class="summary-cards">
         <div class="card">
-             <!-- 
-            <div class="card-icon"></div>
-            -->
-            <div class="card-content">
+            <div>
                 <span class="card-title">TOTAL EXPENSES</span>
-                <span class="card-value">$100,000</span>
+                <div class="card-value">$100,000</div>
             </div>
         </div>
         <div class="card">
-            <!-- 
-            <div class="card-icon"></div>
-            -->
-            <div class="card-content">
+            <div>
                 <span class="card-title">TOTAL TRANSACTIONS</span>
-                <span class="card-value">100,000</span>
+                <div class="card-value">100,000</div>
             </div>
         </div>
     </div>
 
-    <!-- Expenses Report -->
-    <div class="report-section">
-        <div class="report-header">
-    <h2>Expenses Report</h2>
-    
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>New Vomero 5</td>
+                    <td><span class="badge-category">Impulsive Purchase</span></td>
+                    <td>$5,800.00</td>
+                </tr>
+            </tbody>
+            <div class="export-buttons">
+                <button class="export-btn csv-btn">Print as CSV</button>
+                <button class="export-btn pdf-btn">Print as PDF</button>
+            </div>
+        </table>
+    </div>
 
-</div>
 
+    <div class="chart-section">
+        <figure class="highcharts-figure">
+            <div id="first-container"></div>
+        </figure>
 
-        <div class="table-container">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Subject</th>
-                        <th>Category</th>
-                        <th>Amount</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>New Vomero 5</td>
-                        <td><span class="badge badge-category">Impulsive Purchase</span></td>
-                        <td>$5,800.00</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Export buttons -->
-        <div class="export-buttons">
-            <button class="export-btn csv-btn">Print as CSV</button>
-            <button class="export-btn pdf-btn">Print as PDF</button>
+        <div class="chart-row">
+            <div class="chart-half-row">
+                <figure class="highcharts-figure">
+                    <div id="container"></div>
+                </figure>
+            </div>
+            <div class="chart-half-row">
+                <figure class="highcharts-figure">
+                    <div id="third-container"></div>
+                </figure>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- Highcharts Column Chart Section -->
-<div class="chart-section">
-    <figure class="highcharts-figure">
-        <div id="container"></div>
-        <p class="highcharts-description">
-            Expenses Overview for 2023
-        </p>
-    </figure>
-</div>
 
 @section Scripts {
     <script src="https://code.highcharts.com/highcharts.js"></script>
@@ -123,7 +112,8 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            Highcharts.chart('container', {
+            // First Chart
+            Highcharts.chart('first-container', {
                 chart: {
                     type: 'column'
                 },
@@ -178,6 +168,107 @@
                 series: [{
                     name: 'Amount',
                     data: [500, 1200, 800, 600, 900]
+                }]
+            });
+
+            // Second Chart
+            Highcharts.chart('container', {
+                colors: ['#01BAF2', '#71BF45', '#FAA74B', '#B37CD2'],
+                chart: {
+                    type: 'pie'
+                },
+                accessibility: {
+                    point: {
+                        valueSuffix: '%'
+                    }
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.name}: {y} %'
+                        },
+                        showInLegend: true
+                    }
+                },
+                series: [{
+                    name: 'Energy Types',
+                    colorByPoint: true,
+                    innerSize: '75%',
+                    data: [{
+                        name: 'EV',
+                        y: 68.1
+                    }, {
+                        name: 'Hybrids',
+                        y: 11.0
+                    }, {
+                        name: 'Diesel',
+                        y: 11.2
+                    }, {
+                        name: 'Petrol',
+                        y: 9.7
+                    }]
+                }]
+            });
+
+            // Third Chart
+            Highcharts.chart('third-container', {
+                chart: {
+                    type: 'pie'
+                },
+                tooltip: {
+                    valueSuffix: '%'
+                },
+                plotOptions: {
+                    series: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: [{
+                            enabled: true,
+                            distance: 20
+                        }, {
+                            enabled: true,
+                            distance: -40,
+                            format: '{point.percentage:.1f}%',
+                            style: {
+                                fontSize: '1.2em',
+                                textOutline: 'none',
+                                opacity: 0.7
+                            },
+                            filter: {
+                                operator: '>',
+                                property: 'percentage',
+                                value: 10
+                            }
+                        }]
+                    }
+                },
+                series: [{
+                    name: 'Composition',
+                    colorByPoint: true,
+                    data: [{
+                        name: 'Water',
+                        y: 55.02
+                    }, {
+                        name: 'Fat',
+                        sliced: true,
+                        selected: true,
+                        y: 26.71
+                    }, {
+                        name: 'Carbohydrates',
+                        y: 1.09
+                    }, {
+                        name: 'Protein',
+                        y: 15.5
+                    }, {
+                        name: 'Ash',
+                        y: 1.68
+                    }]
                 }]
             });
         });
