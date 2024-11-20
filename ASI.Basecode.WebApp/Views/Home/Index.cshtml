@@ -1,4 +1,6 @@
-﻿@{
+﻿@model ASI.Basecode.WebApp.Models.DashboardViewModel
+
+@{
     ViewData["Title"] = "Dashboard";
 }
 
@@ -30,16 +32,17 @@
         }
     </style>
 }
+
 <div class="dashboard-container">   
     <div class="d-flex justify-content-between align-items-center">
         <h1>Dashboard</h1>
         <div class="date-picker">
             <label for="start-date">From:</label>
-            <input type="date" id="start-date" name="start-date" class="date-input">
+            <input type="date" id="start-date" name="start-date" class="date-input" value="">
 
             <label for="end-date">To:</label>
             <input type="date" id="end-date" name="end-date" class="date-input">
-            <button class="generate-report-btn">Generate Report</button>
+            <button class="generate-report-btn" onclick="generateReport()">Generate Report</button>
         </div>
     </div>
     <hr class="expenses-divider">
@@ -48,16 +51,21 @@
         <div class="card">
             <div>
                 <span class="card-title">TOTAL EXPENSES</span>
-                <div class="card-value">$100,000</div>
+                <div class="card-value total-expenses">$@Model.TotalExpense</div>
             </div>
         </div>
         <div class="card">
             <div>
                 <span class="card-title">TOTAL TRANSACTIONS</span>
-                <div class="card-value">100,000</div>
+                <div class="card-value total-transactions">@Model.TotalTransaction</div>
             </div>
         </div>
     </div>
+
+    @if (Model.Expenses == null || !Model.Expenses.Any())
+    {
+        <p>No expenses found.</p>
+    }
 
     <div class="table-container">
         <table class="table">
@@ -68,12 +76,17 @@
                     <th>Amount</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>New Vomero 5</td>
-                    <td><span class="badge-category">Impulsive Purchase</span></td>
-                    <td>$5,800.00</td>
-                </tr>
+            <tbody id="expense-table-body">
+                @foreach (var item in Model.Expenses)
+                {
+                    <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                    <td>
+                        <span class="badge bg-secondary">@item.CategoryName</span>
+                    </td>
+                    <td>@item.Amount.ToString("C")</td>
+                    </tr>
+                }
             </tbody>
             <div class="export-buttons">
                 <button class="export-btn csv-btn">Print as CSV</button>
@@ -111,8 +124,319 @@
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
     <script>
+        // Check for error message and display Toastr notification
+        var errorMessage = '@TempData["ErrorMessage"]';
+        if (errorMessage) {
+            toastr.error(errorMessage);
+        }
+
+        // Check for success message and display Toastr notification
+        var successMessage = '@TempData["SuccessMessage"]';
+        if (successMessage) {
+            toastr.success(successMessage);
+        }
+    </script>
+
+    <script>
+        let latestDate;
+        let filter = false;
+
         document.addEventListener("DOMContentLoaded", function () {
-            // First Chart
+            // Fetch the categories first, then create the charts once the data is available
+            populateCategory()
+                .then(({ categories, totalExpenses }) => {
+                    startOfMonth();
+
+                    // First Chart
+                    Highcharts.chart('first-container', {
+                        chart: {
+                            type: 'column'
+                        },
+                        title: {
+                            text: 'Expenses by Category',
+                            align: 'left',
+                            style: {
+                                color: '#426B1F',
+                                fontWeight: 'bold'
+                            }
+                        },
+                        xAxis: {
+                            categories: categories,  // Use the fetched categories
+                            crosshair: true,
+                            accessibility: {
+                                description: 'Expense Categories'
+                            },
+                            labels: {
+                                style: {
+                                    color: '#426B1F'
+                                }
+                            }
+                        },
+                        yAxis: {
+                            min: 0,
+                            title: {
+                                text: 'Amount (in USD)',
+                                style: {
+                                    color: '#426B1F'
+                                }
+                            },
+                            labels: {
+                                style: {
+                                    color: '#426B1F'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            valuePrefix: '$',
+                            backgroundColor: '#426B1F',
+                            style: {
+                                color: '#FAFAF5'
+                            }
+                        },
+                        plotOptions: {
+                            column: {
+                                pointPadding: 0.2,
+                                borderWidth: 0
+                            }
+                        },
+                        colors: ['#426B1F', '#88B04B', '#E5EEDE', '#BFD7B5', '#88B04B'],
+                        series: [{
+                            name: 'Amount',
+                            data: totalExpenses  // Example data
+                        }]
+                    });
+
+                    // Second Chart
+                    Highcharts.chart('container', {
+                        colors: ['#01BAF2', '#71BF45', '#FAA74B', '#B37CD2'],
+                        chart: {
+                            type: 'pie'
+                        },
+                        accessibility: {
+                            point: {
+                                valueSuffix: '%'
+                            }
+                        },
+                        tooltip: {
+                            pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>'
+                        },
+                        plotOptions: {
+                            pie: {
+                                allowPointSelect: true,
+                                cursor: 'pointer',
+                                dataLabels: {
+                                    enabled: true,
+                                    format: '{point.name}: {y} %'
+                                },
+                                showInLegend: true
+                            }
+                        },
+                        series: [{
+                            name: 'Energy Types',
+                            colorByPoint: true,
+                            innerSize: '75%',
+                            data: [{
+                                name: 'EV',
+                                y: 68.1
+                            }, {
+                                name: 'Hybrids',
+                                y: 11.0
+                            }, {
+                                name: 'Diesel',
+                                y: 11.2
+                            }, {
+                                name: 'Petrol',
+                                y: 9.7
+                            }]
+                        }]
+                    });
+
+                    // Third Chart
+                    Highcharts.chart('third-container', {
+                        chart: {
+                            type: 'pie'
+                        },
+                        tooltip: {
+                            valueSuffix: '%'
+                        },
+                        plotOptions: {
+                            series: {
+                                allowPointSelect: true,
+                                cursor: 'pointer',
+                                dataLabels: [{
+                                    enabled: true,
+                                    distance: 20
+                                }, {
+                                    enabled: true,
+                                    distance: -40,
+                                    format: '{point.percentage:.1f}%',
+                                    style: {
+                                        fontSize: '1.2em',
+                                        textOutline: 'none',
+                                        opacity: 0.7
+                                    },
+                                    filter: {
+                                        operator: '>',
+                                        property: 'percentage',
+                                        value: 10
+                                    }
+                                }]
+                            }
+                        },
+                        series: [{
+                            name: 'Composition',
+                            colorByPoint: true,
+                            data: [{
+                                name: 'Water',
+                                y: 55.02
+                            }, {
+                                name: 'Fat',
+                                sliced: true,
+                                selected: true,
+                                y: 26.71
+                            }, {
+                                name: 'Carbohydrates',
+                                y: 1.09
+                            }, {
+                                name: 'Protein',
+                                y: 15.5
+                            }, {
+                                name: 'Ash',
+                                y: 1.68
+                            }]
+                        }]
+                    });
+                })
+                .catch(error => {
+                    console.error("Error fetching categories:", error);
+                });
+        });
+
+        // Modify populateCategory to return a promise
+        function populateCategory() {
+            return new Promise((resolve, reject) => {
+                fetch('/Home/DataParse')  // Call the API that returns categories and expenses
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+
+                            // Get categories and expenses
+                            const categories = data.data_category.map(category => category.name);
+                            const expenses = data.data_expense;
+
+                            expenses.sort((a, b) => new Date(b.date) - new Date(a.date));  // Sort in descending order (latest first)
+
+                            // Get the latest expense (the first one after sorting)
+                            const latestExpense = expenses[0];  // This will be the most recent expense
+
+                            // Get the date of the latest expense
+                            latestDate = latestExpense ? latestExpense.date.split('T')[0] : null;
+
+                            // Initialize an object to store total amounts for each category
+                            const categoryTotals = {};
+
+                            // Iterate over each expense and accumulate the amounts per category
+                            expenses.forEach(expense => {
+                                const categoryName = expense.categoryName;
+
+                                // If the category exists in the categoryTotals, add the expense amount to it
+                                if (categoryTotals[categoryName]) {
+                                    categoryTotals[categoryName] += expense.amount;
+                                } else {
+                                    // If category doesn't exist yet, initialize it with the expense amount
+                                    categoryTotals[categoryName] = expense.amount;
+                                }
+                            });
+
+                            // Create an array of total expenses that aligns with the order of categories
+                            const totalExpenses = categories.map(category => categoryTotals[category] || 0); // If no expense found for category, default to 0
+                            // Resolve the promise with both categories and their total expenses
+                            resolve({ categories, totalExpenses });
+                        } else {
+                            reject("Error fetching data: " + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        reject("Error fetching data: " + error);
+                    });
+            })
+        };
+
+        function startOfMonth() {
+            var dateInput = document.getElementById('start-date');
+            var today = new Date();  // Get the current date
+            today.setDate(1);  // Set the date to the 1st of the current month
+            var startOfMonth = today.toISOString().split('T')[0];  // Get the date in YYYY-MM-DD format
+            dateInput.value = startOfMonth;
+            document.getElementById('end-date').value = latestDate;
+        }
+
+        function generateReport() {
+            const startDate = document.getElementById('start-date').value;
+            const endDate = document.getElementById('end-date').value;
+
+            // Validate dates before making the request
+            if (!startDate || !endDate) {
+                alert("Please select both start and end dates.");
+                return;
+            }
+
+            // Convert to Date objects for comparison (ensure they are in the correct format)
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+
+            // Call your controller action DataParseFilterByDate with start and end date as parameters
+            fetch(`/Home/DataParseFilterByDate?start=${start.toISOString()}&end=${end.toISOString()}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // If the request was successful, we have categories and expenses
+                        const categories = data.data_category.map(category => category.name);
+                        const expenses = data.data_expense;
+
+                        // Prepare total expenses for each category
+                        const categoryTotals = {};
+                        expenses.forEach(expense => {
+                            const categoryName = expense.categoryName;
+                            if (categoryTotals[categoryName]) {
+                                categoryTotals[categoryName] += expense.amount;
+                            } else {
+                                categoryTotals[categoryName] = expense.amount;
+                            }
+                        });
+
+                        // Create an array of total expenses that aligns with the order of categories
+                        const totalExpenses = categories.map(category => categoryTotals[category] || 0);
+
+                        // Update the charts with the new data
+                        updateCharts(categories, totalExpenses);
+                        updateTable(expenses);
+
+                        // Calculate total expenses and total transactions
+                        const totalExpense = totalExpenses.reduce((sum, amount) => sum + amount, 0);
+                        const totalTransaction = expenses.length;  // Number of expenses is the number of transactions
+
+                        // Update the total expenses and total transaction cards
+                        document.querySelector('.card-value.total-expenses').textContent = `$${totalExpense.toFixed(2)}`;
+                        document.querySelector('.card-value.total-transactions').textContent = totalTransaction;
+                    } 
+                    else {
+                        location.reload();
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching filtered data:", error);
+                    alert("An error occurred while fetching the report.");
+                });
+        }
+
+        function updateCharts(categories, totalExpenses) {
+            // Destroy existing charts before creating new ones
+            if (Highcharts.charts[0]) Highcharts.charts[0].destroy();  // Destroy first chart
+            if (Highcharts.charts[1]) Highcharts.charts[1].destroy();  // Destroy second chart
+            if (Highcharts.charts[2]) Highcharts.charts[2].destroy();  // Destroy third chart
+
+            // Recreate the first chart (Expenses by Category)
             Highcharts.chart('first-container', {
                 chart: {
                     type: 'column'
@@ -126,7 +450,7 @@
                     }
                 },
                 xAxis: {
-                    categories: ['Office Supplies', 'Travel', 'Entertainment', 'Food', 'Utilities'],
+                    categories: categories,  // Use the fetched categories
                     crosshair: true,
                     accessibility: {
                         description: 'Expense Categories'
@@ -167,7 +491,7 @@
                 colors: ['#426B1F', '#88B04B', '#E5EEDE', '#BFD7B5', '#88B04B'],
                 series: [{
                     name: 'Amount',
-                    data: [500, 1200, 800, 600, 900]
+                    data: totalExpenses  // Example data
                 }]
             });
 
@@ -271,6 +595,41 @@
                     }]
                 }]
             });
-        });
+        }
+
+        function updateTable(expenses) {
+            // Get the table body element where the rows will be inserted
+            const tableBody = document.getElementById('expense-table-body');
+
+            // Clear the table body first (remove any existing rows)
+            tableBody.innerHTML = '';
+
+            // Iterate through the expenses array and generate table rows
+            expenses.forEach(expense => {
+                // Create a new row
+                const row = document.createElement('tr');
+
+                // Create and append the "Subject" column
+                const subjectCell = document.createElement('td');
+                subjectCell.textContent = expense.title;  // Assuming expense.title contains the subject
+                row.appendChild(subjectCell);
+
+                // Create and append the "Category" column
+                const categoryCell = document.createElement('td');
+                const badge = document.createElement('span');
+                badge.classList.add('badge', 'bg-secondary');
+                badge.textContent = expense.categoryName;  // Assuming expense.categoryName contains the category
+                categoryCell.appendChild(badge);
+                row.appendChild(categoryCell);
+
+                // Create and append the "Amount" column
+                const amountCell = document.createElement('td');
+                amountCell.textContent = expense.amount.toFixed(2);  // Assuming expense.amount contains the amount
+                row.appendChild(amountCell);
+
+                // Append the row to the table body
+                tableBody.appendChild(row);
+            });
+        }
     </script>
 }

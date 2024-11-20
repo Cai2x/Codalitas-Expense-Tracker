@@ -34,12 +34,6 @@
 
     // Function to open the delete modal 
     function openDeleteCategoryModal(categoryId) {
-        currentCategoryId = categoryId;
-        console.log('Opening modal for expense ID:', categoryId);
-
-        // Set the value of the hidden input to the CategoryId of the expense to delete
-        document.getElementById('DeleteExpenseId').value = categoryId;
-
         // Open the modal programmatically
         if (deleteCategoryModal) {
             deleteCategoryModal.show();
@@ -59,22 +53,14 @@
         fetch(`/Category/PostDelete/${currentCategoryId}`, {
             method: 'POST',
         })
-            .then(response => {
-                if (response.ok) {
-                    if (response.redirected) {
-                        window.location.href = response.url;  // Redirect to the new location
-                    } else {
-                        alert('Expense deleted successfully!');
-                        deleteCategoryModal.hide(); // Close modal after success
-                    }
-                } else {
-                    return response.json();
-                }
-            })
+            .then(response => response.json())
             .then(data => {
-                if (data && !data.success) {
-                    alert('Failed to delete expense: ' + data.message);
+                if (data.success) {
+                    location.reload(); // Redirect manually
+                } else {
+                    alert('Failed to delete category');
                 }
+                deleteCategoryModal.hide(); // Close the modal after response
             })
             .catch(error => {
                 console.error('Error deleting expense:', error);
