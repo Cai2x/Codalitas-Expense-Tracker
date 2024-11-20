@@ -45,6 +45,7 @@
 
 .save-button {
     width: 300px;
+    font-weight:500;
 }
 
 .change-password-modal .btn-primary:hover {
