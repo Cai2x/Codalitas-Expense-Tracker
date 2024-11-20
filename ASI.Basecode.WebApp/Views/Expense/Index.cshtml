@@ -28,7 +28,36 @@
 
 
     <div class="table-container">
-        <h2>My Expenses</h2>
+        <!-- Filters and Title Section -->
+        <div class="d-flex align-items-center justify-content-between">
+            <!-- Title Section -->
+            <h2 class="mb-0">My Expenses</h2>
+
+            <div class="search-bar">
+                <input type="text" placeholder="Search Expenses" id="search">
+            </div>
+
+            <!-- Filters Section -->
+            <div class="filters d-flex align-items-center">
+                
+                <select class="form-select-sm me-2" id="filterCategory" onchange="applyFilter()">
+                    <option value="">Filter by Category</option>
+                    <option value="Food">Food</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Utilities">Utilities</option>
+                    <option value="Miscellaneous">Miscellaneous</option>
+                </select>
+            
+                <select class="form-select-sm" id="sortExpenses" onchange="applySort()">
+                    <option value="">Sort by</option>
+                    <option value="amount_asc">Amount (Low to High)</option>
+                    <option value="amount_desc">Amount (High to Low)</option>
+                    <option value="date_asc">Date (Oldest First)</option>
+                    <option value="date_desc">Date (Newest First)</option>
+                </select>
+            </div>
+        </div>
+
 
         @if (Model == null || !Model.Any())
         {

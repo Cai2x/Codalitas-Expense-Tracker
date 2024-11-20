@@ -1,6 +1,9 @@
 ﻿
 .change-password-modal {
+    
     background-color: #FAFAF5;
+    margin:auto;
+    left:130px;
     border-radius: 10px;
     padding: 2rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -42,6 +45,7 @@
 
 .save-button {
     width: 300px;
+    font-weight:500;
 }
 
 .change-password-modal .btn-primary:hover {
