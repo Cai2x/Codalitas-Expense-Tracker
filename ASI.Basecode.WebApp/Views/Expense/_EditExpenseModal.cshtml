@@ -10,6 +10,7 @@
             </div>
             <div class="modal-body">
                 <form asp-action="Edit" method="post" id="editExpenseForm">
+                    <input type="hidden" name="currentPage" value="@ViewBag.CurrentPage" />
                     <!-- Hidden input to store the Expense ID -->
                     <input type="hidden" asp-for="ExpenseId" id="EditExpenseId"/>
 

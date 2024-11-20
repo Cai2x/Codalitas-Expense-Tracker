@@ -12,29 +12,19 @@
                  onclick="window.location.href = '@Url.Action("Index", "Home")';">
                 -->
         </div>
-        <div class="logosec">
+        <div>
+            <a asp-action="Index" asp-controller="Settings" class="profile" >
             @HttpContextAccessor.HttpContext.Session.GetString("UserName")
+            
             <div class="mr-20 hover-pointer" style="position: relative">
-
                 <div class="dp">
                     <img src="~/img/profile-logo.png"
                      class="dpicn hover-pointer"
                      alt="dp">
                 </div>
-
-                <div class="dropdown">
-                    <ul>
-                        <li>
-                            <i class="fa-solid fa-gear"></i>
-                            <a asp-action="Index" asp-controller="Settings">Settings</a>
-                        </li>
-                        <li>
-                            <i class="fa-solid fa-right-from-bracket"></i>
-                            <a asp-action="SignOutUser" asp-controller="Account">Logout</a>
-                        </li>
-                    </ul>
-                </div>
+                   
             </div>
+            </a>
         </div>
     </header>
 }
