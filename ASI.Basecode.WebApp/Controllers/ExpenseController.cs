@@ -44,11 +44,18 @@ namespace ASI.Basecode.WebApp.Controllers
 
                 var data = _expenseService.RetrieveUserExpenses(int.Parse(UserId));
 
+                if (data == null || !data.Any())
+                {
+                    ViewBag.CurrentPage = 1;
+                    ViewBag.TotalPages = 1;
+                    return View(null);  // Return an empty list to avoid null reference
+                }
+
                 var paginatedExpenses = data
                    .Skip((page - 1) * pageSize)
                    .Take(pageSize)
                    .ToList();
-             
+
 
                 // Calculate total pages
                 var totalExpenses = data.Count;
@@ -91,7 +98,7 @@ namespace ASI.Basecode.WebApp.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        
+
         [HttpGet]
         public IActionResult Edit(int id)
         {
@@ -102,7 +109,7 @@ namespace ASI.Basecode.WebApp.Controllers
                 //return View(expense);
                 return Ok(expense);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -118,7 +125,7 @@ namespace ASI.Basecode.WebApp.Controllers
                 return Ok(expense);
                 //return View(expense);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -135,7 +142,7 @@ namespace ASI.Basecode.WebApp.Controllers
             {
                 _expenseService.AddExpense(expense, int.Parse(UserId));
                 TempData["SuccessMessage"] = "Expense added successfully!";
-                
+
 
                 var data = _expenseService.RetrieveUserExpenses(int.Parse(UserId));
                 int totalExpenses = data.Count;
@@ -170,29 +177,29 @@ namespace ASI.Basecode.WebApp.Controllers
                 TempData["SuccessMessage"] = "Expense Updated successfully!";
                 return RedirectToAction("Display", new { page = currentPage });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpPost]
-        public IActionResult PostDelete(int Id, int  currentPage)
+        public IActionResult PostDelete(int Id, int currentPage)
         {
             try
             {
                 _expenseService.DeleteExpense(Id);
                 TempData["SuccessMessage"] = "Expense Deleted successfully!";
-                return RedirectToAction("Display", new { page = currentPage });
+                return Json(new { success = true, redirectUrl = Url.Action("Display", new { page = currentPage }) });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-#endregion
+        #endregion
 
-public IActionResult Index()
+        public IActionResult Index()
         {
             return Display();
         }

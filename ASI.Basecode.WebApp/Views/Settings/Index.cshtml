@@ -1,6 +1,5 @@
 ﻿@model ASI.Basecode.Services.ServiceModels.UserViewModel
 
-
 @{
     ViewData["Title"] = "Settings and Preferences";
 }
@@ -33,24 +32,24 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label for="FirstName" class="form-label">First Name</label>
-                <input asp-for="FirstName" class="form-control input-field" />
+                <input asp-for="FirstName" class="form-control input-field" readonly />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
             <div class="col-md-6">
                 <label for="LastName" class="form-label">Last Name</label>
-                <input asp-for="LastName" class="form-control input-field" />
+                <input asp-for="LastName" class="form-control input-field" readonly />
                 <span asp-validation-for="LastName" class="text-danger"></span>  
             </div>
         </div>
         <div class="row mb-4">
             <div class="col-md-12">
                 <label for="Username" class="form-label">User Name</label>
-                <input asp-for="Username" class="form-control input-field" />
+                <input asp-for="Username" class="form-control input-field" readonly />
                 <span asp-validation-for="Username" class="text-danger"></span>
             </div>
         </div>
         <div class="button-container">
-            <button type="submit" class="btn btn-save">Save</button>
+            <button type="submit" class="btn btn-save" data-bs-toggle="modal" data-bs-target="#editProfileModal">Edit Profile</button>
             <button type="button" class="btn btn-change-password" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
                 Change Password
                 </button>
@@ -60,3 +59,4 @@
  
 
 <partial name="ChangePassword" model="new ASI.Basecode.Services.ServiceModels.UserViewModel()" />
+<partial name="_EditProfile" model="new ASI.Basecode.Services.ServiceModels.UserViewModel()" />

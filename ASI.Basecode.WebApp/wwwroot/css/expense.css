@@ -192,3 +192,49 @@ h1 {
     background-color: #e9ecef; 
     border-color: #e9ecef; 
 }
+
+
+/*DropDown Filters*/
+
+/* Align title and filters */
+.table-container .d-flex {
+    display: flex;
+    align-items: center; /* Align items vertically */
+    justify-content: space-between; /* Spread items: title on the left, filters on the right */
+    
+}
+
+/* Filters section styling */
+.filters {
+    display: flex;
+    gap: 10px; /* Add spacing between dropdowns */
+}
+
+    /* Style the dropdowns */
+    .filters select {
+        background-color: #426B1F; /* Match your theme */
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding:  5px 10px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+/* Search Bar Styling */
+.search-bar input {
+    width: 400px; /* Adjust the width to fit your layout */
+    padding: 3px 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-right: 10px; 
+    background-color: #426B1F;
+    color: white; /* Text color when typing */
+    font-weight: 500;
+}
+    .search-bar input::placeholder {
+        color: white;
+        font-weight: 500;
+    }

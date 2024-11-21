@@ -130,37 +130,56 @@ namespace ASI.Basecode.Services.Services
         {
             var user = _repository.GetUsers().Where(x => x.Email == email).FirstOrDefault();
             if (user == null)
-                return false;
+                return true; 
 
             var generate_token = Guid.NewGuid().ToString();
-            // Construct the reset password link
-            var resetLink = $"https://youtube.com";
-            var emailBody = $"Click <a href='{generate_token}'>here</a> to reset your password.";
+            var resetLink = $"https://localhost:62290/Account/ResetPassword?token={generate_token}";
+            var emailBody = $"Click <a href='{resetLink}'>here</a> to reset your password.";
 
-            // Send the email
             await SendEmailAsync(email, "Password Reset Request", emailBody);
-            
-            //If email is sent successfully, add token to db 
-            var token = new Token();
-            token.Token1 = generate_token;
-            token.ExpirationDate = DateTime.UtcNow.AddMinutes(5);
-            token.Email = email;
 
-            // Store the token and expiration in your database (implement this method)
+            var token = new Token
+            {
+                Token1 = generate_token,
+                ExpirationDate = DateTime.UtcNow.AddMinutes(2),
+                Email = email
+            };
+
             _tokenrepository.AddToken(token);
             return true;
         }
 
-        //Forgot Password
-        public bool ChangePassword(string email, string newPassword)
-        {
 
-            var user  = _repository.GetUsers().Where(x => x.Email == email).FirstOrDefault();
+        //Reset Password
+        public bool ResetPassword(string newPassword, string token)
+        {
+            var lateToken = _tokenrepository.RetrieveTokens().Where(x => x.ExpirationDate < DateTime.UtcNow).ToList();
+            foreach(var tokens in lateToken)
+            {
+                _tokenrepository.DeleteToken(tokens);
+            }
+
+            var validToken = _tokenrepository.RetrieveTokens().FirstOrDefault(x => x.Token1 == token);
+
+            if (validToken == null)
+            {
+                return false;
+            }
+            if (validToken.ExpirationDate < DateTime.UtcNow)
+            {
+                _tokenrepository.DeleteToken(validToken);
+                return false;
+                
+            }
+            
+            var user  = _repository.GetUsers().Where(x => x.Email == validToken.Email).FirstOrDefault();
             if (user == null)
             {
+                _tokenrepository.DeleteToken(validToken);
                 return false;
                 throw new InvalidDataException(Resources.Messages.Errors.UserNotFound);
             }
+
             var encryptedNewPassword = PasswordManager.EncryptPassword(newPassword);
 
             user.Password = encryptedNewPassword;
@@ -168,6 +187,7 @@ namespace ASI.Basecode.Services.Services
             user.UpdatedBy = System.Environment.UserName;
 
             _repository.ChangePassword(user);
+            _tokenrepository.DeleteToken(validToken);
             return true;
         }
 

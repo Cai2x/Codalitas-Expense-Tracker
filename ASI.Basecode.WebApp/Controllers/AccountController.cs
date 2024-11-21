@@ -130,23 +130,11 @@ namespace ASI.Basecode.WebApp.Controllers
             return View();
         }
 
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult ForgotPassword()
-        {
-            return View();
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult VerifyOtp()
-        {
-            return View();
-        }
+        
 
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult ResetPassword(UserViewModel model)
+        public IActionResult ChangePassword(UserViewModel model)
         {
             try
             {
@@ -182,10 +170,21 @@ namespace ASI.Basecode.WebApp.Controllers
         }
 
 
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> ForgotPassAsync(string email)
+        public async Task<IActionResult> ForgotPassword(string email)
         {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                TempData["ErrorMessage"] = "Email cannot be empty.";
+                return View("ForgotPassword");
+            }
             try
             {
                 var forgotpass = await _userService.SendPasswordResetEmailAsync(email);
@@ -194,35 +193,46 @@ namespace ASI.Basecode.WebApp.Controllers
                 {
                     TempData["SuccessMessage"] = "Password changed successfully.";
                 }
-                return Ok(forgotpass);
+                //return Ok(forgotpass);
             }
             catch (InvalidDataException ex)
             {
                 TempData["ErrorMessage"] = ex.Message;
-                return BadRequest(ex.Message);
+                //return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = Resources.Messages.Errors.ServerError;
-                return BadRequest(ex.Message);
+
+                //return BadRequest(ex.Message);
+
             }
 
-            //return View();
+            return View("ForgotPassword");
         }
 
-        public IActionResult ResetPassword(string email)
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult ResetPassword(string newPassword, string token)
         {
             try
             {
-                var userId = int.Parse(UserId);
-                if (userId == 0)
-                {
-                    TempData["ErrorMessage"] = Resources.Messages.Errors.UserNotFound;
-                    return View();
-                }
-                TempData["ErrorMessage"] = "Change Password Failed";
+                var forgotpass = _userService.ResetPassword(newPassword, token);
 
-                return RedirectToAction("Index", "Settings");
+                if (forgotpass)
+                {
+                    TempData["SuccessMessage"] = "Password changed successfully.";
+                    return RedirectToAction("Login", "Account");
+                }
+
+                TempData["ErrorMessage"] = "Reset Password Token has expired";
+                return RedirectToAction("ForgotPassword", "Account");
 
             }
             catch (InvalidDataException ex)

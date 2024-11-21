@@ -1,0 +1,37 @@
+﻿@model ASI.Basecode.Services.ServiceModels.UserViewModel
+
+<!-- Modal for Editing Profile -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content edit-profle-content">
+            <div class="modal-header">
+                <h5 class="modal-title edit-profile-header" id="editProfileModalLabel">Edit Profile</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="SaveProfile">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="FirstName" class="form-label">First Name</label>
+                            <input asp-for="FirstName" class="form-control input-field" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="LastName" class="form-label">Last Name</label>
+                            <input asp-for="LastName" class="form-control input-field" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-5">
+                        <div class="col-md-12">
+                            <label for="Username" class="form-label">User Name</label>
+                            <input asp-for="Username" class="form-control input-field" />
+                            <span asp-validation-for="Username" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-save d-flex justify-content-center mx-auto">Save Changes →</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

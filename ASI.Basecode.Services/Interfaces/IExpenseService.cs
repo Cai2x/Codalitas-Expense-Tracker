@@ -15,5 +15,7 @@ namespace ASI.Basecode.Services.Interfaces
         void UpdateExpense(ExpenseViewModel expenseModel);
         List<ExpenseViewModel> RetrieveUserExpenses(int userId);
         ExpenseViewModel RetrieveExpense(int expenseId);
+        ExpenseViewModel TotalRecord(int userId);
+        List<ExpenseViewModel> DateFilter(DateTime startDate, DateTime endDate, int userId);
     }
 }

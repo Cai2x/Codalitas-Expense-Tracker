@@ -26,5 +26,7 @@ namespace ASI.Basecode.Services.ServiceModels
         [Required(ErrorMessage = "Date is required.")]
         public DateTime Date { get; set; }
         public bool isDeleted { get; set; }
+        public double TotalExpense {  get; set; }
+        public int TotalTransaction { get; set; }
     }
 }

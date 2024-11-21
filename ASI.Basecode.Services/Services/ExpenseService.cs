@@ -41,8 +41,54 @@ namespace ASI.Basecode.Services.Services
                     CategoryName = category.Name,
                     Status = expense.Status,
                     ExpenseDateCreated = expense.DateCreated,
-                    Date = expense.Date
-                }).ToList();
+                    Date = expense.Date,
+        }).ToList();
+
+            return retrievedData;
+        }
+
+        public ExpenseViewModel TotalRecord(int userId)
+        {
+            var expense = _expenseRepository.RetrieveExpenses().Where(x => x.UserId == userId && x.IsDeleted == false)
+                 .Join(_categoryRepository.RetrieveCategory().Where(c => c.IsDeleted == false),
+                 expense => expense.CategoryId,
+                 category => category.CategoryId,
+                 (expense, category) => new ExpenseViewModel
+                 {
+                     ExpenseId = expense.ExpenseId,
+                     Amount = expense.Amount,
+                     CategoryName = category.Name
+                 });
+
+            double totalExpense = expense.Sum(e => e.Amount);
+            int totalTransaction = expense.Count();
+
+            return new ExpenseViewModel
+            {
+                TotalExpense = totalExpense,
+                TotalTransaction = totalTransaction,
+            };
+        }
+
+        public List<ExpenseViewModel> DateFilter(DateTime startDate, DateTime endDate, int userId)
+        {
+            var retrievedData = _expenseRepository.RetrieveExpenses()
+               .Where(x => x.UserId == userId && x.IsDeleted == false && x.Date <= endDate && x.Date >= startDate)
+               .Join(_categoryRepository.RetrieveCategory().Where(c => c.IsDeleted == false),
+               expense => expense.CategoryId,
+               category => category.CategoryId,
+               (expense, category) => new ExpenseViewModel
+               {
+                   ExpenseId = expense.ExpenseId,
+                   Title = expense.Title,
+                   Amount = expense.Amount,
+                   Description = expense.Description,
+                   CategoryId = category.CategoryId,
+                   CategoryName = category.Name,
+                   Status = expense.Status,
+                   ExpenseDateCreated = expense.DateCreated,
+                   Date = expense.Date,
+               }).ToList();
 
             return retrievedData;
         }
