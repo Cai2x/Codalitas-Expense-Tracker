@@ -1,5 +1,6 @@
 ﻿using ASI.Basecode.Data.Models;
 using ASI.Basecode.Services.ServiceModels;
+using System.Threading.Tasks;
 using static ASI.Basecode.Resources.Constants.Enums;
 
 namespace ASI.Basecode.Services.Interfaces
@@ -10,5 +11,8 @@ namespace ASI.Basecode.Services.Interfaces
         void AddUser(UserViewModel model);
         UserViewModel RetrieveUser(int user);
         bool ChangePassword(int userId, string oldPassword, string newPassword);
+        bool ResetPassword(string newPassword, string token); 
+        Task<bool> SendPasswordResetEmailAsync(string email);
+        Task SendEmailAsync(string email, string subject, string message);
     }
 }
