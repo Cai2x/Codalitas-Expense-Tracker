@@ -4,6 +4,11 @@ body {
     background-color: #FAFAF5;
 }
 
+    body.dark-mode {
+        background-color: #2e2e2e; /* Dark mode background color */
+        color: white; /* Dark mode text color */
+    }
+
 .page-container {
     max-width: 800px;
     margin: auto;
@@ -12,6 +17,13 @@ body {
     border-radius: 15px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
+
+body.dark-mode .page-container {
+    background-color: #333333;
+    color: white;
+}
+
+    
 
 /* Page Heading */
 h1 {
@@ -136,10 +148,14 @@ h1 {
     padding: 2rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+        body.dark-mode .edit-profle-content {
+            background-color: #333333;
+            color: white;
+        }
 .edit-profile-header {
     font-size: 2rem;
     font-family: 'Newsreader', serif;
     color: #426B1F;
-    font-weight:bold;
+    font-weight: bold;
 }
 
