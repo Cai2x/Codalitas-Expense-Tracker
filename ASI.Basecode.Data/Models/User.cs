@@ -8,6 +8,7 @@ namespace ASI.Basecode.Data.Models
         public User()
         {
             Categories = new HashSet<Category>();
+            Tokens = new HashSet<Token>();
         }
 
         public int UserId { get; set; }
@@ -24,5 +25,6 @@ namespace ASI.Basecode.Data.Models
         public bool IsDeleted { get; set; }
 
         public virtual ICollection<Category> Categories { get; set; }
+        public virtual ICollection<Token> Tokens { get; set; }
     }
 }

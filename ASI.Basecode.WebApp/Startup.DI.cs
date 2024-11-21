@@ -38,11 +38,11 @@ namespace ASI.Basecode.WebApp
             this._services.AddScoped<ICategoryService, CategoryService>();
             this._services.AddScoped<IExpenseService, ExpenseService>();
 
-
             // Repositories
             this._services.AddScoped<IUserRepository, UserRepository>();
             this._services.AddScoped<ICategoryRepository, CategoryRepository>();
             this._services.AddScoped<IExpenseRepository, ExpenseRepository>();
+            this._services.AddScoped<ITokenRepository, TokenRepository>();
 
             // Manager Class
             this._services.AddScoped<SignInManager>();
