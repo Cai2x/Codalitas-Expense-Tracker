@@ -134,7 +134,7 @@ namespace ASI.Basecode.WebApp.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult ChangePassword(UserViewModel model)
+        public IActionResult ChangePassword(ChangePasswordModel model)
         {
             try
             {
@@ -145,7 +145,7 @@ namespace ASI.Basecode.WebApp.Controllers
                     return View();
                 }
 
-                var changepass = _userService.ChangePassword(userId, model.Password, model.NewPassword);
+                var changepass = _userService.ChangePassword(userId, model.OldPassword, model.NewPassword);
 
                 if (changepass)
                 {
@@ -166,7 +166,6 @@ namespace ASI.Basecode.WebApp.Controllers
                 TempData["ErrorMessage"] = Resources.Messages.Errors.ServerError;
                 return BadRequest(ex.Message);
             }
-            //return View();
         }
 
 
@@ -245,7 +244,6 @@ namespace ASI.Basecode.WebApp.Controllers
                 TempData["ErrorMessage"] = Resources.Messages.Errors.ServerError;
                 return BadRequest(ex.Message);
             }
-            //return View();
         }
 
 
