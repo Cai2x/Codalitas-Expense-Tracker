@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="~/css/register.css" />
 }
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css" />
+
+
 <div class="register-box h-auto top">
     <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-md-6">
@@ -66,9 +69,16 @@
 
 @section scripts {
     <script>
+        // Check for error message and display Toastr notification
         var errorMessage = '@TempData["ErrorMessage"]';
         if (errorMessage) {
             toastr.error(errorMessage);
+        }
+
+        // Check for success message and display Toastr notification
+        var successMessage = '@TempData["SuccessMessage"]';
+        if (successMessage) {
+            toastr.success(successMessage);
         }
     </script>
 }

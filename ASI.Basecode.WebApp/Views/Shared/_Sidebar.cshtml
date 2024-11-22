@@ -18,42 +18,10 @@
             <a href="/Home/Index"> <i class="fa-solid fa-table-columns"></i> Dashboard</a>
             <a href="/Expense/Index"> <i class="fa-solid fa-money-bill"></i> Expenses</a>
              <a href="/Category/Index"> <i class="fa-solid fa-list"></i> Category</a>
-        </div>
-
-        <div class="toggle-switch ">
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                <label class="form-check-label" for="flexSwitchCheckDefault">
-                    <i class="fas fa-moon"></i> Mode
-                </label>
-            </div>
-        </div>
+        </div>     
         <a asp-action="SignOutUser" asp-controller="Account" class="logout-button">
             <i class="fa-solid fa-right-from-bracket"></i> Logout
         </a>
 
     </div>
 }
-
-<script>
-    // Check if the switch state is stored in localStorage
-    const switchState = localStorage.getItem('switchState');
-    const switchElement = document.getElementById('flexSwitchCheckDefault');
-
-    // If a state is stored, apply it to the switch
-    if (switchState === 'on') {
-      switchElement.checked = true;
-    } else {
-      switchElement.checked = false;
-    }
-
-    // Add an event listener to the switch
-    switchElement.addEventListener('change', function() {
-      // Save the current state of the switch to localStorage
-      if (this.checked) {
-        localStorage.setItem('switchState', 'on');
-      } else {
-        localStorage.setItem('switchState', 'off');
-      }
-    });
-</script>

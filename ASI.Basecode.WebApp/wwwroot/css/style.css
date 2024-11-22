@@ -70,7 +70,7 @@ header {
     text-decoration: none;
     background-color: #31541a;
     color: white;
-    margin-top: 10px;
+    margin-top: 500px;
     font-weight: bold;
     padding: 10px 20px;
     border-radius: 5px;
@@ -160,19 +160,26 @@ header {
     border: 1px solid;
     border-radius: 7px;
     padding: 7px;
-    gap: 10px;
-    position: center;
-    margin-top: 270px;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+    margin-left:auto;
+    
+    
+    
 }
 
     .toggle-switch .form-check-input:checked {
         background-color: lightgreen;
         border-color: #426B1F;
     }
+
+/*body.dark-mode .toggle-switch .form-check-input {
+    background-color: #426B1F;
+    border-color: #444;
+}*/
+
+body.dark-mode .toggle-switch  {
+    background-color: #426B1F;
+    border-color: #444;
+}
     
 .content-container {
     z-index: 1; /* Lower than the sidebar */

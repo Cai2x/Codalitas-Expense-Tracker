@@ -189,7 +189,7 @@ namespace ASI.Basecode.WebApp.Controllers
             try
             {
                 _expenseService.DeleteExpense(Id);
-                TempData["SuccessMessage"] = "Expense Deleted successfully!";
+                TempData["SuccessMessage"] = "Expense Deleted Successfully!";
                 return Json(new { success = true, redirectUrl = Url.Action("Display", new { page = currentPage }) });
             }
             catch (Exception ex)
