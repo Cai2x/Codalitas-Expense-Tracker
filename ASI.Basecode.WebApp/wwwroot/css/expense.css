@@ -4,16 +4,6 @@ body {
     background-color: #FAFAF5;
 }
 
-    body.dark-mode  {
-        background-color: #2e2e2e; /* Dark mode background color */
-        color: white; /* Dark mode text color */
-    }
-        body.dark-mode .table-container {
-            background-color: #333333;
-            color: white;
-        }
-
-
 /* Header container styling */
 .expenses-header {
     margin-bottom: 10px;
@@ -31,11 +21,6 @@ body {
     background-color: #FAFAF5 !important;
     padding: 20px !important;
     border-radius: 10px;
-}
-
-/* Dark mode modal body */
-body.dark-mode .modal-cstm {
-    background-color: #333 !important; /* Dark mode */
 }
 
 /* Container for the page heading */
@@ -72,11 +57,6 @@ h1 {
     border-radius: 12px;
     box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.1);
 }
-
-    .table .dark-mode {
-        background-color: #2e2e2e; /* Dark mode background color */
-        color: white; /* Dark mode text color */
-    }
 
     .table th, .table td {
         padding: 15px;
@@ -258,16 +238,3 @@ h1 {
         color: white;
         font-weight: 500;
     }
-
-
-    /*Dark Mode*/
-
-body.dark-mode .addExpense-field {
-    background-color: #333333;
-    color: #D1D1D1;
-}
-
-body.dark-mode .box-input {
-    background-color: #333333;
-    color: #D1D1D1;
-}

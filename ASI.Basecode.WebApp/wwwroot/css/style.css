@@ -90,11 +90,6 @@ header {
     border-bottom-right-radius: 20px;
 }
 
-    .sidebar.dark-mode {
-        background-color: #2e2e2e; /* Dark mode background color */
-        color: white; /* Dark mode text color */
-    }
-
 
     .sidebar .logosec {
         text-align: center;
@@ -497,8 +492,3 @@ header {
     color: white;
     border-radius: 4px;
 }
-body.dark-mode .sidebar {
-    background-color: #333333;
-    color: white;
-}
-/*DarkMode Switch Design*/

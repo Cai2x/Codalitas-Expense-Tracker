@@ -1,67 +1,19 @@
 ﻿@using static ASI.Basecode.Resources.Views.Screen
 
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="light">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
-
-
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/main.css" />
     <link rel="stylesheet" href="~/css/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-
-    
-
     @RenderSection("Styles", required: false)
-
-
 </head>
-
 <body>
-
-     <script>
-     // Apply the theme based on saved preference
-     const savedTheme = localStorage.getItem("theme");
-     if (savedTheme) {
-         document.documentElement.setAttribute('data-bs-theme', savedTheme);
-         // Apply the dark-mode class if the saved theme is 'dark'
-         if (savedTheme === 'dark') {
-             document.body.classList.add('dark-mode');
-         }
-     }
-
-     document.addEventListener("DOMContentLoaded", function() {
-         const switchButton = document.getElementById('flexSwitchCheckDefault');
-
-         // Check the saved theme and set the switch's state
-         if (savedTheme === 'dark') {
-             switchButton.checked = true;
-         } else {
-             switchButton.checked = false;
-         }
-
-         // Toggle dark mode
-         switchButton.addEventListener('change', function() {
-             const newTheme = switchButton.checked ? 'dark' : 'light';
-             document.documentElement.setAttribute('data-bs-theme', newTheme);
-             localStorage.setItem("theme", newTheme); // Save the theme in localStorage
-
-             // Toggle the 'dark-mode' class on the body element
-     if (newTheme === 'dark') {
-         document.body.classList.add('dark-mode');
-     } else {
-         document.body.classList.remove('dark-mode');
-     }
-         });
-     });
- </script>
-
-
-
     <!-- Conditional Navbar -->
     @if (!(ViewBag.LoginView == true))
     {
@@ -112,9 +64,6 @@
             progressBar: true
         };
     </script>
-
-    
-
     @section Scripts {
         <script>
             document.addEventListener("DOMContentLoaded", function () {
