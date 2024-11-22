@@ -130,23 +130,11 @@ namespace ASI.Basecode.WebApp.Controllers
             return View();
         }
 
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult ForgotPassword()
-        {
-            return View();
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult VerifyOtp()
-        {
-            return View();
-        }
+        
 
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult ChangePassword(UserViewModel model)
+        public IActionResult ChangePassword(ChangePasswordModel model)
         {
             try
             {
@@ -157,7 +145,7 @@ namespace ASI.Basecode.WebApp.Controllers
                     return View();
                 }
 
-                var changepass = _userService.ChangePassword(userId, model.Password, model.NewPassword);
+                var changepass = _userService.ChangePassword(userId, model.OldPassword, model.NewPassword);
 
                 if (changepass)
                 {
@@ -178,8 +166,86 @@ namespace ASI.Basecode.WebApp.Controllers
                 TempData["ErrorMessage"] = Resources.Messages.Errors.ServerError;
                 return BadRequest(ex.Message);
             }
-            //return View();
         }
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                TempData["ErrorMessage"] = "Email cannot be empty.";
+                return View("ForgotPassword");
+            }
+            try
+            {
+                var forgotpass = await _userService.SendPasswordResetEmailAsync(email);
+
+                if (forgotpass)
+                {
+                    TempData["SuccessMessage"] = "Password changed successfully.";
+                }
+                //return Ok(forgotpass);
+            }
+            catch (InvalidDataException ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+                //return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = Resources.Messages.Errors.ServerError;
+
+                //return BadRequest(ex.Message);
+
+            }
+
+            return View("ForgotPassword");
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult ResetPassword(string newPassword, string token)
+        {
+            try
+            {
+                var forgotpass = _userService.ResetPassword(newPassword, token);
+
+                if (forgotpass)
+                {
+                    TempData["SuccessMessage"] = "Password changed successfully.";
+                    return RedirectToAction("Login", "Account");
+                }
+
+                TempData["ErrorMessage"] = "Reset Password Token has expired";
+                return RedirectToAction("ForgotPassword", "Account");
+
+            }
+            catch (InvalidDataException ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = Resources.Messages.Errors.ServerError;
+                return BadRequest(ex.Message);
+            }
+        }
+
 
         /// <summary>
         /// Sign Out current account and return login view.
