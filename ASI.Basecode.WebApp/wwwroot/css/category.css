@@ -4,16 +4,6 @@ body {
     background-color: #FAFAF5;
 }
 
-    body.dark-mode {
-        background-color: #2e2e2e; /* Dark mode background color */
-        color: white; /* Dark mode text color */
-    }
-
-        body.dark-mode .table-container {
-            background-color: #333333;
-            color: white;
-        }
-
 
 /* Header container styling */
 .category-header {
@@ -43,24 +33,10 @@ body {
 }
 
 /*modal body*/
-.modal-cstm  {
-    background-color: #FAFAF5 ;
+.modal-cstm {
+    background-color: #FAFAF5 !important;
     padding: 20px !important;
     border-radius: 10px;
-}
-
-body.dark-mode .addcategory-content {
-    background-color: #333333;
-    color: white;
-}
-body.dark-mode .input-field {
-    background-color: #333333;
-    color: white;
-}
-
-body.dark-mode .textarea-field {
-    background-color: #333333;
-    color: white;
 }
 
 

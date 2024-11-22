@@ -29,42 +29,39 @@
 
     <div class="table-container">
         <!-- Filters and Title Section -->
-        <div class="d-flex align-items-center justify-content-between mb-3">
+        <div class="d-flex align-items-center justify-content-between">
             <!-- Title Section -->
             <h2 class="mb-0">My Expenses</h2>
 
-            @if (Model != null && Model.Any())
-            {
-                <div class="search-bar">
-                    <input type="text" placeholder="Search Expenses" id="search">
-                </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Search Expenses" id="search">
+            </div>
 
-                <!-- Filters Section -->
-                <div class="filters d-flex align-items-center">
-                    <select class="form-select-sm me-2" id="filterCategory" onchange="applyFilter()">
-                        <option value="">Filter by Category</option>
-                        <option value="Food">Food</option>
-                        <option value="Travel">Travel</option>
-                        <option value="Utilities">Utilities</option>
-                        <option value="Miscellaneous">Miscellaneous</option>
-                    </select>
-
-                    <select class="form-select-sm" id="sortExpenses" onchange="applySort()">
-                        <option value="">Sort by</option>
-                        <option value="amount_asc">Amount (Low to High)</option>
-                        <option value="amount_desc">Amount (High to Low)</option>
-                        <option value="date_asc">Date (Oldest First)</option>
-                        <option value="date_desc">Date (Newest First)</option>
-                    </select>
-                </div>
-            }
+            <!-- Filters Section -->
+            <div class="filters d-flex align-items-center">
+                
+                <select class="form-select-sm me-2" id="filterCategory" onchange="applyFilter()">
+                    <option value="">Filter by Category</option>
+                    <option value="Food">Food</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Utilities">Utilities</option>
+                    <option value="Miscellaneous">Miscellaneous</option>
+                </select>
+            
+                <select class="form-select-sm" id="sortExpenses" onchange="applySort()">
+                    <option value="">Sort by</option>
+                    <option value="amount_asc">Amount (Low to High)</option>
+                    <option value="amount_desc">Amount (High to Low)</option>
+                    <option value="date_asc">Date (Oldest First)</option>
+                    <option value="date_desc">Date (Newest First)</option>
+                </select>
+            </div>
         </div>
 
 
-        <!-- Table Section -->
         @if (Model == null || !Model.Any())
         {
-            <p class="text-center">No expenses found.</p>
+            <p>No expenses found.</p>
         }
         else
         {
@@ -109,42 +106,37 @@
                     }
                 </tbody>
             </table>
+
+         
         }
-
-        <!-- Pagination Section -->
-
         <div class="pagination-container text-center">
-            @if (Model != null && Model.Any())
-            {
-                <nav aria-label="Page navigation">
-                    <ul class="pagination justify-content-center">
-                        @if (ViewBag.CurrentPage > 1)
-                        {
-                            <li class="page-item">
-                                <a class="page-link" href="@Url.Action("Display", new { page = ViewBag.CurrentPage - 1 })">Previous</a>
-                            </li>
-                        }
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    @if (ViewBag.CurrentPage > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Display", new { page = ViewBag.CurrentPage - 1 })">Previous</a>
+                        </li>
+                    }
 
-                        @for (int i = 1; i <= ViewBag.TotalPages; i++)
-                        {
-                            <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
-                                <a class="page-link" href="@Url.Action("Display", new { page = i })">@i</a>
-                            </li>
-                        }
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("Display", new { page = i })">@i</a>
+                        </li>
+                    }
 
-                        @if (ViewBag.CurrentPage < ViewBag.TotalPages)
-                        {
-                            <li class="page-item">
-                                <a class="page-link" href="@Url.Action("Display", new { page = ViewBag.CurrentPage + 1 })">Next</a>
-                            </li>
-                        }
-                    </ul>
-                </nav>
-            }
+                    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Display", new { page = ViewBag.CurrentPage + 1 })">Next</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
         </div>
     </div>
 </div>
-
 
 <!--To Call the expenseviewmodel-->
 <partial name="_ExpenseModal" model="new ASI.Basecode.Services.ServiceModels.ExpenseViewModel()"/>

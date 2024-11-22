@@ -121,7 +121,7 @@ namespace ASI.Basecode.WebApp.Controllers
             try
             {
                 var expense = _expenseService.RetrieveExpense(id);
-                TempData["SuccessMessage"] = "Expense Deleted successfully!";
+                TempData["SuccessMessage"] = "Expense added successfully!";
                 return Ok(expense);
                 //return View(expense);
             }
