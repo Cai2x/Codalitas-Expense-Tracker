@@ -146,7 +146,9 @@
                     // First Chart
                     Highcharts.chart('first-container', {
                         chart: {
-                            type: 'column'
+                            type: 'column',
+                            borderRadius: 20,
+                            
                         },
                         title: {
                             text: 'Expenses by Category',
@@ -206,7 +208,9 @@
                     Highcharts.chart('container', {
                         colors: ['#01BAF2', '#71BF45', '#FAA74B', '#B37CD2'],
                         chart: {
-                            type: 'pie'
+                            type: 'pie',
+                            borderRadius: 20,
+
                         },
                         accessibility: {
                             point: {

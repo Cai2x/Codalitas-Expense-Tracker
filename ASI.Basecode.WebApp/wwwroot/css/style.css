@@ -27,6 +27,21 @@ body {
     overflow-x: hidden;
 }
 
+    body.dark-mode .sidebar .menu a {
+        color: white;
+    }
+
+        body.dark-mode .sidebar .menu a:hover {
+            background-color: lightgreen;
+            border-radius: 10px;
+            color: #426B1F;
+        }
+
+    body.dark-mode h1{
+        color: white;
+    }
+
+
 
 header {
     height: 80px;
@@ -55,7 +70,7 @@ header {
     text-decoration: none;
     background-color: #31541a;
     color: white;
-    margin-top:310px;
+    margin-top: 10px;
     font-weight: bold;
     padding: 10px 20px;
     border-radius: 5px;
@@ -91,8 +106,8 @@ header {
 }
 
     .sidebar.dark-mode {
-        background-color: #2e2e2e; /* Dark mode background color */
-        color: white; /* Dark mode text color */
+        background-color: #2e2e2e; 
+        color: white; 
     }
 
 
@@ -120,10 +135,14 @@ header {
             transition: background-color 0.3s ease;
         }
 
+        
+
+
             .sidebar .menu a:hover {
                 background-color: #E5EEDE;
                 border-radius: 10px;
             }
+
 
             .sidebar .menu a.active {
                 background-color: #426B1F; 
@@ -137,16 +156,27 @@ header {
                 margin-bottom: 20px;
             }
 
+.toggle-switch {
+    border: 1px solid;
+    border-radius: 7px;
+    padding: 7px;
+    gap: 10px;
+    position: center;
+    margin-top: 270px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
 
-
-
-
-
-
-
+    .toggle-switch .form-check-input:checked {
+        background-color: lightgreen;
+        border-color: #426B1F;
+    }
+    
 .content-container {
     z-index: 1; /* Lower than the sidebar */
-    padding-left: 250px;
+    padding-left: 220px;
     padding-top: 20px;
 }
 

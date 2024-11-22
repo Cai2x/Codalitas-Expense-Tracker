@@ -14,10 +14,25 @@ body {
             color: white;
         }
 
+        body.dark-mode .table th {
+            
+            color: lightgreen;
+        }
+        body.dark-mode  .table td {
+            
+            color: lightgreen;
+        }
+
+        body.dark-mode .table-container h2 {
+            color: lightgreen;
+        }
+
 
 /* Header container styling */
 .category-header {
     margin-bottom: 10px;
+    justify-content: space-between;
+
 }
 
 /* Divider line under "Expenses" heading */
@@ -137,12 +152,13 @@ h1 {
 .btn-success {
     background-color: #426B1F;
     border: none;
-    padding: 10px 20px;
     font-size: 18px;
     border-radius: 5px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 10px;
+    padding: 20px;
 }
 
     .btn-success:hover {
