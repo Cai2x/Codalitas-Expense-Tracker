@@ -147,7 +147,7 @@ h1 {
     padding: 20px;
     background-color: #f8f8f8;
     border-radius: 12px;
-    margin-bottom: 40px;
+   
 }
 
     .table-container h2 {
@@ -252,7 +252,7 @@ h1 {
     margin-right: 10px; 
     background-color: #426B1F;
     color: white; /* Text color when typing */
-    font-weight: 500;
+    font-weight: 400;
 }
     .search-bar input::placeholder {
         color: white;

@@ -25,11 +25,14 @@
 					<span>@Model.Username</span>
 				</div>
         -->
+        <div class="profile-details ms-5">
+            <h3 class="mb-1">@Model.FirstName @Model.LastName</h3>
+        </div>
 
     </div>
 
     <div class="form-container">
-        <div class="row mb-3">
+      @*   <div class="row mb-3">
             <div class="col-md-6">
                 <label for="FirstName" class="form-label">First Name</label>
                 <input asp-for="FirstName" class="form-control input-field" readonly />
@@ -40,10 +43,17 @@
                 <input asp-for="LastName" class="form-control input-field" readonly />
                 <span asp-validation-for="LastName" class="text-danger"></span>  
             </div>
+        </div> *@
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <label for="Email" class="form-label">Email</label>
+                <input asp-for="Email" class="form-control input-field" readonly />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
         </div>
         <div class="row mb-4">
             <div class="col-md-12">
-                <label for="Username" class="form-label">User Name</label>
+                <label for="Username" class="form-label">UserName</label>
                 <input asp-for="Username" class="form-control input-field" readonly />
                 <span asp-validation-for="Username" class="text-danger"></span>
             </div>

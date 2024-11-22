@@ -190,7 +190,7 @@ namespace ASI.Basecode.WebApp.Controllers
 
                 if (forgotpass)
                 {
-                    TempData["SuccessMessage"] = "Password changed successfully.";
+                    TempData["SuccessMessage"] = "Reset link sent successfully!.";
                 }
                 //return Ok(forgotpass);
             }
