@@ -146,7 +146,7 @@ namespace ASI.Basecode.WebApp.Controllers
         public IActionResult Edit(CategoryViewModel category, int currentPage)
         {
             _categoryService.UpdateCategory(category);
-            TempData["SuccessMessage"] = "Category Updated successfully!";
+            TempData["SuccessMessage"] = "Category Updated Successfully!";
             
             return RedirectToAction("Display", new { page = currentPage });
         }   
@@ -154,9 +154,18 @@ namespace ASI.Basecode.WebApp.Controllers
         [HttpPost]
         public IActionResult PostDelete(int Id)
         {
-            _categoryService.DeleteCategory(Id);
-            TempData["SuccessMessage"] = "Category deleted successfully!";
-            return Json(new { success = true });
+            try
+            {
+                _categoryService.DeleteCategory(Id);
+                TempData["SuccessMessage"] = "Category Deleted Successfully!";
+                return Json(new { success = true });
+            }
+
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
         #endregion
 

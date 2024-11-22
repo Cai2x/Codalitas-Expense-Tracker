@@ -117,6 +117,8 @@ namespace ASI.Basecode.WebApp.Controllers
             try
             {
                 _userService.AddUser(model);
+                TempData["SuccessMessage"] = "Registration successful! Please log In.";
+
                 return RedirectToAction("Login", "Account");
             }
             catch(InvalidDataException ex)
@@ -149,10 +151,13 @@ namespace ASI.Basecode.WebApp.Controllers
 
                 if (changepass)
                 {
-                    TempData["SuccessMessage"] = "Password changed successfully.";
+                    TempData["SuccessMessage"] = "Password Changed Successfully.";
                 }
-
-                TempData["ErrorMessage"] = "Change Password Failed";
+                else
+                {
+                    TempData["ErrorMessage"] = "Change Password Failed";
+                }
+                
 
                 return RedirectToAction("Index", "Settings");
             }
@@ -190,7 +195,7 @@ namespace ASI.Basecode.WebApp.Controllers
 
                 if (forgotpass)
                 {
-                    TempData["SuccessMessage"] = "Password changed successfully.";
+                    TempData["SuccessMessage"] = "Reset link sent successfully!.";
                 }
                 //return Ok(forgotpass);
             }
@@ -227,6 +232,7 @@ namespace ASI.Basecode.WebApp.Controllers
                 if (forgotpass)
                 {
                     TempData["SuccessMessage"] = "Password changed successfully.";
+
                     return RedirectToAction("Login", "Account");
                 }
 

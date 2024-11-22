@@ -248,8 +248,7 @@ h1 {
 .table-container {
     padding: 20px;
     background-color: #f8f8f8;
-    border-radius: 12px;
-    margin-bottom: 40px;
+    border-radius: 12px;  
 }
 
     .table-container h2 {
