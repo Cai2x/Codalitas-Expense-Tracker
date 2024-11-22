@@ -15,6 +15,6 @@ namespace ASI.Basecode.Services.Interfaces
         bool ResetPassword(string newPassword, string token); 
         Task<bool> SendPasswordResetEmailAsync(string email);
         Task SendEmailAsync(string email, string subject, string message);
-        UserViewModel ResetClaim(int id);
+        UserViewModel GetUserPass(int id);
     }
 }

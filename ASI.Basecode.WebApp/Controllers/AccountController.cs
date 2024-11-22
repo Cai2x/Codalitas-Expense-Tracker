@@ -125,20 +125,38 @@ namespace ASI.Basecode.WebApp.Controllers
         }
         
         [HttpPost]
-        public IActionResult Edit(EditProfileModel model)
+        public async Task<IActionResult> EditAsync(EditProfileModel model)
         {
             try
             {
                 _userService.UpdateUser(model);
-                var user = _userService.ResetClaim(model.UserId);
+                var user = _userService.GetUserPass(model.UserId);
                 var login = new LoginViewModel
                 {
                     Username = user.Username,
                     Password = user.Password,
                 };
 
-                TempData["SuccessMessage"] = "Profile Updated successfully!";
-                return RedirectToAction("Index","Settings");
+                User resetUser = null;
+                this._session.SetString("HasSession", "Exist");
+
+                var resetClaim = _userService.AuthenticateUser(login.Username,login.Password,ref resetUser);
+                if (resetClaim == LoginResult.Success)
+                {
+                    // Step 5: Sign in the user to reset claims
+                    await _signInManager.SignInAsync(resetUser);
+
+                    // Step 6: Set session data
+                    this._session.SetString("UserName", resetUser.FirstName);
+
+                    // Step 7: Redirect to the Settings page or another appropriate page
+                    return RedirectToAction("Index", "Settings");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Error during profile update. Please try again.";
+                    return RedirectToAction("Index", "Settings");
+                }
             }
             catch (Exception ex)
             {

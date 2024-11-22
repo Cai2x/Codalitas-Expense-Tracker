@@ -85,14 +85,15 @@ namespace ASI.Basecode.Services.Services
             return current_user;
         }
 
-        public UserViewModel ResetClaim(int id)
+        public UserViewModel GetUserPass(int id)
         {
             var current_user = _repository.GetUsers().Where(x => x.UserId == id)
                 .Select(e => new UserViewModel
                 {
                     Username = e.Username,
-                    Password = e.Password,
+                    Password = PasswordManager.DecryptPassword(e.Password),
                 }).FirstOrDefault();
+
             return current_user;
         }
 
