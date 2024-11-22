@@ -4,10 +4,35 @@ body {
     background-color: #FAFAF5;
 }
 
+    body.dark-mode {
+        background-color: #2e2e2e; /* Dark mode background color */
+        color: white; /* Dark mode text color */
+    }
+
+        body.dark-mode .table-container {
+            background-color: #333333;
+            color: white;
+        }
+
+        body.dark-mode .table th {
+            
+            color: lightgreen;
+        }
+        body.dark-mode  .table td {
+            
+            color: lightgreen;
+        }
+
+        body.dark-mode .table-container h2 {
+            color: lightgreen;
+        }
+
 
 /* Header container styling */
 .category-header {
     margin-bottom: 10px;
+    justify-content: space-between;
+
 }
 
 /* Divider line under "Expenses" heading */
@@ -33,10 +58,24 @@ body {
 }
 
 /*modal body*/
-.modal-cstm {
-    background-color: #FAFAF5 !important;
+.modal-cstm  {
+    background-color: #FAFAF5 ;
     padding: 20px !important;
     border-radius: 10px;
+}
+
+body.dark-mode .addcategory-content {
+    background-color: #333333;
+    color: white;
+}
+body.dark-mode .input-field {
+    background-color: #333333;
+    color: white;
+}
+
+body.dark-mode .textarea-field {
+    background-color: #333333;
+    color: white;
 }
 
 
@@ -113,12 +152,13 @@ h1 {
 .btn-success {
     background-color: #426B1F;
     border: none;
-    padding: 10px 20px;
     font-size: 18px;
     border-radius: 5px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 10px;
+    padding: 20px;
 }
 
     .btn-success:hover {
