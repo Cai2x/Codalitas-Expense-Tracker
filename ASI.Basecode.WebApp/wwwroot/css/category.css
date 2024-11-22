@@ -27,6 +27,10 @@ body {
             color: lightgreen;
         }
 
+        body.dark-mode  h2 {
+            color: white;
+        }
+
 
 /* Header container styling */
 .category-header {
