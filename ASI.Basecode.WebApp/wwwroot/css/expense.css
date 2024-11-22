@@ -301,3 +301,7 @@ body.dark-mode .box-input {
     background-color: #333333;
     color: #D1D1D1;
 }
+
+.hidden {
+    display: none;
+}

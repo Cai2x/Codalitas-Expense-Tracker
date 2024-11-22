@@ -67,6 +67,7 @@
     </div>
 </div>
 
+<script src="~/js/func.js"></script>
 <!-- JavaScript to Load Expense Data and Populate Modal -->
 <script>
     let editExpenseModal;  // Declare the modal globally
@@ -118,6 +119,7 @@
         }
     }
 
+    var editUrl = '@Url.Action("Edit", "Expense")';
     document.getElementById('editExpenseForm').addEventListener('submit', function (event) {
     event.preventDefault();  // Prevent default form submission
 
@@ -125,7 +127,7 @@
 
     // Submit form data via AJAX
     $.ajax({
-        url: '@Url.Action("Edit", "Expense")',  // Ensure the correct controller and action are used
+        url: editUrl + "?currentPage=" + currentPage,  // Ensure the correct controller and action are used
         type: 'POST',
         data: formData,
         processData: false,
@@ -134,7 +136,7 @@
             if (response.success) {
                 // Show success message using toastr
                 toastr.success('Expense updated successfully!');
-                loadData(currentPage, currentSort,currentCategory);
+                loadData(currentPage, currentSearch, currentSort, currentCategory);
                 editExpenseModal.hide();
                 document.body.classList.remove('modal-open');
                 document.querySelector('.modal-backdrop').remove();

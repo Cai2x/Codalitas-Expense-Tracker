@@ -38,10 +38,10 @@
                     <script>
                         // Add event listener to fetch categories and reset form on modal show
                         document.getElementById('addExpenseModal').addEventListener('show.bs.modal', function (event) {
-                            const categoryDropdownEdit = document.getElementById('categoryDropdown');
-                            fetchCategories(categoryDropdown, null);
                             resetForm();
                             today();
+                            const categoryDropdown = document.getElementById('categoryDropdown');
+                            fetchCategories(categoryDropdown, null);
                         });
 
                         function today(){
@@ -78,3 +78,4 @@
         </div>
     </div>
 </div>
+

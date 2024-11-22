@@ -1,9 +1,8 @@
 ﻿@model LoginViewModel
-
 @using static ASI.Basecode.Resources.Views.Screen
 
 @section styles {
-    <link rel="stylesheet" href="~/css/login.css"/>
+    <link rel="stylesheet" href="~/css/login.css" />
     <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@400;700&display=swap" rel="stylesheet">
 }
 
@@ -15,39 +14,38 @@
     @Html.AntiForgeryToken()
 </div>
 
-<div class="container  login-container" >
+<div class="container login-container">
     <div class="col-md-5">
         <h1 class="header-text text-center mt-3 mb-5">GasTue</h1>
-            <div class="card login-card">
-                <div class="card-body">
-                    <h3 class="text-left mt-3 mb-5 login-heading">Login</h3>
-                    <form asp-action="Login" asp-controller="Account" method="post" id="loginForm">
-                        <div class="mb-3">
-                            <label for="username" class="form-label">Username</label>
-                            <input type="text" id="username" class="form-control input" asp-for="Username" placeholder="Enter Username" />
-                            <span asp-validation-for="Username" class="text-danger"></span>
-                        </div>
-                        <div class="mb-5">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" id="password" class="form-control input" asp-for="Password" placeholder="Enter password" />
-                            <span asp-validation-for="Password" class="text-danger"></span>
-                        </div>
-                        <div class="d-grid gap-2 mt-4 mb-3">
-                            <button type="submit" class="btn btn-login text-white">Login</button>
-                        </div>
-                        <div class="text-center">
-                            <a asp-controller="Account" asp-action="ForgotPassword" class="text-muted">Forgot Password?</a>
-                        </div>
-                    </form>
-                    <div class="mt-5 text-center">
-                        <span>Don't have an account? </span>
-                        <a asp-controller="Account" asp-action="Register" class="text-success">Sign Up</a>
+        <div class="card login-card">
+            <div class="card-body">
+                <h3 class="text-left mt-3 mb-5 login-heading">Login</h3>
+                <form asp-action="Login" asp-controller="Account" method="post" id="loginForm">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" id="username" class="form-control input" asp-for="Username" placeholder="Enter Username" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
                     </div>
+                    <div class="mb-5">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" id="password" class="form-control input" asp-for="Password" placeholder="Enter password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="d-grid gap-2 mt-4 mb-3">
+                        <button type="submit" class="btn btn-login text-white">Login</button>
+                    </div>
+                    <div class="text-center">
+                        <a asp-controller="Account" asp-action="ForgotPassword" class="text-muted">Forgot Password?</a>
+                    </div>
+                </form>
+                <div class="mt-5 text-center">
+                    <span>Don't have an account? </span>
+                    <a asp-controller="Account" asp-action="Register" class="text-success">Sign Up</a>
                 </div>
-          </div>
+            </div>
+        </div>
     </div>
 </div>
-
 
 @section scripts {
     <script>

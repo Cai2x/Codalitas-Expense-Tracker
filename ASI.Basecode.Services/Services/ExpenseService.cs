@@ -27,11 +27,11 @@ namespace ASI.Basecode.Services.Services
 
         public List<ExpenseViewModel> RetrieveUserExpenses(int userId)
         {
-            var retrievedData = _expenseRepository.RetrieveExpenses().Where(x=>x.UserId == userId && x.IsDeleted == false)
-                .Join(_categoryRepository.RetrieveCategory().Where(c => c.IsDeleted == false), 
+            var retrievedData = _expenseRepository.RetrieveExpenses().Where(x => x.UserId == userId && x.IsDeleted == false)
+                .Join(_categoryRepository.RetrieveCategory().Where(c => c.IsDeleted == false),
                 expense => expense.CategoryId,
                 category => category.CategoryId,
-                (expense,category) => new ExpenseViewModel
+                (expense, category) => new ExpenseViewModel
                 {
                     ExpenseId = expense.ExpenseId,
                     Title = expense.Title,
@@ -42,7 +42,10 @@ namespace ASI.Basecode.Services.Services
                     Status = expense.Status,
                     ExpenseDateCreated = expense.DateCreated,
                     Date = expense.Date,
-        }).ToList();
+                })
+            .OrderByDescending(x => x.Status)
+            .ThenBy(x => x.CategoryName)
+            .ToList();
 
             return retrievedData;
         }
@@ -142,7 +145,9 @@ namespace ASI.Basecode.Services.Services
                     data = data.OrderByDescending(x => x.Date).ToList();
                     break;
                 default:
-                    data = data.OrderBy(x => x.CategoryName).ToList();
+                    data = data.OrderByDescending(x => x.Status)
+                               .ThenBy(x=> x.CategoryName)
+                               .ToList();
                     break;
             }
 

@@ -74,6 +74,7 @@ namespace ASI.Basecode.Services.Services
                     FirstName = e.FirstName,
                     LastName = e.LastName,
                     Username = e.Username,
+                    Email = e.Email,
                 }).FirstOrDefault();
 
             if (current_user is null)
