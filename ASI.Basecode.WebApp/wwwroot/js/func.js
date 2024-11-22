@@ -9,7 +9,7 @@ function fetchCategories(dropdownElement, id) {
                 dropdownElement.innerHTML = '';
 
                 // Default "Select Category" option
-                if (id == null && dropdownElement !== "filterCategory") {
+                if (id == null && dropdownElement.id !== "filterCategory") {
                     const defaultOption = document.createElement('option');
                     defaultOption.value = '';
                     defaultOption.textContent = 'Select Category';
@@ -17,6 +17,12 @@ function fetchCategories(dropdownElement, id) {
                     dropdownElement.appendChild(defaultOption);
                 }
 
+                if (dropdownElement.id === "filterCategory") {
+                    const defaultOption = document.createElement('option');
+                    defaultOption.value = '';
+                    defaultOption.textContent = 'All';
+                    dropdownElement.appendChild(defaultOption);
+                }
                 // Populate the dropdown with categories
                 categories.forEach(category => {
                     const option = document.createElement('option');

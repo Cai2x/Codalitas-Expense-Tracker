@@ -143,13 +143,8 @@ namespace ASI.Basecode.WebApp.Controllers
                 var resetClaim = _userService.AuthenticateUser(login.Username,login.Password,ref resetUser);
                 if (resetClaim == LoginResult.Success)
                 {
-                    // Step 5: Sign in the user to reset claims
                     await _signInManager.SignInAsync(resetUser);
-
-                    // Step 6: Set session data
                     this._session.SetString("UserName", resetUser.FirstName);
-
-                    // Step 7: Redirect to the Settings page or another appropriate page
                     return RedirectToAction("Index", "Settings");
                 }
                 else
