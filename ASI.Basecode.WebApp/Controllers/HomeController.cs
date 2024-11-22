@@ -46,7 +46,7 @@ namespace ASI.Basecode.WebApp.Controllers
         /// <returns> Home View </returns>
         public IActionResult Index()
         {
-            var data = _expenseService.RetrieveUserExpenses(int.Parse(UserId));
+            var data = _expenseService.RetrieveUserExpenses(int.Parse(UserId)).Where(x=>x.Status);
             var total = _expenseService.TotalRecord(int.Parse(UserId));
 
             var dashboardModel = new DashboardViewModel
@@ -70,7 +70,7 @@ namespace ASI.Basecode.WebApp.Controllers
                     return Ok(new { success = false, data = categories });
                 }
 
-                var expenses = _expenseService.RetrieveUserExpenses(int.Parse(UserId));
+                var expenses = _expenseService.RetrieveUserExpenses(int.Parse(UserId)).Where(x => x.Status);
 
                 if (expenses == null || !expenses.Any())
                 {

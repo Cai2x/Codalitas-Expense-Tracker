@@ -68,6 +68,13 @@ body {
     border-radius: 10px;
 }
 
+/*modal body*/
+.modal-cstm {
+    background-color: #FAFAF5 !important;
+    padding: 20px !important;
+    border-radius: 10px;
+}
+
 body.dark-mode .addcategory-content {
     background-color: #333333;
     color: white;
@@ -81,8 +88,6 @@ body.dark-mode .textarea-field {
     background-color: #333333;
     color: white;
 }
-
-
 
 .modal-title {
     font-family: 'Newsreader', serif;

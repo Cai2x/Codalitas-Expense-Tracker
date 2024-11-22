@@ -46,6 +46,11 @@ app.MapControllerRoute(
     pattern: "Category/Edit/{id}",
     defaults: new { controller = "Category", action = "Edit" });
 
+app.MapControllerRoute(
+    name: "profileEdit",
+    pattern: "Account/GetUserDetails/{id}",
+    defaults: new { controller = "Account", action = "Edit" });
+
 app.MapControllers();
 app.MapRazorPages();
 

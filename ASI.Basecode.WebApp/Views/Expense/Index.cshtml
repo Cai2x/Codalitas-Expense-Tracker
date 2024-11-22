@@ -26,7 +26,6 @@
     </div>
     <hr class="expenses-divider">
 
-
     <div class="table-container">
         <!-- Filters and Title Section -->
         <div class="d-flex align-items-center justify-content-between mb-1">
@@ -36,24 +35,25 @@
             @if (Model != null && Model.Any())
             {
                 <div class="search-bar">
-                    <i class="fa fa-search search-icon"></i>
-                    <input type="text" placeholder="Search Expenses" id="search">                 
+                    <input type="text" placeholder="Search Expenses" id="search" oninput="applyFilterSort()">
                 </div>
 
                 <!-- Filters Section -->
                 <div class="filters d-flex align-items-center">
-                    <select class="form-select-sm me-2" id="filterCategory" onchange="applyFilter()">
-                        <option value="">Filter by Category</option>                       
-                    </select>
+                    <h5 class="mb-0">Category</h5>
+                <select class="form-select-sm me-2" id="filterCategory" onchange="applyFilterSort()">
+                </select>
 
-                    <select class="form-select-sm" id="sortExpenses" onchange="applySort()">
-                        <option value="">Sort by</option>
-                        <option value="amount_asc">Amount (Low to High)</option>
-                        <option value="amount_desc">Amount (High to Low)</option>
-                        <option value="date_asc">Date (Oldest First)</option>
-                        <option value="date_desc">Date (Newest First)</option>
-                    </select>
-                </div>
+                    <h5 class="mb-0">Sort by</h5>
+                <select class="form-select-sm" id="sortExpenses" onchange="applyFilterSort()">
+                    <option value="">N/A</option>
+                    <option value="amount_asc">Amount (Low to High)</option>
+                    <option value="amount_desc">Amount (High to Low)</option>
+                    <option value="date_asc">Date (Oldest First)</option>
+                    <option value="date_desc">Date (Newest First)</option>
+                </select>
+
+            </div>
             }
         </div>
 
@@ -107,43 +107,14 @@
                 </tbody>
             </table>
         }
-
-       
-
-    
-    </div>
-    @if (Model != null && Model.Any())
-    {
-        <!-- Pagination Section -->
+        <!----Pagination to diri---->
         <div class="pagination-container text-center">
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
-                    @if (ViewBag.CurrentPage > 1)
-                    {
-                        <li class="page-item">
-                            <a class="page-link" href="@Url.Action("Display", new { page = ViewBag.CurrentPage - 1 })">Previous</a>
-                        </li>
-                    }
-
-                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
-                    {
-                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
-                            <a class="page-link" href="@Url.Action("Display", new { page = i })">@i</a>
-                        </li>
-                    }
-
-                    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
-                    {
-                        <li class="page-item">
-                            <a class="page-link" href="@Url.Action("Display", new { page = ViewBag.CurrentPage + 1 })">Next</a>
-                        </li>
-                    }
                 </ul>
             </nav>
-
         </div>
-    }
-    
+    </div>
 </div>
 
 
@@ -164,6 +135,157 @@
         var successMessage = '@TempData["SuccessMessage"]';
         if (successMessage) {
             toastr.success(successMessage);
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Initialize global variables to store the current sort and page
+        let currentPage = 1;
+        let currentSort = '';
+        let currentCategory = '';
+        let currentSearch = '';
+
+        // When the sort dropdown changes, call the applySort function
+        function applyFilterSort() {
+            currentSort = document.getElementById('sortExpenses').value;  // Get the selected sorting option
+            currentCategory = document.getElementById('filterCategory').value;
+            currentSearch = document.getElementById('search').value;
+            loadData(1, currentSearch, currentSort, currentCategory);  // Fetch sorted and paginated data
+        }
+
+        // Load data with pagination and sorting
+        function loadData(page, expenseName, sortOption, category) {
+            $.ajax({
+                url: '@Url.Action("SearchFilter", "Expense")',
+                type: 'GET',
+                data: {page: page, expenseName: expenseName, sortType: sortOption, filterCategory: category, pageSize: 7 },
+                success: function (response) {
+                    updateTable(response.data);  // Update the table with the sorted data
+                    updatePagination(response.totalPages, response.currentPage);  // Update pagination controls
+                },
+                error: function () {
+                    alert('An error occurred while fetching sorted data');
+                }
+            });
+        }
+
+        // Update the table with the data from the server
+        function updateTable(data) {
+            var tbody = document.querySelector('table tbody');
+            tbody.innerHTML = '';  // Clear the current table content
+
+            data.forEach(function (item) {
+                var row = document.createElement('tr');
+                var formattedAmount = parseFloat(item.amount).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+
+                // Add columns to the row
+                row.innerHTML = `
+                        <td>${item.title}</td>
+                        <td><span class="badge bg-secondary">${item.categoryName}</span></td>
+                        <td>${formattedAmount}</td>
+                        <td>
+                            ${item.status ? '<span class="badge bg-success">Published</span>' : '<span class="badge bg-warning">Draft</span>'}
+                        </td>
+                        <td>
+                            <a href="javascript:void(0);" onclick="openEditModal(${item.expenseId})" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editExpenseModal">
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+                            <a href="javascript:void(0);" onclick="openDeleteModal(${item.expenseId})" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteExpenseModal">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
+                    `;
+                tbody.appendChild(row);  // Append the row to the table body
+            });
+        }
+
+        // Update the pagination controls
+        function updatePagination(totalPages, currentPage) {
+            var pagination = document.querySelector('.pagination');
+            pagination.innerHTML = '';  // Clear existing pagination controls
+
+            // Add "Previous" button if necessary
+            if (currentPage > 1) {
+                pagination.innerHTML += `<li class="page-item">
+                        <a class="page-link" href="javascript:void(0);" onclick="changePage(${currentPage - 1})">Previous</a>
+                    </li>`;
+            }
+
+            // Add page number buttons
+            for (var i = 1; i <= totalPages; i++) {
+                pagination.innerHTML += `<li class="page-item ${i === currentPage ? 'active' : ''}">
+                        <a class="page-link" href="javascript:void(0);" onclick="changePage(${i})">${i}</a>
+                    </li>`;
+            }
+
+            // Add "Next" button if necessary
+            if (currentPage < totalPages) {
+                pagination.innerHTML += `<li class="page-item">
+                        <a class="page-link" href="javascript:void(0);" onclick="changePage(${currentPage + 1})">Next</a>
+                    </li>`;
+            }
+        }
+
+        // Change the current page and reload the data
+        function changePage(page) {
+            currentPage = page;  // Update current page
+            loadData(currentPage, currentSearch, currentSort, currentCategory);  // Reload the data with new page and current sorting
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const categoryFilter = document.getElementById('filterCategory');
+            fetchCategories(categoryFilter, null); // Call the function to populate categories
+
+            let totalPagesFromServer = @ViewBag.TotalPages; // Access ViewBag values for totalPages
+            let currentPageFromServer = @ViewBag.CurrentPage; // Access ViewBag values for currentPage
+            updatePagination(totalPagesFromServer, currentPageFromServer);
+        });
+
+        function fetchCategories(dropdownElement, id) {
+            fetch('/Expense/Category')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const categories = data.data;
+
+                        // Clear existing options
+                        dropdownElement.innerHTML = '';
+
+                        if (id == null && dropdownElement !== filterCategory) {
+                            const defaultOption = document.createElement('option');
+                            defaultOption.value = '';
+                            defaultOption.textContent = 'Select Category';  // Adjust text as needed
+                            defaultOption.hidden = true;
+                            dropdownElement.appendChild(defaultOption);
+                        }
+
+                        if(dropdownElement === filterCategory)
+                        {
+                            const defaultOption = document.createElement('option');
+                            defaultOption.value = '';
+                            defaultOption.textContent = 'All';  // Adjust text as needed
+                            dropdownElement.appendChild(defaultOption);
+                        }
+
+                        // Populate the dropdown with fetched categories
+                        categories.forEach(category => {
+                            const option = document.createElement('option');
+                            option.value = category.categoryId;
+                            option.textContent = category.name;
+                            dropdownElement.appendChild(option);
+
+                            if (id != null && category.categoryId === id){
+                                option.selected = true;
+                            }
+                        });
+                    } else {
+                        console.error("Error fetching categories:", data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching categories:', error);
+                });
         }
     </script>
 }

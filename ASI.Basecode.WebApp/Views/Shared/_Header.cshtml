@@ -3,27 +3,30 @@
 
 @if (!(ViewBag.LoginView == true))
 {
+    string profileUrl;
+
+    if (HttpContextAccessor.HttpContext.Session.GetString("ProfileUrl") != null)
+    {
+        profileUrl = HttpContextAccessor.HttpContext.Session.GetString("ProfileUrl");
+    }
+    else
+    {
+        profileUrl = "https://127.0.0.1:8080/default.jpg";
+    }
+
     <header>
         <div class="logosec hover-pointer">
-
-            <!-- header logo
-            <img src="~/img/asi-logo-invert.svg"
-                 style="width: 185px;" alt="logo"
-                 onclick="window.location.href = '@Url.Action("Index", "Home")';">
-                -->
+            <!-- header logo -->
         </div>
         <div>
-            <a asp-action="Index" asp-controller="Settings" class="profile" >
-            @HttpContextAccessor.HttpContext.Session.GetString("UserName")
-            
-            <div class="mr-20 hover-pointer" style="position: relative">
-                <div class="dp">
-                    <img src="~/img/profile-logo.png"
-                     class="dpicn hover-pointer"
-                     alt="dp">
+            <a asp-action="Index" asp-controller="Settings" class="profile">
+                @HttpContextAccessor.HttpContext.Session.GetString("UserName")
+                <div class="mr-20 hover-pointer" style="position: relative">
+                    <div class="dp">
+                        <!-- Check if ProfileUrl is null, and adjust logic accordingly -->
+                        <img src=@profileUrl class="dpicn hover-pointer" alt="dp">
+                    </div>
                 </div>
-                   
-            </div>
             </a>
         </div>
     </header>

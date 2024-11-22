@@ -1,5 +1,6 @@
 ﻿using ASI.Basecode.Services.Interfaces;
 using ASI.Basecode.Services.Services;
+using ASI.Basecode.WebApp.Models;
 using ASI.Basecode.WebApp.Mvc;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -30,6 +31,7 @@ namespace ASI.Basecode.WebApp.Controllers
             try
             {
                 var data = _userService.RetrieveUser(int.Parse(UserId));
+
                 return View(data);
             }
             catch (Exception ex)

@@ -22,13 +22,17 @@ namespace ASI.Basecode.Data.Repositories
         {
             return this.GetDbSet<User>().Any(x => x.Username == userName);
         }
+        public bool EmailExists(string email)
+        {
+            return this.GetDbSet<User>().Any(x => x.Email == email);
+        }
 
         public void AddUser(User user)
         {
             this.GetDbSet<User>().Add(user);
             UnitOfWork.SaveChanges();
         }
-        public void ChangePassword(User user)
+        public void UpdateUser(User user)
         {
             this.GetDbSet<User>().Update(user);
             UnitOfWork.SaveChanges();

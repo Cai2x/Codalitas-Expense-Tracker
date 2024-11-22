@@ -43,6 +43,12 @@ namespace ASI.Basecode.Data
             {
                 return GetFolderPath(Path.Combine(LogDirectory, appName));
             }
+
+            public static string CoverImagesDirectory
+            {
+                get { return GetFolderPath(SetupRootDirectory, "Picture assets"); }
+            }
+
         }
 
         /// <summary>

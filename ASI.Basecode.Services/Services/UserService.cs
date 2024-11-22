@@ -11,6 +11,7 @@ using System.Net.Mail;
 using System.Net;
 using System.Threading.Tasks;
 using static ASI.Basecode.Resources.Constants.Enums;
+using ASI.Basecode.Data.Repositories;
 
 namespace ASI.Basecode.Services.Services
 {
@@ -40,6 +41,13 @@ namespace ASI.Basecode.Services.Services
         public void AddUser(UserViewModel model)
         {
             var user = new User();
+            var existingEmail = _repository.EmailExists(model.Email);
+
+            if (existingEmail)
+            {
+                throw new InvalidDataException("Email already in use");
+            }
+
             if (!_repository.UserExists(model.Username))
             {
                 _mapper.Map(model, user);
@@ -57,22 +65,58 @@ namespace ASI.Basecode.Services.Services
             }
         }
 
-        public UserViewModel RetrieveUser(int user)
+        public EditProfileModel RetrieveUser(int user)
         {
             var current_user = _repository.GetUsers().Where(x=>x.UserId == user)
-                .Select(e=>new UserViewModel
+                .Select(e=>new EditProfileModel
                 {
+                    UserId = e.UserId,
                     FirstName = e.FirstName,
                     LastName = e.LastName,
-                    Username = e.Username
+                    Username = e.Username,
                 }).FirstOrDefault();
 
             if (current_user is null)
             {
-                new UserViewModel();
+                new EditProfileModel();
             }
 
             return current_user;
+        }
+
+        public UserViewModel ResetClaim(int id)
+        {
+            var current_user = _repository.GetUsers().Where(x => x.UserId == id)
+                .Select(e => new UserViewModel
+                {
+                    Username = e.Username,
+                    Password = e.Password,
+                }).FirstOrDefault();
+            return current_user;
+        }
+
+        public void UpdateUser(EditProfileModel model)
+        {
+            var profile = _repository.GetUsers().Where(x => x.UserId == model.UserId).FirstOrDefault();
+
+            if (profile is null)
+            {
+                throw new InvalidDataException(Resources.Messages.Errors.UserNotFound);
+            }
+
+            _mapper.Map(model, profile);
+            profile.DateUpdated = DateTime.Now;
+            profile.UpdatedBy = System.Environment.UserName;
+
+            try
+            {
+                _repository.UpdateUser(profile);
+            }
+
+            catch (Exception)
+            {
+                throw new InvalidDataException(Resources.Messages.Errors.ServerError);
+            }
         }
 
         public bool ChangePassword(int userId, string oldPassword, string newPassword)
@@ -98,7 +142,7 @@ namespace ASI.Basecode.Services.Services
             user.DateUpdated = DateTime.Now;
             user.UpdatedBy = System.Environment.UserName;
 
-            _repository.ChangePassword(user);
+            _repository.UpdateUser(user);
             return true;
         }
         //FOR EMAIL SENDING
@@ -165,12 +209,6 @@ namespace ASI.Basecode.Services.Services
             {
                 return false;
             }
-            if (validToken.ExpirationDate < DateTime.UtcNow)
-            {
-                _tokenrepository.DeleteToken(validToken);
-                return false;
-                
-            }
             
             var user  = _repository.GetUsers().Where(x => x.Email == validToken.Email).FirstOrDefault();
             if (user == null)
@@ -186,11 +224,9 @@ namespace ASI.Basecode.Services.Services
             user.DateUpdated = DateTime.Now;
             user.UpdatedBy = System.Environment.UserName;
 
-            _repository.ChangePassword(user);
+            _repository.UpdateUser(user);
             _tokenrepository.DeleteToken(validToken);
             return true;
         }
-
-
     }
 }

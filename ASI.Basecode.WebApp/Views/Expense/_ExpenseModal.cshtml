@@ -38,7 +38,8 @@
                     <script>
                         // Add event listener to fetch categories and reset form on modal show
                         document.getElementById('addExpenseModal').addEventListener('show.bs.modal', function (event) {
-                            fetchAddCategories(); // Fetch categories
+                            const categoryDropdownEdit = document.getElementById('categoryDropdown');
+                            fetchCategories(categoryDropdown, null);
                             resetForm();
                             today();
                         });
@@ -53,49 +54,6 @@
                             // Reset the form fields to empty
                             const form = document.getElementById('addExpenseForm');
                             form.reset();  // Resets all form fields
-                        }
-
-                        function fetchAddCategories() {
-                            fetch('/Expense/Category')
-                                .then(response => response.json())
-                                .then(data => {
-                                    if (data.success) {
-                                        const dropdown = document.getElementById('categoryDropdown');
-                                        dropdown.innerHTML = ''; // Clear any existing options
-
-                                        const defaultOption = document.createElement('option');
-                                        defaultOption.value = "";
-                                        defaultOption.textContent = "Select Category";
-                                        defaultOption.disabled = true;
-                                        defaultOption.selected = true;
-                                        defaultOption.hidden = true;
-                                        dropdown.appendChild(defaultOption);
-
-                                        // Append fetched categories
-                                        data.data.forEach(category => {
-                                            const option = document.createElement('option');
-                                            option.value = category.categoryId; // Pass CategoryId as value
-                                            option.textContent = category.name;  // Display CategoryName
-                                            dropdown.appendChild(option);
-                                        });
-
-                                    } 
-                                    else {
-                                        const dropdown = document.getElementById('categoryDropdown');
-                                        dropdown.innerHTML = ''; // Clear any existing options
-
-                                        const defaultOption = document.createElement('option');
-                                        defaultOption.value = "";
-                                        defaultOption.textContent = "No Categories Added";
-                                        defaultOption.disabled = true;
-                                        defaultOption.selected = true;
-                                        defaultOption.hidden = true;
-                                        dropdown.appendChild(defaultOption);
-                                    }
-                                })
-                                .catch(error => {
-                                    console.error('Error fetching categories:', error);
-                                });
                         }
                     </script>
 

@@ -23,6 +23,7 @@ namespace ASI.Basecode.Data.Models
         public string UpdatedBy { get; set; }
         public bool DarkMode { get; set; }
         public bool IsDeleted { get; set; }
+        public string ProfileUrl { get; set; }
 
         public virtual ICollection<Category> Categories { get; set; }
         public virtual ICollection<Token> Tokens { get; set; }

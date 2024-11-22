@@ -2,8 +2,8 @@
 
 <div class="modal fade" id="deleteCategoryModal" tabindex="-1" role="dialog" aria-labelledby="deletecategoryModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content del-modal-content">
-            <div class="delete-modal-body del-modal-body text-center">
+        <div class="modal-content delete-modal-content">
+            <div class="delete-modal-body delete-modal-body text-center">
                 <div class="mb-3">
                     <span class="display-1 text-danger">&times;</span>
                 </div>
@@ -36,6 +36,7 @@
     function openDeleteCategoryModal(categoryId) {
         // Open the modal programmatically
         if (deleteCategoryModal) {
+            currentCategoryId = categoryId;
             deleteCategoryModal.show();
         } else {
             console.error("Modal instance not initialized.");

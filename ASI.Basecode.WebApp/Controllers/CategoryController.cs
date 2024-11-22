@@ -36,7 +36,6 @@ namespace ASI.Basecode.WebApp.Controllers
         {
             try
             {
-                int userId = int.Parse(UserId);
                 int pageSize = 7; // items per page for pagination
 
                 var data = _categoryService.RetrieveUserCategory(int.Parse(UserId));
@@ -44,8 +43,7 @@ namespace ASI.Basecode.WebApp.Controllers
 
                 if (data == null || !data.Any())
                 {
-                    ViewBag.CurrentPage = 1;
-                    ViewBag.TotalPages = 1;
+                    return View(null);
                 }
 
                 var paginatedCategories = data

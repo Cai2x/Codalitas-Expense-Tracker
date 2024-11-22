@@ -43,11 +43,8 @@ namespace ASI.Basecode.WebApp.Controllers
                 int pageSize = 7; // items per page for pagination
 
                 var data = _expenseService.RetrieveUserExpenses(int.Parse(UserId));
-
                 if (data == null || !data.Any())
                 {
-                    ViewBag.CurrentPage = 1;
-                    ViewBag.TotalPages = 1;
                     return View(null);  // Return an empty list to avoid null reference
                 }
 
@@ -56,7 +53,6 @@ namespace ASI.Basecode.WebApp.Controllers
                    .Take(pageSize)
                    .ToList();
 
-
                 // Calculate total pages
                 var totalExpenses = data.Count;
                 var totalPages = (int)Math.Ceiling(totalExpenses / (double)pageSize);
@@ -64,18 +60,47 @@ namespace ASI.Basecode.WebApp.Controllers
                 ViewBag.CurrentPage = page;
                 ViewBag.TotalPages = totalPages;
 
-                if (data is null)
-                {
-                    // Return an empty list to avoid null reference
-                    return View(null);
-                }
-
                 // Return the view with the retrieved data
                 return View("Index", paginatedExpenses);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult SearchFilter(int page, string expenseName, string sortType, int? filterCategory, int pageSize = 7)
+        {
+            try
+            {
+                // Retrieve the user's expenses (or modify the logic as per your business rules)
+                var data = _expenseService.SearchFilterExpense(expenseName, sortType, filterCategory, int.Parse(UserId));
+
+                // If no data exists, return an empty response
+                if (data == null || !data.Any())
+                {
+                    return Ok(new { success = false, data = data, totalPages = 0, currentPage = page });
+                }
+
+                // Apply pagination logic
+                var totalItems = data.Count();
+                var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+                var paginatedData = data.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+                // Return response with success status, data, and pagination info
+                return Ok(new
+                {
+                    success = true,
+                    data = paginatedData,
+                    totalPages = totalPages,
+                    currentPage = page
+                });
+            }
+            catch (Exception ex)
+            {
+                // Return bad request in case of error
+                return BadRequest(new { success = false, message = ex.Message });
             }
         }
 
@@ -105,7 +130,6 @@ namespace ASI.Basecode.WebApp.Controllers
             try
             {
                 var expense = _expenseService.RetrieveExpense(id);
-                TempData["SuccessMessage"] = "Expense Updated successfully!";
                 //return View(expense);
                 return Ok(expense);
             }
@@ -174,8 +198,7 @@ namespace ASI.Basecode.WebApp.Controllers
             try
             {
                 _expenseService.UpdateExpense(expense);
-                TempData["SuccessMessage"] = "Expense Updated successfully!";
-                return RedirectToAction("Display", new { page = currentPage });
+                return Json(new { success = true, currentPage = currentPage });
             }
             catch (Exception ex)
             {
@@ -189,8 +212,7 @@ namespace ASI.Basecode.WebApp.Controllers
             try
             {
                 _expenseService.DeleteExpense(Id);
-                TempData["SuccessMessage"] = "Expense Deleted Successfully!";
-                return Json(new { success = true, redirectUrl = Url.Action("Display", new { page = currentPage }) });
+                return Json(new { success = true, currentPage = currentPage });
             }
             catch (Exception ex)
             {

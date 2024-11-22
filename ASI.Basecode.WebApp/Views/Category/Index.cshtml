@@ -64,20 +64,18 @@
                 }
             </tbody>
         </table>
-
     }
-    
-</div>
-<!-- Pagination Controls -->
-<div class="pagination-container text-center">
-    <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
-            @if (ViewBag.CurrentPage > 1)
-            {
-                <li class="page-item">
-                    <a class="page-link" href="@Url.Action("Display", new { page = ViewBag.CurrentPage - 1 })">Previous</a>
-                </li>
-            }
+
+    <!-- Pagination Controls -->
+    <div class="pagination-container text-center">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                @if (ViewBag.CurrentPage > 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="@Url.Action("Display", new { page = ViewBag.CurrentPage - 1 })">Previous</a>
+                    </li>
+                }
 
             @for (int i = 1; i <= ViewBag.TotalPages; i++)
             {
@@ -86,15 +84,15 @@
                 </li>
             }
 
-            @if (ViewBag.CurrentPage < ViewBag.TotalPages)
-            {
-                <li class="page-item">
-                    <a class="page-link" href="@Url.Action("Display", new { page = ViewBag.CurrentPage + 1 })">Next</a>
-                </li>
-            }
-        </ul>
-    </nav>
-
+                @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="@Url.Action("Display", new { page = ViewBag.CurrentPage + 1 })">Next</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
 </div>
 
 <!--To call Add Category Modal-->

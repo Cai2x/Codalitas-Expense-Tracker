@@ -25,9 +25,13 @@ body {
             color: lightgreen;
         }
 
-    body.dark-mode .table-container h2 {
+        body.dark-mode .table-container h2 {
         color: lightgreen;
-    }
+        }
+
+        body.dark-mode .table-container h5 {
+            color: lightgreen;
+        }
         body.dark-mode h2 {
             color: white;
         }
@@ -171,6 +175,12 @@ h1 {
 }
 
     .table-container h2 {
+        font-size: 1.5rem;
+        color: #426B1F;
+        margin-bottom: 15px;
+    }
+
+    .table-container h5 {
         font-size: 1.5rem;
         color: #426B1F;
         margin-bottom: 15px;

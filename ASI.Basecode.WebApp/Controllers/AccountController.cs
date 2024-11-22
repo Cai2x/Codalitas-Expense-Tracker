@@ -81,7 +81,7 @@ namespace ASI.Basecode.WebApp.Controllers
         /// 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
             User user = null;
 
@@ -110,6 +110,42 @@ namespace ASI.Basecode.WebApp.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult GetUserDetails(int id)
+        {
+            try
+            {
+                var expense = _userService.RetrieveUser(id);
+                return Ok(expense);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        
+        [HttpPost]
+        public IActionResult Edit(EditProfileModel model)
+        {
+            try
+            {
+                _userService.UpdateUser(model);
+                var user = _userService.ResetClaim(model.UserId);
+                var login = new LoginViewModel
+                {
+                    Username = user.Username,
+                    Password = user.Password,
+                };
+
+                TempData["SuccessMessage"] = "Profile Updated successfully!";
+                return RedirectToAction("Index","Settings");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost]
         [AllowAnonymous]
         public IActionResult Register(UserViewModel model)
@@ -125,18 +161,18 @@ namespace ASI.Basecode.WebApp.Controllers
             {
                 TempData["ErrorMessage"] = ex.Message;
             }
-            catch(Exception)
+            catch(Exception ex)
             {
-                TempData["ErrorMessage"] = Resources.Messages.Errors.ServerError;
+                //TempData["ErrorMessage"] = Resources.Messages.Errors.ServerError;
+                TempData["ErrorMessage"] = ex.Message;
+                throw new InvalidDataException(ex.Message);
             }
             return View();
         }
 
-        
-
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult ChangePassword(ChangePasswordModel model)
+        public IActionResult ChangePassword(ForgotPasswordModel model)
         {
             try
             {
@@ -180,6 +216,7 @@ namespace ASI.Basecode.WebApp.Controllers
         {
             return View();
         }
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> ForgotPassword(string email)
@@ -221,6 +258,7 @@ namespace ASI.Basecode.WebApp.Controllers
         {
             return View();
         }
+
         [HttpPost]
         [AllowAnonymous]
         public IActionResult ResetPassword(string newPassword, string token)

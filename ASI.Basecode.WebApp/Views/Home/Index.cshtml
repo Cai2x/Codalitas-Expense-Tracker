@@ -50,7 +50,7 @@
         <div class="card">
             <div>
                 <span class="card-title">TOTAL EXPENSES</span>
-                <div class="card-value total-expenses">$@Model.TotalExpense</div>
+                <div class="card-value total-expenses">@Model.TotalExpense.ToString("C")</div>
             </div>
         </div>
         <div class="card">
@@ -92,7 +92,6 @@
 
 
     <div class="chart-section">
-
         <div class="chart-row">
             <div class="chart-half-row">
                 <figure class="highcharts-figure">
@@ -135,8 +134,8 @@
 
         document.addEventListener("DOMContentLoaded", function () {
             // Fetch the categories first, then create the charts once the data is available
-            populateCategory()
-                .then(({ categories, totalExpenses }) => {
+            populateChart()
+                .then(({ categories, totalExpenses, percentage }) => {
                     startOfMonth();
 
                     // First Chart
@@ -208,6 +207,9 @@
                             borderRadius: 20,
 
                         },
+                        title: {
+                            text: 'Expense percentage via Category',
+                        },
                         accessibility: {
                             point: {
                                 valueSuffix: '%'
@@ -227,80 +229,7 @@
                                 showInLegend: true
                             }
                         },
-                        series: [{
-                            name: 'Energy Types',
-                            colorByPoint: true,
-                            innerSize: '75%',
-                            data: [{
-                                name: 'EV',
-                                y: 68.1
-                            }, {
-                                name: 'Hybrids',
-                                y: 11.0
-                            }, {
-                                name: 'Diesel',
-                                y: 11.2
-                            }, {
-                                name: 'Petrol',
-                                y: 9.7
-                            }]
-                        }]
-                    });
-
-                    // Third Chart
-                    Highcharts.chart('third-container', {
-                        chart: {
-                            type: 'pie'
-                        },
-                        tooltip: {
-                            valueSuffix: '%'
-                        },
-                        plotOptions: {
-                            series: {
-                                allowPointSelect: true,
-                                cursor: 'pointer',
-                                dataLabels: [{
-                                    enabled: true,
-                                    distance: 20
-                                }, {
-                                    enabled: true,
-                                    distance: -40,
-                                    format: '{point.percentage:.1f}%',
-                                    style: {
-                                        fontSize: '1.2em',
-                                        textOutline: 'none',
-                                        opacity: 0.7
-                                    },
-                                    filter: {
-                                        operator: '>',
-                                        property: 'percentage',
-                                        value: 10
-                                    }
-                                }]
-                            }
-                        },
-                        series: [{
-                            name: 'Composition',
-                            colorByPoint: true,
-                            data: [{
-                                name: 'Water',
-                                y: 55.02
-                            }, {
-                                name: 'Fat',
-                                sliced: true,
-                                selected: true,
-                                y: 26.71
-                            }, {
-                                name: 'Carbohydrates',
-                                y: 1.09
-                            }, {
-                                name: 'Protein',
-                                y: 15.5
-                            }, {
-                                name: 'Ash',
-                                y: 1.68
-                            }]
-                        }]
+                        series: percentage
                     });
                 })
                 .catch(error => {
@@ -308,8 +237,7 @@
                 });
         });
 
-        // Modify populateCategory to return a promise
-        function populateCategory() {
+        function populateChart() {
             return new Promise((resolve, reject) => {
                 fetch('/Home/DataParse')  // Call the API that returns categories and expenses
                     .then(response => response.json())
@@ -346,8 +274,25 @@
 
                             // Create an array of total expenses that aligns with the order of categories
                             const totalExpenses = categories.map(category => categoryTotals[category] || 0); // If no expense found for category, default to 0
+                            const totalExpense = totalExpenses.reduce((sum, amount) => sum + amount, 0);
+
+                            // Transform the data into the required format for the chart
+                            const chartData = categories.map(category => ({
+                                name: category,
+                                y: totalExpense > 0
+                                    ? Math.round((categoryTotals[category] / totalExpense) * 100)
+                                    : 0
+                            }));
+
                             // Resolve the promise with both categories and their total expenses
-                            resolve({ categories, totalExpenses });
+                            resolve({ categories, totalExpenses,
+                                percentage: [{
+                                    name: 'Expense Percentage',
+                                    colorByPoint: true,
+                                    innerSize: '75%',
+                                    data: chartData
+                                }]
+                            });
                         } else {
                             reject("Error fetching data: " + data.message);
                         }
@@ -404,16 +349,33 @@
                         // Create an array of total expenses that aligns with the order of categories
                         const totalExpenses = categories.map(category => categoryTotals[category] || 0);
 
-                        // Update the charts with the new data
-                        updateCharts(categories, totalExpenses);
-                        updateTable(expenses);
-
                         // Calculate total expenses and total transactions
                         const totalExpense = totalExpenses.reduce((sum, amount) => sum + amount, 0);
                         const totalTransaction = expenses.length;  // Number of expenses is the number of transactions
 
+                        const chartData = categories.map(category => ({
+                            name: category,
+                            y: totalExpense > 0
+                                ? Math.round((categoryTotals[category] / totalExpense) * 100)
+                                : 0
+                        }));
+
+                        // Update the charts with the new data
+                        updateCharts(categories, totalExpenses,
+                            [{
+                                name: 'Categories',
+                                colorByPoint: true,
+                                innerSize: '75%',
+                                data: chartData
+                            }]
+                        );
+                        updateTable(expenses);
+
                         // Update the total expenses and total transaction cards
-                        document.querySelector('.card-value.total-expenses').textContent = `$${totalExpense.toFixed(2)}`;
+                        document.querySelector('.card-value.total-expenses').textContent = new Intl.NumberFormat('en-US', {
+                            style: 'currency',
+                            currency: 'USD', // Specify the currency, like USD, EUR, etc.
+                        }).format(totalExpense);
                         document.querySelector('.card-value.total-transactions').textContent = totalTransaction;
                     } 
                     else {
@@ -426,13 +388,12 @@
                 });
         }
 
-        function updateCharts(categories, totalExpenses) {
+        function updateCharts(categories, totalExpenses, percentage) {
             // Destroy existing charts before creating new ones
             if (Highcharts.charts[0]) Highcharts.charts[0].destroy();  // Destroy first chart
             if (Highcharts.charts[1]) Highcharts.charts[1].destroy();  // Destroy second chart
             if (Highcharts.charts[2]) Highcharts.charts[2].destroy();  // Destroy third chart
 
-            // Recreate the first chart (Expenses by Category)
             Highcharts.chart('first-container', {
                 chart: {
                     type: 'column'
@@ -497,6 +458,9 @@
                 chart: {
                     type: 'pie'
                 },
+                title: {
+                    text: 'Expense percentage via Category',
+                },
                 accessibility: {
                     point: {
                         valueSuffix: '%'
@@ -516,80 +480,7 @@
                         showInLegend: true
                     }
                 },
-                series: [{
-                    name: 'Energy Types',
-                    colorByPoint: true,
-                    innerSize: '75%',
-                    data: [{
-                        name: 'EV',
-                        y: 68.1
-                    }, {
-                        name: 'Hybrids',
-                        y: 11.0
-                    }, {
-                        name: 'Diesel',
-                        y: 11.2
-                    }, {
-                        name: 'Petrol',
-                        y: 9.7
-                    }]
-                }]
-            });
-
-            // Third Chart
-            Highcharts.chart('third-container', {
-                chart: {
-                    type: 'pie'
-                },
-                tooltip: {
-                    valueSuffix: '%'
-                },
-                plotOptions: {
-                    series: {
-                        allowPointSelect: true,
-                        cursor: 'pointer',
-                        dataLabels: [{
-                            enabled: true,
-                            distance: 20
-                        }, {
-                            enabled: true,
-                            distance: -40,
-                            format: '{point.percentage:.1f}%',
-                            style: {
-                                fontSize: '1.2em',
-                                textOutline: 'none',
-                                opacity: 0.7
-                            },
-                            filter: {
-                                operator: '>',
-                                property: 'percentage',
-                                value: 10
-                            }
-                        }]
-                    }
-                },
-                series: [{
-                    name: 'Composition',
-                    colorByPoint: true,
-                    data: [{
-                        name: 'Water',
-                        y: 55.02
-                    }, {
-                        name: 'Fat',
-                        sliced: true,
-                        selected: true,
-                        y: 26.71
-                    }, {
-                        name: 'Carbohydrates',
-                        y: 1.09
-                    }, {
-                        name: 'Protein',
-                        y: 15.5
-                    }, {
-                        name: 'Ash',
-                        y: 1.68
-                    }]
-                }]
+                series: percentage
             });
         }
 

@@ -6,7 +6,7 @@ namespace ASI.Basecode.WebApp.Models
 {
     public class DashboardViewModel
     {
-        public List<ExpenseViewModel> Expenses { get; set; }
+        public IEnumerable<ExpenseViewModel> Expenses { get; set; }
         public double TotalExpense { get; set; }
         public int TotalTransaction { get; set; }
     }

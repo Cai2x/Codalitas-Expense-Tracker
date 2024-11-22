@@ -52,13 +52,18 @@
         }
 
         // Perform the deletion (example with a DELETE request, change endpoint as needed)
-        fetch(`/Expense/PostDelete/${currentExpenseId}`, {
+        fetch(`/Expense/PostDelete/${currentExpenseId}?currentPage=${currentPage}`, {
             method: 'POST',
         })
             .then(response => response.json()) // Parse the JSON response
             .then(data => {
                 if (data.success) {
-                    location.reload(); // Redirect manually
+                    toastr.success('Expense Deleted successfully!');
+                    loadData(currentPage, currentSort,currentCategory);
+                    deleteExpenseModal.hide();  
+
+                    document.body.classList.remove('modal-open');
+                    document.querySelector('.modal-backdrop').remove();
                 } else {
                     alert('Failed to delete expense: ' + data.message);
                 }

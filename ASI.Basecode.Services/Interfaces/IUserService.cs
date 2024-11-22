@@ -9,10 +9,12 @@ namespace ASI.Basecode.Services.Interfaces
     {
         LoginResult AuthenticateUser(string userName, string password, ref User user);
         void AddUser(UserViewModel model);
-        UserViewModel RetrieveUser(int user);
+        EditProfileModel RetrieveUser(int user);
         bool ChangePassword(int userId, string oldPassword, string newPassword);
+        void UpdateUser(EditProfileModel model);
         bool ResetPassword(string newPassword, string token); 
         Task<bool> SendPasswordResetEmailAsync(string email);
         Task SendEmailAsync(string email, string subject, string message);
+        UserViewModel ResetClaim(int id);
     }
 }

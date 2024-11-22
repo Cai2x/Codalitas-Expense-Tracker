@@ -1,4 +1,4 @@
-﻿@model ASI.Basecode.Services.ServiceModels.UserViewModel
+﻿@model ASI.Basecode.Services.ServiceModels.EditProfileModel
 
 <!-- Modal for Editing Profile -->
 <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
@@ -9,23 +9,24 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form asp-action="SaveProfile">
+                <form asp-action="Edit" asp-controller="Account" id="editProfileForm" method="post">
+                    <input type="hidden" asp-for="UserId" id="EditUserId" />
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="FirstName" class="form-label">First Name</label>
-                            <input asp-for="FirstName" class="form-control input-field" />
+                            <input asp-for="FirstName" id="EditFirstName" class="form-control input-field" />
                             <span asp-validation-for="FirstName" class="text-danger"></span>
                         </div>
                         <div class="col-md-6">
                             <label for="LastName" class="form-label">Last Name</label>
-                            <input asp-for="LastName" class="form-control input-field" />
+                            <input asp-for="LastName" id="EditLastName" class="form-control input-field" />
                             <span asp-validation-for="LastName" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-12">
-                            <label for="Username" class="form-label">UserName</label>
-                            <input asp-for="Username" class="form-control input-field" />
+                            <label for="Username" class="form-label">User Name</label>
+                            <input asp-for="Username" id="EditUsername" class="form-control input-field" />
                             <span asp-validation-for="Username" class="text-danger"></span>
                         </div>
                     </div>
@@ -42,3 +43,57 @@
         </div>
     </div>
 </div>
+
+<script>
+    let editProfileModal;  // Declare the modal globally
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const modalElement = document.getElementById('editProfileModal');
+        if (modalElement) {
+            editProfileModal = new bootstrap.Modal(modalElement);
+        } else {
+            console.error("Edit modal not found in DOM!");
+        }
+
+        modalElement.addEventListener('hidden.bs.modal', function () {
+            resetEditForm();  // Reset form on modal close
+        });
+    });
+
+    // Function to open the modal and populate data
+    function openEditModal(user) {
+        fetch(`/Account/GetUserDetails/${user}`)
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(error => { throw new Error(error.message); });
+                }
+                return response.json();
+            })
+            .then(profile => {
+                populateModalFields(profile);
+
+                // Open the modal programmatically
+                if (editProfileModal) {
+                    editProfileModal.show();
+                } else {
+                    console.error("Modal instance not initialized.");
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching expense:', error);
+                alert("Error fetching expense: " + error.message);
+            });
+    }
+
+    function populateModalFields(profile) {
+        document.getElementById("EditUserId").value = profile.userId;
+        document.getElementById("EditFirstName").value = profile.firstName;
+        document.getElementById("EditLastName").value = profile.lastName;
+        document.getElementById("EditUsername").value = profile.username;
+    }
+
+    function resetEditForm() {
+        const form = document.getElementById('editProfileForm');
+        form.reset();  // Resets all form fields
+    }
+</script>

@@ -12,7 +12,5 @@ namespace ASI.Basecode.Services.ServiceModels
         public string Email { get; set; }
         public int RequestId { get; set; }
         public DateTime ExpirationDate { get; set; }
-
-
     }
 }

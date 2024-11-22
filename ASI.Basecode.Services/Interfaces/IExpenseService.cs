@@ -17,5 +17,6 @@ namespace ASI.Basecode.Services.Interfaces
         ExpenseViewModel RetrieveExpense(int expenseId);
         ExpenseViewModel TotalRecord(int userId);
         List<ExpenseViewModel> DateFilter(DateTime startDate, DateTime endDate, int userId);
+        List<ExpenseViewModel> SearchFilterExpense(string expenseName, string sort, int? filterId, int userId);
     }
 }
