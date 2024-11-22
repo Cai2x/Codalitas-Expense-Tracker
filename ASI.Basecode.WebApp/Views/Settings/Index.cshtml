@@ -18,6 +18,9 @@
         <div class="profile-image">
             <!-- Placeholder for user image -->
             <img src="~/images/placeholder.png" alt="Profile Picture" class="profile-picture">
+            <a href="#" title="Edit Profile" class="edit-profile-link">
+                <i class="fas fa-user-edit"></i>
+            </a>
         </div>
         <!--
 		<div class="profile-details">
@@ -27,6 +30,8 @@
         -->
         <div class="profile-details ms-5">
             <h3 class="mb-1">@Model.FirstName @Model.LastName</h3>
+            <p class="mb-1">@Model.Email </p>
+            <p class="mb-1">@Model.Username </p>
         </div>
         <div class="toggle-switch ">
             <div class="form-check form-switch">

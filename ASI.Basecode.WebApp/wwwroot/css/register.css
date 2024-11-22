@@ -5,14 +5,19 @@ body {
     background-repeat: no-repeat;
     height: 100vh;
     width: 100vw;
-    overflow: auto;
+    overflow-x:hidden;
+    overflow-y:hidden;
 }
+
+
+
+
 
 .su-text {
     font: Inter;
     color: #000000;
     font-weight: 500;
-    font-size: 48px;
+    font-size: 2.5rem;
 }
 
 
@@ -21,6 +26,10 @@ body {
     border-radius: 10px;
     /*max-height: 80vh;*/ /* Limit height to prevent stretching */
     /*overflow-y: auto;*/ /* Enable scrolling within the card */
+}
+
+.form-label{
+    margin-bottom:3px;
 }
 
 

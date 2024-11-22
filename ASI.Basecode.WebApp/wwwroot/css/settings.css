@@ -9,17 +9,27 @@ body {
         color: white; /* Dark mode text color */
     }
 
+        body.dark-mode .edit-profile-header {
+            color: white;
+        }
+
+        body.dark-mode .profile-container {
+            background-color: #333333;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+
+
 .page-container {
     max-width: 800px;
     margin: auto;
     padding: 40px 20px;
-    background-color: #FFFFFF;
     border-radius: 15px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    /*box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);*/
 }
 
 body.dark-mode .page-container {
-    background-color: #333333;
+    /*background-color: #333333;*/
     color: white;
 }
 
@@ -42,7 +52,7 @@ h1 {
 .profile-container {
     display: flex;
     align-items: center;
-    padding: 20px;
+    padding: 40px;
     background-color: #FAFAF5;
     border-radius: 12px;
     margin-bottom: 30px;
@@ -74,8 +84,6 @@ h1 {
 
 /* Form Styling */
 .form-container {
-    background-color: #f8f8f8;
-    padding: 20px;
     border-radius: 12px;
 }
 
@@ -101,8 +109,9 @@ h1 {
 /* Button Styling */
 .button-container {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
+
 }
 
 .btn-save {
@@ -137,7 +146,6 @@ h1 {
 
 
 
-    /*Edit profile*/
 
 .edit-profle-content {
     margin: auto;
@@ -152,6 +160,7 @@ h1 {
             background-color: #333333;
             color: white;
         }
+
 .edit-profile-header {
     font-size: 2rem;
     font-family: 'Newsreader', serif;
@@ -166,5 +175,49 @@ h1 {
     font-weight:600;
 }
 
+
+.edit-profile-link {
+    color: #426B1F;
+    text-decoration: none;
+    font-size: 20px;
+    transition: color 0.3s ease;
+}
+
+    .edit-profile-link:hover {
+        color: darkgreen;
+    }
+
+    /* Style the icon inside the link */
+    .edit-profile-link i {
+        margin-right: 5px; 
+        font-size: 24px; 
+    }
+
+    .edit-profile-link:hover i {
+        transform: scale(1.2); 
+        transition: transform 0.3s ease; 
+    }
+
+.toggle-switch {
+    border: 1px solid;
+    border-radius: 7px;
+    padding: 10px;
+    margin-left: auto;
+}
+
+    .toggle-switch .form-check-input:checked {
+        background-color: lightgreen;
+        border-color: #426B1F;
+    }
+
+/*body.dark-mode .toggle-switch .form-check-input {
+    background-color: #426B1F;
+    border-color: #444;
+}*/
+
+body.dark-mode .toggle-switch {
+    background-color: #426B1F;
+    border-color: #444;
+}
 
 
