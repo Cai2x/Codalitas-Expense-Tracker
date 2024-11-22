@@ -28,6 +28,9 @@ body {
     body.dark-mode .table-container h2 {
         color: lightgreen;
     }
+        body.dark-mode h2 {
+            color: white;
+        }
 
 
 /* Header container styling */
