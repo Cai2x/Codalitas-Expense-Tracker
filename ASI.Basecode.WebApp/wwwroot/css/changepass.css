@@ -13,6 +13,13 @@
         color:white;
     }
 
+        body.dark-mode .change-password-modal .modal-title {
+            color: white;
+        }
+
+
+    
+
 .change-password-modal .dark-mode {
     background-color: #2e2e2e; /* Dark mode background color */
     color: white; /* Dark mode text color */
@@ -62,8 +69,13 @@
 }
 
 .form-label {
-    font-weight: 600;
+    font-weight: 400;
     color: #426B1F;
     margin-left: 5px;
+}
+
+body.dark-mode .form-label {
+    font-weight: 400;
+    color: lightgreen;
 }
 
